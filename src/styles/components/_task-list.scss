@@ -1,0 +1,17 @@
+.task-list{
+    
+    input{
+        height: 35px;
+        width: 99.5%;
+
+        border: none;
+   
+        // box-shadow: 0 2px 10px black;
+    }
+    .style-task{
+        border-inline-start: 6px rgb(55, 55, 105) solid;
+        padding-inline-start: 5px;
+        // margin: 2px;
+        
+    }
+}
