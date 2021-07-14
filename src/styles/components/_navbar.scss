@@ -10,11 +10,11 @@
     .user-action {
         @include flex(center, center, column);
 
-        gap:10px;
+        gap: 10px;
         margin: 0 auto;
-        a{
+        a {
             display: flex;
-           justify-content: center;
+            justify-content: center;
             align-items: center;
             height: 50px;
             width: 50px;
@@ -22,19 +22,17 @@
             cursor: pointer;
             transition: 1s;
             color: white;
-            &:hover{
+            &:hover {
                 background-color: #141416;
-                
             }
         }
-        .router-link-exact-active{
-            &::before{
-
+        .router-link-exact-active {
+            &::before {
                 border-width: 8px 6px 8px 0;
             }
             //your desired design when link is clicked
-          background-color:rgba(255, 255, 255, 0.5);
-           }
+            background-color: rgba(255, 255, 255, 0.5);
+        }
     }
     .user-details {
         background-color: #03c874;

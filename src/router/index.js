@@ -1,11 +1,10 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import home from '../views/Home.vue';
-import about from '../views/About.vue';
-import boardApp from '../views/board-app.vue'
-import boardDetails from '../views/board-details.vue'
-import taskDetails from '../views/task-details.vue'
-
+import home from '../views/home.vue';
+import about from '../views/about.vue';
+import boardApp from '../views/board-app.vue';
+import boardDetails from '../views/board-details.vue';
+import taskDetails from '../views/task-details.vue';
 
 Vue.use(VueRouter);
 
@@ -33,11 +32,11 @@ const routes = [
                     {
                         path: 'task/:id',
                         name: 'taskDetails',
-                        component: taskDetails
-                    }
-                ]
-            }
-        ]
+                        component: taskDetails,
+                    },
+                ],
+            },
+        ],
     },
 ];
 

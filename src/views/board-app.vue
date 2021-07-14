@@ -1,25 +1,26 @@
 <template>
     <section class="board-app">
-        <navbar/>
-        <board-list :boards="boards"/>
-        <router-view/>
+        <navbar />
+        <board-list :boards="boards" />
+        <router-view />
     </section>
 </template>
 <script>
-import navbar from '../components/navbar.vue'
-import boardList from '../components/board-list.vue'
+import navbar from '../components/navbar.vue';
+import boardList from '../components/board-list.vue';
 
 export default {
-
     computed: {
-        boards() { return this.$store.getters.boards }
+        boards() {
+            return this.$store.getters.boards;
+        },
     },
-    created(){
-        this.$router.push('/boards/123')
+    created() {
+        // this.$router.push('/boards/123')
     },
-    components:{
+    components: {
         navbar,
-        boardList
-    }
-}
+        boardList,
+    },
+};
 </script>
