@@ -1,0 +1,115 @@
+.board-header {
+    @include flex;
+    flex-direction: column;
+    width: 60%;
+    margin: 0 auto;
+
+    .board-info {
+        @include flex;
+        width: 100%;
+        justify-content: space-between;
+        font-family: Lato;
+
+        .board-title {
+            @include flex;
+            justify-content: start;
+            align-items: flex-start;
+            flex-direction: column;
+            flex: 6;
+            gap: 5px;
+        }
+
+        .board-title .main-title {
+            flex: 6;
+            width: 100%;
+            h2,
+            input {
+                text-align: left;
+                color: #2c3e50;
+                width: 100%;
+                height: 100%;
+                font-family: Lato;
+                font-weight: 600;
+                font-size: 1.5em;
+                border: none;
+                outline: none;
+                transition: 0.2s;
+                border-radius: 5px;
+                padding: 3px 10px;
+
+                &:hover {
+                    box-shadow: 0 0 1px 1px #2c3e50;
+                }
+            }
+        }
+
+        .board-title .sub-title {
+            width: 100%;
+            p,
+            input {
+                text-align: left;
+                color: #2c3e50;
+                width: 100%;
+                height: 100%;
+                font-family: Lato;
+                font-weight: 400;
+                font-size: 1em;
+                border: none;
+                outline: none;
+                transition: 0.2s;
+                border-radius: 5px;
+                padding: 3px 10px;
+
+                &:hover {
+                    box-shadow: 0 0 1px 1px #2c3e50;
+                }
+            }
+        }
+
+        .members {
+            @include flex;
+            gap: 0px;
+        }
+
+        h2,
+        p,
+        input {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            list-style-type: none;
+
+            li {
+                @include flex;
+                font-family: Lato;
+                font-weight: 600;
+                border: 2px solid #f4f4f4;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+            }
+        }
+    }
+
+    .board-actions {
+        @include flex;
+        width: 100%;
+        justify-content: start;
+
+        .board-filter {
+            @include flex;
+            gap: 5px;
+
+            button,
+            input,
+            select {
+                padding: 5px 10px;
+                border-radius: 5px;
+                outline: none;
+                border: 2px solid #afafaf;
+            }
+        }
+    }
+}
