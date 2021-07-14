@@ -1,6 +1,6 @@
 <template>
     <article @click="setBoard(miniBoard._id)" class="board-preview">
-        {{ miniBoard.title }}
+        {{ miniBoard._id }}
     </article>
 </template>
 
@@ -14,8 +14,7 @@ export default {
     },
     methods: {
         setBoard(boardId) {
-            if (this.$store.getters.currBoard._id === boardId) return;
-
+            if (this.$store.getters.currBoard?._id === boardId) return;
             this.$router.push(`/boards/${boardId}`);
         },
     },

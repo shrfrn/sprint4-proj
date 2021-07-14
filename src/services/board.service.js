@@ -1,5 +1,7 @@
 // import {httpService} from '@/services/http.service.js'
 import { storageService } from '@/services/async-storage.service.js';
+import { utilService } from './util.service.js';
+
 const KEY = 'somedayBoard';
 export const boardService = {
     query,
@@ -8,15 +10,19 @@ export const boardService = {
     save,
     // getEmptyToy,
     getEmptyFilter,
+    updateGroup,
+    removeGroup,
+    duplicateGroup,
 };
 
 // Board service
 
 // async function query(filterBy) {
 async function query() {
+    // _createInitialData();
     // if(!filterBy) filterBy = getEmptyFilter()
     let boards = await storageService.query(KEY);
-    if (!boards || boards.length === 0) boards = _createInitialData()
+    if (!boards || boards.length === 0) boards = _createInitialData();
 
     boards = boards.map((board) => {
         return { _id: board._id, title: board.title };
@@ -43,6 +49,29 @@ async function save(board) {
         return await storageService.post(KEY, board);
         // return await httpService.post('toy/', toy)
     }
+}
+
+async function updateGroup(updatedGroup, currBoard) {
+    const board = await getById(currBoard._id);
+    const idx = board.groups.findIndex((group) => group.id === updatedGroup.id);
+    board.groups.splice(idx, 1, updatedGroup);
+    return await storageService.put(KEY, board);
+}
+
+async function removeGroup(group, currBoard) {
+    const board = await getById(currBoard._id);
+    const idx = board.groups.findIndex((gp) => gp.id === group.id);
+    board.groups.splice(idx, 1);
+    return await storageService.put(KEY, board);
+}
+
+async function duplicateGroup(duplicatedGroup, currBoard) {
+    duplicatedGroup.title = 'Copy of ' + duplicatedGroup.title;
+    const board = await getById(currBoard._id);
+    const idx = board.groups.findIndex((gp) => gp.id === duplicatedGroup.id);
+    duplicatedGroup.id = utilService.makeId();
+    board.groups.splice(idx + 1, 0, duplicatedGroup);
+    return await storageService.put(KEY, board);
 }
 
 // function getEmptyToy() {
@@ -88,9 +117,9 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Bobby', 'Puki', 'Baba', 'Nachi'],
-                            status: 'In progress',
+                            status: { txt: 'In progress', color: '#999598' },
                             date: Date.now(),
-                        }
+                        },
                     },
                     {
                         id: 't102',
@@ -98,9 +127,9 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Puki'],
-                            status: 'Done',
+                            status: { txt: 'Done', color: '#235467' },
                             date: Date.now(),
-                        }
+                        },
                     },
                     {
                         id: 't103',
@@ -108,13 +137,13 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Bobby', 'Puki'],
-                            status: 'Stuck',
+                            status: { txt: 'Stuck', color: '#292929' },
                             date: Date.now(),
-                        }
+                        },
                     },
                 ],
                 style: {
-                    color: '#232323'
+                    color: '#232323',
                 },
             },
             {
@@ -127,9 +156,9 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Bobby', 'Puki'],
-                            status: 'Done',
+                            status: { txt: 'Done', color: '#235467' },
                             date: Date.now(),
-                        }
+                        },
                     },
                     {
                         id: 't202',
@@ -137,9 +166,9 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Puki'],
-                            status: 'Done',
+                            status: { txt: 'Done', color: '#235467' },
                             date: Date.now(),
-                        }
+                        },
                     },
                     {
                         id: 't203',
@@ -147,9 +176,9 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Bobby'],
-                            status: 'In progress',
+                            status: { txt: 'In progress', color: '#999598' },
                             date: Date.now(),
-                        }
+                        },
                     },
                     {
                         id: 't204',
@@ -157,13 +186,13 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Bobby', 'Puki'],
-                            status: 'Stuck',
+                            status: { txt: 'Stuck', color: '#292929' },
                             date: Date.now(),
-                        }
+                        },
                     },
                 ],
                 style: {
-                    color: '#232323'
+                    color: '#232323',
                 },
             },
         ],
@@ -191,9 +220,9 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Muki', 'Puki'],
-                            status: 'Done',
+                            status: { txt: 'Done', color: '#235467' },
                             date: Date.now(),
-                        }
+                        },
                     },
                     {
                         id: 't1021',
@@ -201,9 +230,9 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Bobby', 'Puki'],
-                            status: 'Done',
+                            status: { txt: 'Done', color: '#235467' },
                             date: Date.now(),
-                        }
+                        },
                     },
                     {
                         id: 't1031',
@@ -211,13 +240,13 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Muki'],
-                            status: 'Stuck',
+                            status: { txt: 'Stuck', color: '#292929' },
                             date: Date.now(),
-                        }
+                        },
                     },
                 ],
                 style: {
-                    color: '#323232'
+                    color: '#323232',
                 },
             },
             {
@@ -230,9 +259,9 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Bobby'],
-                            status: 'Done',
+                            status: { txt: 'Done', color: '#235467' },
                             date: Date.now(),
-                        }
+                        },
                     },
                     {
                         id: 't2021',
@@ -240,9 +269,9 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Bobby'],
-                            status: 'Stuck',
+                            status: { txt: 'Stuck', color: '#292929' },
                             date: Date.now(),
-                        }
+                        },
                     },
                     {
                         id: 't2031',
@@ -250,9 +279,9 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Bobby', 'Puki'],
-                            status: 'In progress',
+                            status: { txt: 'In progress', color: '#999598' },
                             date: Date.now(),
-                        }
+                        },
                     },
                     {
                         id: 't2041',
@@ -260,13 +289,13 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Bobby'],
-                            status: 'Stuck',
+                            status: { txt: 'Stuck', color: '#292929' },
                             date: Date.now(),
-                        }
+                        },
                     },
                 ],
                 style: {
-                    color: '#323232'
+                    color: '#323232',
                 },
             },
         ],
