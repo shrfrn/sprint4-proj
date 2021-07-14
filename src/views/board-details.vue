@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <section class="board-details">
         <!-- BOARDDETAILS -->
         <!-- RENDER THE BOARD HEADER -->
         <board-header />

@@ -1,20 +1,16 @@
 .board-header {
-    @include flex;
-    flex-direction: column;
-    width: 60%;
+    @include flex(center, center, column);
+    // flex-direction: column;
+    width: 90%;
     margin: 0 auto;
 
     .board-info {
-        @include flex;
+        @include flex(space-between, center, row);
         width: 100%;
-        justify-content: space-between;
         font-family: Lato;
 
         .board-title {
-            @include flex;
-            justify-content: start;
-            align-items: flex-start;
-            flex-direction: column;
+            @include flex(start, flex-start, column);
             flex: 6;
             gap: 5px;
         }
@@ -67,7 +63,7 @@
         }
 
         .members {
-            @include flex;
+            @include flex(center, center, row);
             gap: 0px;
         }
 
@@ -82,7 +78,7 @@
             list-style-type: none;
 
             li {
-                @include flex;
+                @include flex(center, center, row);
                 font-family: Lato;
                 font-weight: 600;
                 border: 2px solid #f4f4f4;
@@ -94,12 +90,12 @@
     }
 
     .board-actions {
-        @include flex;
+        @include flex(start, center, row);
         width: 100%;
-        justify-content: start;
+        // justify-content: start;
 
         .board-filter {
-            @include flex;
+            @include flex(center, center, row);
             gap: 5px;
 
             button,
