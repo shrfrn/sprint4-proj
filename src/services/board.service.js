@@ -117,7 +117,7 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Bobby', 'Puki', 'Baba', 'Nachi'],
-                            status: 'In progress',
+                            status: { txt: 'In progress', color: '#999598' },
                             date: Date.now(),
                         },
                     },
@@ -127,7 +127,7 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Puki'],
-                            status: 'Done',
+                            status: { txt: 'Done', color: '#235467' },
                             date: Date.now(),
                         },
                     },
@@ -137,7 +137,7 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Bobby', 'Puki'],
-                            status: 'Stuck',
+                            status: { txt: 'Stuck', color: '#292929' },
                             date: Date.now(),
                         },
                     },
@@ -156,7 +156,7 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Bobby', 'Puki'],
-                            status: 'Done',
+                            status: { txt: 'Done', color: '#235467' },
                             date: Date.now(),
                         },
                     },
@@ -166,7 +166,7 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Puki'],
-                            status: 'Done',
+                            status: { txt: 'Done', color: '#235467' },
                             date: Date.now(),
                         },
                     },
@@ -176,7 +176,7 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Bobby'],
-                            status: 'In progress',
+                            status: { txt: 'In progress', color: '#999598' },
                             date: Date.now(),
                         },
                     },
@@ -186,7 +186,7 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Bobby', 'Puki'],
-                            status: 'Stuck',
+                            status: { txt: 'Stuck', color: '#292929' },
                             date: Date.now(),
                         },
                     },
@@ -220,7 +220,7 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Muki', 'Puki'],
-                            status: 'Done',
+                            status: { txt: 'Done', color: '#235467' },
                             date: Date.now(),
                         },
                     },
@@ -230,7 +230,7 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Bobby', 'Puki'],
-                            status: 'Done',
+                            status: { txt: 'Done', color: '#235467' },
                             date: Date.now(),
                         },
                     },
@@ -240,13 +240,13 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Muki'],
-                            status: 'Stuck',
+                            status: { txt: 'Stuck', color: '#292929' },
                             date: Date.now(),
                         },
                     },
                 ],
                 style: {
-                    color: '#585858',
+                    color: '#323232',
                 },
             },
             {
@@ -259,7 +259,7 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Bobby'],
-                            status: 'Done',
+                            status: { txt: 'Done', color: '#235467' },
                             date: Date.now(),
                         },
                     },
@@ -269,7 +269,7 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Bobby'],
-                            status: 'Stuck',
+                            status: { txt: 'Stuck', color: '#292929' },
                             date: Date.now(),
                         },
                     },
@@ -279,7 +279,7 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Bobby', 'Puki'],
-                            status: 'In progress',
+                            status: { txt: 'In progress', color: '#999598' },
                             date: Date.now(),
                         },
                     },
@@ -289,13 +289,13 @@ const gBoards = [
                         createdAt: Date.now(),
                         columns: {
                             delegates: ['Bobby'],
-                            status: 'Stuck',
+                            status: { txt: 'Stuck', color: '#292929' },
                             date: Date.now(),
                         },
                     },
                 ],
                 style: {
-                    color: '#9977fa',
+                    color: '#323232',
                 },
             },
         ],
