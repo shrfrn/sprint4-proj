@@ -3,13 +3,10 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+import {boardStore} from './board.store.js'
+
 export default new Vuex.Store({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
-  }
+    modules: {
+        boardStore,        
+    }
 })
