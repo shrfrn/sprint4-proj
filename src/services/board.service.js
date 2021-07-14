@@ -15,12 +15,12 @@ export const boardService = {
 // async function query(filterBy) {
 async function query() {
     // if(!filterBy) filterBy = getEmptyFilter()
-    let boards = await storageService.get(KEY);
-    if (!boards || boards.length === 0) boards = _createInitialData();
+    let boards = await storageService.query(KEY);
+    if (!boards || boards.length === 0) boards = _createInitialData()
 
     boards = boards.map((board) => {
         return { _id: board._id, title: board.title };
-    });
+    })
     return boards;
     // return await httpService.get('toy', {filterBy})
 }
@@ -76,6 +76,7 @@ const gBoards = [
             fullname: 'Muki Suflaki',
             imgUrl: 'http://some-img.jpg',
         },
+        columns: ['delegates', 'date', 'status'],
         groups: [
             {
                 id: 'g101',
@@ -85,18 +86,36 @@ const gBoards = [
                         id: 't101',
                         title: 'Board list',
                         createdAt: Date.now(),
+                        columns: {
+                            delegates: ['Bobby', 'Puki' , 'Baba', 'Nachi'],
+                            status: {txt: 'In progress', color: '#999598'},
+                            date: Date.now(),
+                        }
                     },
                     {
                         id: 't102',
                         title: 'Board details',
                         createdAt: Date.now(),
+                        columns: {
+                            delegates: ['Puki'],
+                            status: {txt: 'Done', color: '#235467'},
+                            date: Date.now(),
+                        }
                     },
                     {
                         id: 't103',
                         title: 'Chat / Activities',
                         createdAt: Date.now(),
+                        columns: {
+                            delegates: ['Bobby', 'Puki'],
+                            status: {txt: 'Stuck', color: '#292929'},
+                            date: Date.now(),
+                        }
                     },
                 ],
+                style: {
+                    color: '#232323'
+                },
             },
             {
                 id: 'g201',
@@ -106,25 +125,49 @@ const gBoards = [
                         id: 't201',
                         title: 'Board preview',
                         createdAt: Date.now(),
+                        columns: {
+                            delegates: ['Bobby', 'Puki'],
+                            status: {txt: 'Done', color: '#235467'},
+                            date: Date.now(),
+                        }
                     },
                     {
                         id: 't202',
                         title: 'group list',
                         createdAt: Date.now(),
+                        columns: {
+                            delegates: ['Puki'],
+                            status: {txt: 'Done', color: '#235467'},
+                            date: Date.now(),
+                        }
                     },
                     {
                         id: 't203',
                         title: 'group preview',
                         createdAt: Date.now(),
+                        columns: {
+                            delegates: ['Bobby'],
+                            status: {txt: 'In progress', color: '#999598'},
+                            date: Date.now(),
+                        }
                     },
                     {
                         id: 't204',
                         title: 'task preview',
                         createdAt: Date.now(),
+                        columns: {
+                            delegates: ['Bobby', 'Puki'],
+                            status: {txt: 'Stuck', color: '#292929'},
+                            date: Date.now(),
+                        }
                     },
                 ],
+                style: {
+                    color: '#232323'
+                },
             },
         ],
+        styles: {},
     },
     {
         _id: 'b102',
@@ -136,6 +179,7 @@ const gBoards = [
             fullname: 'Bobby Balobby',
             imgUrl: 'http://some-img.jpg',
         },
+        columns: ['delegates', 'status', 'date'],
         groups: [
             {
                 id: 'g102',
@@ -145,18 +189,36 @@ const gBoards = [
                         id: 't1011',
                         title: 'Board service',
                         createdAt: Date.now(),
+                        columns: {
+                            delegates: ['Muki', 'Puki'],
+                            status: {txt: 'Done', color: '#235467'},
+                            date: Date.now(),
+                        }
                     },
                     {
                         id: 't1021',
                         title: 'Socket details',
                         createdAt: Date.now(),
+                        columns: {
+                            delegates: ['Bobby', 'Puki'],
+                            status: {txt: 'Done', color: '#235467'},
+                            date: Date.now(),
+                        }
                     },
                     {
                         id: 't1031',
                         title: 'User Service',
                         createdAt: Date.now(),
+                        columns: {
+                            delegates: ['Muki'],
+                            status: {txt: 'Stuck', color: '#292929'},
+                            date: Date.now(),
+                        }
                     },
                 ],
+                style: {
+                    color: '#323232'
+                },
             },
             {
                 id: 'g202',
@@ -166,23 +228,46 @@ const gBoards = [
                         id: 't2011',
                         title: 'Create Mongo DB',
                         createdAt: Date.now(),
+                        columns: {
+                            delegates: ['Bobby'],
+                            status: {txt: 'Done', color: '#235467'},
+                            date: Date.now(),
+                        }
                     },
                     {
                         id: 't2021',
                         title: 'write aggrigations',
                         createdAt: Date.now(),
+                        columns: {
+                            delegates: ['Bobby'],
+                            status: {txt: 'Stuck', color: '#292929'},
+                            date: Date.now(),
+                        }
                     },
                     {
                         id: 't2031',
                         title: 'filter and sort',
                         createdAt: Date.now(),
+                        columns: {
+                            delegates: ['Bobby', 'Puki'],
+                            status: {txt: 'In progress', color: '#999598'},
+                            date: Date.now(),
+                        }
                     },
                     {
                         id: 't2041',
                         title: 'Port to Atlas',
                         createdAt: Date.now(),
+                        columns: {
+                            delegates: ['Bobby'],
+                            status: {txt: 'Stuck', color: '#292929'},
+                            date: Date.now(),
+                        }
                     },
                 ],
+                style: {
+                    color: '#323232'
+                },
             },
         ],
         members: [
@@ -190,6 +275,7 @@ const gBoards = [
             { _id: 'u102', fullname: 'RV' },
             { _id: 'u103', fullname: 'SF' },
         ],
+        styles: {},
     },
 ];
 
