@@ -1,5 +1,5 @@
 <template>
-<section></section>
+<section>boardlist</section>
 </template>
 
 <script>
