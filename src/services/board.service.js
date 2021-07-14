@@ -1,6 +1,6 @@
 // import {httpService} from '@/services/http.service.js'
-import {storageService} from '@/services/async-storage.service.js'
-const KEY = 'somedayBoard'
+import { storageService } from '@/services/async-storage.service.js';
+const KEY = 'somedayBoard';
 export const boardService = {
     query,
     getById,
@@ -8,61 +8,63 @@ export const boardService = {
     save,
     // getEmptyToy,
     getEmptyFilter,
-}
+};
 
 // Board service
 
 // async function query(filterBy) {
 async function query() {
     // if(!filterBy) filterBy = getEmptyFilter()
-    let boards = await storageService.get(KEY)
-    if (!boards || boards.length === 0) boards = _createInitialData()
+    let boards = await storageService.get(KEY);
+    if (!boards || boards.length === 0) boards = _createInitialData();
 
-    boards = boards.map(board => { return { _id: board._id, title: board.title }})
-    return boards
+    boards = boards.map((board) => {
+        return { _id: board._id, title: board.title };
+    });
+    return boards;
     // return await httpService.get('toy', {filterBy})
 }
 
 async function getById(id) {
-    return await storageService.get(KEY, id)
+    return await storageService.get(KEY, id);
     // return await httpService.get('toy/' + id)
 }
 
 async function remove(id) {
-    return await storageService.delete(KEY, id)
+    return await storageService.delete(KEY, id);
     // return await httpService.delete('toy/' + id)
 }
 
 async function save(board) {
-    if(board._id){
-        return await storageService.put(KEY, board)
+    if (board._id) {
+        return await storageService.put(KEY, board);
         // return await httpService.put('toy/' + toy._id, toy)
     } else {
-        return await storageService.post(KEY, board)
+        return await storageService.post(KEY, board);
         // return await httpService.post('toy/', toy)
-    } 
+    }
 }
 
 // function getEmptyToy() {
 //     return {
 //         name: '',
 //         price: '',
-//         type: '', 
-//         createdAt: '', 
+//         type: '',
+//         createdAt: '',
 //         inStock: true,
 //     }
 // }
 
-function getEmptyFilter(){
+function getEmptyFilter() {
     return {
         txt: '',
         inStock: 'all',
         toyType: 'all',
         sortBy: 'name',
-    }
+    };
 }
 
-// Data initailization 
+// Data initailization
 
 const gBoards = [
     {
@@ -72,7 +74,7 @@ const gBoards = [
         createdBy: {
             _id: 'u101',
             fullname: 'Muki Suflaki',
-            imgUrl: 'http://some-img.jpg'
+            imgUrl: 'http://some-img.jpg',
         },
         groups: [
             {
@@ -94,7 +96,7 @@ const gBoards = [
                         title: 'Chat / Activities',
                         createdAt: Date.now(),
                     },
-                ]
+                ],
             },
             {
                 id: 'g201',
@@ -120,18 +122,19 @@ const gBoards = [
                         title: 'task preview',
                         createdAt: Date.now(),
                     },
-                ]
+                ],
             },
-        ]
+        ],
     },
     {
         _id: 'b102',
         title: 'Backend',
+        description: 'This is very awesome!',
         createdAt: Date.now(),
         createdBy: {
             _id: 'u102',
             fullname: 'Bobby Balobby',
-            imgUrl: 'http://some-img.jpg'
+            imgUrl: 'http://some-img.jpg',
         },
         groups: [
             {
@@ -153,7 +156,7 @@ const gBoards = [
                         title: 'User Service',
                         createdAt: Date.now(),
                     },
-                ]
+                ],
             },
             {
                 id: 'g202',
@@ -179,13 +182,18 @@ const gBoards = [
                         title: 'Port to Atlas',
                         createdAt: Date.now(),
                     },
-                ]
+                ],
             },
-        ]
-    }
-]
+        ],
+        members: [
+            { _id: 'u101', fullname: 'AK' },
+            { _id: 'u102', fullname: 'RV' },
+            { _id: 'u103', fullname: 'SF' },
+        ],
+    },
+];
 
-function _createInitialData(){
-    localStorage.setItem(KEY, JSON.stringify(gBoards))
-    return gBoards
+function _createInitialData() {
+    localStorage.setItem(KEY, JSON.stringify(gBoards));
+    return gBoards;
 }
