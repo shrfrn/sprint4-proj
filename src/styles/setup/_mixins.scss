@@ -65,3 +65,9 @@
   align-items: center;
   gap: 20px;
 }
+@mixin flex($justify, $align,$direction) {
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+  flex-direction: $direction;
+  }
