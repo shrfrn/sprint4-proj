@@ -1,29 +1,50 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import home from '../views/home.vue';
+import about from '../views/about.vue';
+import boardApp from '../views/board-app.vue'
+import boardDetails from '../views/board-details.vue'
+import taskDetails from '../views/task-details.vue'
 
-Vue.use(VueRouter)
+
+Vue.use(VueRouter);
 
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
+    {
+        path: '/',
+        name: 'home',
+        component: home,
+    },
+    {
+        path: '/about',
+        name: 'about',
+        component: about,
+    },
+    {
+        path: '/boards',
+        name: 'boards',
+        component: boardApp,
+        children: [
+            {
+                path: ':boardId',
+                name: 'boardDetails',
+                component: boardDetails,
+                children: [
+                    {
+                        path: 'task/:id',
+                        name: 'taskDetails',
+                        component: taskDetails
+                    }
+                ]
+            }
+        ]
+    },
+];
 
 const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
-})
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes,
+});
 
-export default router
+export default router;

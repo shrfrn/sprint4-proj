@@ -1,4 +1,4 @@
-# random-proj-cli
+# Someday
 
 ## Project setup
 ```
