@@ -23,7 +23,6 @@ export default {
     },
     async created() {
         await this.$store.dispatch({type: 'loadBoards'})
-        console.log('boards loaded', this.$store.getters.boards)
     },
     components: {
         boardPreview,
