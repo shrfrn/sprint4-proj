@@ -21,14 +21,11 @@
 <script>
 // import { boardService } from '../services/board.service';
 import boardHeader from '../components/board-header.vue';
-<<<<<<< HEAD
 import groupList from '../components/group-list.vue';
-=======
 import delegateColumn from '../components/delegate.column.vue';
 import statusColumn from '../components/status.column.vue';
 import dateColumn from '../components/date.column.vue';
 // import boardViews from '../components/board-views.vue';
->>>>>>> b8f41b9f4d376aa8f01eab36d7cec75a6bdf9fb9
 
 export default {
     data() {
@@ -39,14 +36,14 @@ export default {
 
     computed: {
         delegates() {
-            return this.$store.getters.currBoard.groups[0].tasks[0].columns['delegates']
+            return this.$store.getters.currBoard.groups[0].tasks[0].columns['delegates'];
         },
         status() {
             console.log(this.$store.getters.currBoard.groups[0].tasks[0].columns['status']);
-            return this.$store.getters.currBoard.groups[0].tasks[0].columns['status']
+            return this.$store.getters.currBoard.groups[0].tasks[0].columns['status'];
         },
         date() {
-            return this.$store.getters.currBoard.groups[0].tasks[0].columns['date']
+            return this.$store.getters.currBoard.groups[0].tasks[0].columns['date'];
         },
     },
 
@@ -64,14 +61,11 @@ export default {
 
     components: {
         boardHeader,
-<<<<<<< HEAD
         groupList,
-=======
         delegateColumn,
         statusColumn,
         dateColumn,
         // boardViews,
->>>>>>> b8f41b9f4d376aa8f01eab36d7cec75a6bdf9fb9
     },
 
     methods: {
