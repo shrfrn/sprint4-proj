@@ -82,29 +82,6 @@ export default {
     },
     data() {
         return {
-            // board: {
-            //     _id: 'b101',
-            //     title: 'My board',
-            //     description: 'This is a great board',
-            //     createdAt: 1589983468418,
-            //     members: [
-            //         {
-            //             _id: 'u101',
-            //             fullname: 'AK',
-            //             imgUrl: 'https://www.google.com',
-            //         },
-            //         {
-            //             _id: 'u102',
-            //             fullname: 'SF',
-            //             imgUrl: 'https://www.google.com',
-            //         },
-            //         {
-            //             _id: 'u103',
-            //             fullname: 'RV',
-            //             imgUrl: 'https://www.google.com',
-            //         },
-            //     ],
-            // },
             isEditingState: false,
             currEditedTag: null,
         };
