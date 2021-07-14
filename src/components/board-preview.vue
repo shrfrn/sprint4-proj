@@ -1,5 +1,5 @@
 <template>
-    <article class="board-preview">
+    <article @click="loadBoard" class="board-preview">
         {{miniBoard.title}}
     </article>
 </template>
@@ -11,6 +11,8 @@ export default {
             type: Object,
             required: true,
         }
+    },
+    methods:{
     }
 }
 </script>
