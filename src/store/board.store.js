@@ -24,19 +24,8 @@ export const boardStore = {
             const idx = state.boards.findIndex((board) => board._id === updateBoard._id);
             state.boards.splice(idx, 1, updateBoard);
             state.currBoard = updateBoard;
+            console.log(state.currBoard.groups ,'bbb');
         },
-        // removeGroup(state, { updateBoard }) {
-        //     console.log('state.boards :>> ', state.boards);
-        //     const idx = state.boards.groups.findIndex((gp) => gp._id === group._id);
-        //     state.boards.splice(idx, 1);
-        // },
-
-        // addReview(state, {review}){
-        //     const idx = state.boards.findIndex(board => board._id === review.boardId)
-        //     if(!state.boards[idx].reviews) state.boards[idx].reviews = []
-        //     delete review.boardId
-        //     state.boards[idx].reviews.push(review)
-        // },
     },
     actions: {
         async loadBoards(context) {
@@ -65,16 +54,28 @@ export const boardStore = {
             // .then(boards => context.commit({type: 'setBoards', boards}))
         },
         async updateTask(context, { task, groupIdx }) {
-            const idx = context.state.currBoard.groups[groupIdx].tasks.findIndex((taskToCheck) => {
-                return taskToCheck.id === task.id;
-            });
-            context.state.currBoard.groups[groupIdx].tasks[idx] = task;
-            console.log(context.state.currBoard.groups[groupIdx].tasks[idx]);
-            await context.dispatch({ type: 'saveBoard', board: context.state.currBoard });
+            const updateBoard = await boardService.updateTask(
+                task,groupIdx,
+                context.state.currBoard._id
+            );
+            context.commit({ type: 'updateBoard', updateBoard });
         },
         async addTask(context, { task, groupIdx }) {
-            context.state.currBoard.groups[groupIdx].tasks.push(task);
-            await context.dispatch({ type: 'saveBoard', board: context.state.currBoard });
+            const updateBoard = await boardService.addTask(
+                task,groupIdx,
+                context.state.currBoard._id
+            );
+            
+            context.commit({ type: 'updateBoard', updateBoard });
+        },
+        async removeTask(context, { task, groupIdx }) {
+          
+            const updateBoard = await boardService.removeTask(
+                task,groupIdx,
+                context.state.currBoard._id
+            );
+            
+            context.commit({ type: 'updateBoard', updateBoard });
         },
         async updateGroupName(context, { updatedGroup }) {
             const updateBoard = await boardService.updateGroup(
@@ -96,6 +97,11 @@ export const boardStore = {
         },
         async updateGroup(context, { group }) {
             const updateBoard = await boardService.updateGroup(group, context.state.currBoard);
+            context.commit({ type: 'updateBoard', updateBoard });
+        },
+        async addNewGroup(context) {
+            const updateBoard = await boardService.addNewGroup(context.state.currBoard._id);
+            console.log('updateBoard :>> ', updateBoard);
             context.commit({ type: 'updateBoard', updateBoard });
         },
         // async addReview(context, {review}){

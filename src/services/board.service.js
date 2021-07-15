@@ -13,6 +13,10 @@ export const boardService = {
     updateGroup,
     removeGroup,
     duplicateGroup,
+    addNewGroup,
+    updateTask,
+    addTask,
+    removeTask,
 };
 
 // Board service
@@ -26,7 +30,7 @@ async function query() {
 
     boards = boards.map((board) => {
         return { _id: board._id, title: board.title };
-    })
+    });
     return boards;
     // return await httpService.get('toy', {filterBy})
 }
@@ -79,6 +83,47 @@ function getEmptyBoard() {
     newBoard._id = null
     return newBoard
 }
+async function addNewGroup(boardId) {
+    const newGroup = _getNewGroup();
+    const board = await getById(boardId);
+    board.groups.splice(0, 0, newGroup);
+    return await storageService.put(KEY, board);
+}
+
+async function removeTask(task, groupIdx, currBoardId) {
+    const board = await getById(currBoardId);
+    console.log(board.groups);
+    const idx = board.groups[groupIdx].tasks.findIndex((taskToCheck) => {
+        return taskToCheck.id === task.id;
+    });
+    board.groups[groupIdx].tasks.splice(idx, 1);
+    return await storageService.put(KEY, board);
+}
+async function updateTask(task, groupIdx, currBoardId) {
+    const board = await getById(currBoardId);
+
+    const idx = board.groups[groupIdx].tasks.findIndex((taskToCheck) => {
+        return taskToCheck.id === task.id;
+    });
+    board.groups[groupIdx].tasks[idx] = task;
+    return await storageService.put(KEY, board);
+}
+async function addTask(task, groupIdx, currBoardId) {
+    const board = await getById(currBoardId);
+
+    board.groups[groupIdx].tasks.push(task);
+
+    return await storageService.put(KEY, board);
+}
+// function getEmptyToy() {
+//     return {
+//         name: '',
+//         price: '',
+//         type: '',
+//         createdAt: '',
+//         inStock: true,
+//     }
+// }
 
 function getEmptyFilter() {
     return {
@@ -192,6 +237,19 @@ const gBoards = [
                 },
             },
         ],
+        members: [
+            {
+                _id: 'u102',
+                fullname: 'RV',
+                imgUrl:
+                    'https://www.iconninja.com/files/980/282/508/female-blond-avatar-person-girl-user-woman-icon.png',
+            },
+            {
+                _id: 'u103',
+                fullname: 'SF',
+                imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+            },
+        ],
         styles: {},
     },
     {
@@ -296,9 +354,22 @@ const gBoards = [
             },
         ],
         members: [
-            { _id: 'u101', fullname: 'AK' },
-            { _id: 'u102', fullname: 'RV' },
-            { _id: 'u103', fullname: 'SF' },
+            {
+                _id: 'u101',
+                fullname: 'AK',
+                imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+            },
+            {
+                _id: 'u102',
+                fullname: 'RV',
+                imgUrl:
+                    'https://www.iconninja.com/files/980/282/508/female-blond-avatar-person-girl-user-woman-icon.png',
+            },
+            {
+                _id: 'u103',
+                fullname: 'SF',
+                imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+            },
         ],
         styles: {},
     },
@@ -307,4 +378,26 @@ const gBoards = [
 function _createInitialData() {
     localStorage.setItem(KEY, JSON.stringify(gBoards));
     return gBoards;
+}
+
+function _getNewGroup() {
+    return {
+        id: utilService.makeId(),
+        title: 'New Group',
+        tasks: [
+            {
+                id: utilService.makeId(),
+                title: 'You can add the task here',
+                createdAt: Date.now(),
+                columns: {
+                    delegates: ['Bobby'],
+                    status: { txt: '', color: '#c2c2c2' },
+                    date: Date.now(),
+                },
+            },
+        ],
+        style: {
+            color: '#5988fa',
+        },
+    };
 }
