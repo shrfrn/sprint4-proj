@@ -13,6 +13,7 @@ export const boardService = {
     updateGroup,
     removeGroup,
     duplicateGroup,
+    addNewGroup,
 };
 
 // Board service
@@ -26,7 +27,7 @@ async function query() {
 
     boards = boards.map((board) => {
         return { _id: board._id, title: board.title };
-    })
+    });
     return boards;
     // return await httpService.get('toy', {filterBy})
 }
@@ -71,6 +72,13 @@ async function duplicateGroup(duplicatedGroup, currBoard) {
     const idx = board.groups.findIndex((gp) => gp.id === duplicatedGroup.id);
     duplicatedGroup.id = utilService.makeId();
     board.groups.splice(idx + 1, 0, duplicatedGroup);
+    return await storageService.put(KEY, board);
+}
+
+async function addNewGroup(boardId) {
+    const newGroup = _getNewGroup();
+    const board = await getById(boardId);
+    board.groups.splice(0, 0, newGroup);
     return await storageService.put(KEY, board);
 }
 
@@ -196,6 +204,19 @@ const gBoards = [
                 },
             },
         ],
+        members: [
+            {
+                _id: 'u102',
+                fullname: 'RV',
+                imgUrl:
+                    'https://www.iconninja.com/files/980/282/508/female-blond-avatar-person-girl-user-woman-icon.png',
+            },
+            {
+                _id: 'u103',
+                fullname: 'SF',
+                imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+            },
+        ],
         styles: {},
     },
     {
@@ -300,9 +321,22 @@ const gBoards = [
             },
         ],
         members: [
-            { _id: 'u101', fullname: 'AK' },
-            { _id: 'u102', fullname: 'RV' },
-            { _id: 'u103', fullname: 'SF' },
+            {
+                _id: 'u101',
+                fullname: 'AK',
+                imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+            },
+            {
+                _id: 'u102',
+                fullname: 'RV',
+                imgUrl:
+                    'https://www.iconninja.com/files/980/282/508/female-blond-avatar-person-girl-user-woman-icon.png',
+            },
+            {
+                _id: 'u103',
+                fullname: 'SF',
+                imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+            },
         ],
         styles: {},
     },
@@ -311,4 +345,26 @@ const gBoards = [
 function _createInitialData() {
     localStorage.setItem(KEY, JSON.stringify(gBoards));
     return gBoards;
+}
+
+function _getNewGroup() {
+    return {
+        id: utilService.makeId(),
+        title: 'New Group',
+        tasks: [
+            {
+                id: utilService.makeId(),
+                title: 'You can add the task here',
+                createdAt: Date.now(),
+                columns: {
+                    delegates: ['Bobby'],
+                    status: { txt: '', color: '#c2c2c2' },
+                    date: Date.now(),
+                },
+            },
+        ],
+        style: {
+            color: '#5988fa',
+        },
+    };
 }

@@ -25,18 +25,6 @@ export const boardStore = {
             state.boards.splice(idx, 1, updateBoard);
             state.currBoard = updateBoard;
         },
-        // removeGroup(state, { updateBoard }) {
-        //     console.log('state.boards :>> ', state.boards);
-        //     const idx = state.boards.groups.findIndex((gp) => gp._id === group._id);
-        //     state.boards.splice(idx, 1);
-        // },
-
-        // addReview(state, {review}){
-        //     const idx = state.boards.findIndex(board => board._id === review.boardId)
-        //     if(!state.boards[idx].reviews) state.boards[idx].reviews = []
-        //     delete review.boardId
-        //     state.boards[idx].reviews.push(review)
-        // },
     },
     actions: {
         async loadBoards(context) {
@@ -95,6 +83,11 @@ export const boardStore = {
         },
         async updateGroup(context, { group }) {
             const updateBoard = await boardService.updateGroup(group, context.state.currBoard);
+            context.commit({ type: 'updateBoard', updateBoard });
+        },
+        async addNewGroup(context) {
+            const updateBoard = await boardService.addNewGroup(context.state.currBoard._id);
+            console.log('updateBoard :>> ', updateBoard);
             context.commit({ type: 'updateBoard', updateBoard });
         },
         // async addReview(context, {review}){

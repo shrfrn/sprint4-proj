@@ -1,6 +1,6 @@
 <template>
     <section v-if="board" class="board-details">
-        <board-header :board="board" />
+        <board-header :board="board" @addNewGroup="addNewGroup" />
         <group-list
             :groups="board.groups"
             @updateGroupName="updateGroupName"
@@ -40,7 +40,6 @@ export default {
             return this.$store.getters.currBoard.groups[0].tasks[0].columns['delegates'];
         },
         status() {
-            console.log(this.$store.getters.currBoard.groups[0].tasks[0].columns['status']);
             return this.$store.getters.currBoard.groups[0].tasks[0].columns['status'];
         },
         date() {
@@ -60,6 +59,15 @@ export default {
                 this.board = this.$store.getters.currBoard;
             } catch (error) {
                 console.log('Couldnt load board');
+            }
+        },
+
+        async addNewGroup() {
+            try {
+                await this.$store.dispatch({ type: 'addNewGroup' });
+                this.loadBoard();
+            } catch (err) {
+                console.log('Couldnt Added the new Group', err);
             }
         },
         async updateGroupName(updatedGroup) {

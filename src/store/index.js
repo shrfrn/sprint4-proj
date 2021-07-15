@@ -1,12 +1,12 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from 'vue';
+import Vuex from 'vuex';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
-import {boardStore} from './board.store.js'
+import { boardStore } from './board.store.js';
 
 export default new Vuex.Store({
     modules: {
-        boardStore,        
-    }
-})
+        boardStore,
+    },
+});
