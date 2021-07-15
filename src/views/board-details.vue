@@ -1,28 +1,18 @@
 <template>
     <section v-if="board" class="board-details">
         <board-header :board="board" />
-        <task-list :tasks="board.groups[1].tasks" :color="board.groups[1].style" :groupIdx="idx" />
-        <!-- <board-views :board="board" /> -->
-        <!-- <router-link to="/boards/123/task/456">task</router-link> -->
+        <group-list
+            :groups="board.groups"
+            @updateGroupName="updateGroupName"
+            @removeGroup="removeGroup"
+            @duplicateGroup="duplicateGroup"
+            @changeColor="changeColor"
+        />
+
         <router-view />
-
-        <section v-if="board" class="board-details">
-            <board-header :board="board" />
-            <group-list
-                :groups="board.groups"
-                @updateGroupName="updateGroupName"
-                @removeGroup="removeGroup"
-                @duplicateGroup="duplicateGroup"
-                @changeColor="changeColor"
-            />
-
-            <!-- <board-views :board="board" /> -->
-            <!-- <router-link to="/boards/123/task/456">task</router-link> -->
-            <router-view />
-            <delegate-column :delegates="delegates" />
-            <status-column :status="status" />
-            <date-column :date="date" />
-        </section>
+        <delegate-column :delegates="delegates" />
+        <status-column :status="status" />
+        <date-column :date="date" />
     </section>
 </template>
 
@@ -30,7 +20,6 @@
 // import { boardService } from '../services/board.service';
 
 import boardHeader from '../components/board-header.vue';
-import TaskList from '../components/task-list.vue';
 
 import groupList from '../components/group-list.vue';
 import delegateColumn from '../components/delegate.column.vue';
@@ -62,6 +51,7 @@ export default {
         console.log('CREATING');
         this.loadBoard();
     },
+
     methods: {
         async loadBoard() {
             try {
@@ -111,7 +101,6 @@ export default {
         '$route.params.boardId': {
             immediate: true,
             handler() {
-                debugger;
                 this.loadBoard();
             },
         },
@@ -123,8 +112,6 @@ export default {
         delegateColumn,
         statusColumn,
         dateColumn,
-        TaskList,
-        // boardViews,
     },
 };
 </script>
