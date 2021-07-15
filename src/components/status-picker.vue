@@ -16,6 +16,7 @@ export default {
     },
     data() {
         return {
+            newStatus: null,
             statuses: [
                 {id: 's001', txt: 'Done', color: '#987987'},
                 {id: 's002', txt: 'In progress', color: '#646465'},
@@ -25,11 +26,12 @@ export default {
         }
     },
     methods: {
-        onSelectStatus(value){
-            // this.value = value
-            this.$emit('input', value)
-            console.log('value onSelect', value);
+        onSelectStatus(newStatus){
+            this.$emit('input', newStatus)
         },
+    },
+    created(){
+        this.newStatus = JSON.parse(JSON.stringify(this.value)) 
     },
     components: {
         statusItem,
