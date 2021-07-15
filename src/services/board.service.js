@@ -26,7 +26,7 @@ async function query() {
 
     boards = boards.map((board) => {
         return { _id: board._id, title: board.title };
-    });
+    })
     return boards;
     // return await httpService.get('toy', {filterBy})
 }

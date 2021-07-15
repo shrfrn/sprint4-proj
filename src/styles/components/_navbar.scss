@@ -13,9 +13,8 @@
         gap: 10px;
         margin: 0 auto;
         a {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            @include flex(center, center, row);
+           
             height: 50px;
             width: 50px;
             border-radius: 5px;

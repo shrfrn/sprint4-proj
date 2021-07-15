@@ -1,7 +1,7 @@
 <template>
   <main class="navbar">
     <section class="task-action">
-      <router-link to="/boards/123" title="logo">1</router-link>
+      <router-link to="/boards" title="logo">1</router-link>
       <router-link to="/boards/456" title="boards">2</router-link>
       <router-link to="/boards/789" title="notification">3</router-link>
     </section>

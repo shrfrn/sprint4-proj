@@ -1,26 +1,37 @@
 <template>
     <section v-if="board" class="board-details">
         <board-header :board="board" />
-        <group-list
-            :groups="board.groups"
-            @updateGroupName="updateGroupName"
-            @removeGroup="removeGroup"
-            @duplicateGroup="duplicateGroup"
-            @changeColor="changeColor"
-        />
-
+        <task-list :tasks="board.groups[1].tasks" :color="board.groups[1].style" :groupIdx="idx" />
         <!-- <board-views :board="board" /> -->
         <!-- <router-link to="/boards/123/task/456">task</router-link> -->
         <router-view />
-        <delegate-column :delegates="delegates" />
-        <status-column :status="status" />
-        <date-column :date="date" />
+
+        <section v-if="board" class="board-details">
+            <board-header :board="board" />
+            <group-list
+                :groups="board.groups"
+                @updateGroupName="updateGroupName"
+                @removeGroup="removeGroup"
+                @duplicateGroup="duplicateGroup"
+                @changeColor="changeColor"
+            />
+
+            <!-- <board-views :board="board" /> -->
+            <!-- <router-link to="/boards/123/task/456">task</router-link> -->
+            <router-view />
+            <delegate-column :delegates="delegates" />
+            <status-column :status="status" />
+            <date-column :date="date" />
+        </section>
     </section>
 </template>
 
 <script>
 // import { boardService } from '../services/board.service';
+
 import boardHeader from '../components/board-header.vue';
+import TaskList from '../components/task-list.vue';
+
 import groupList from '../components/group-list.vue';
 import delegateColumn from '../components/delegate.column.vue';
 import statusColumn from '../components/status.column.vue';
@@ -31,6 +42,7 @@ export default {
     data() {
         return {
             board: null,
+            idx: 1,
         };
     },
 
@@ -46,28 +58,10 @@ export default {
             return this.$store.getters.currBoard.groups[0].tasks[0].columns['date'];
         },
     },
-
     created() {
+        console.log('CREATING');
         this.loadBoard();
     },
-    watch: {
-        '$route.params.boardId': {
-            immediate: true,
-            handler() {
-                this.loadBoard();
-            },
-        },
-    },
-
-    components: {
-        boardHeader,
-        groupList,
-        delegateColumn,
-        statusColumn,
-        dateColumn,
-        // boardViews,
-    },
-
     methods: {
         async loadBoard() {
             try {
@@ -95,7 +89,10 @@ export default {
         },
         async duplicateGroup(duplicatedGroup) {
             try {
-                await this.$store.dispatch({ type: 'duplicateGroup', duplicatedGroup });
+                await this.$store.dispatch({
+                    type: 'duplicateGroup',
+                    duplicatedGroup,
+                });
                 this.loadBoard();
             } catch (err) {
                 console.log('Couldnt duplicate the group', err);
@@ -109,6 +106,25 @@ export default {
                 console.log('Couldnt change the color of the group', err);
             }
         },
+    },
+    watch: {
+        '$route.params.boardId': {
+            immediate: true,
+            handler() {
+                debugger;
+                this.loadBoard();
+            },
+        },
+    },
+
+    components: {
+        boardHeader,
+        groupList,
+        delegateColumn,
+        statusColumn,
+        dateColumn,
+        TaskList,
+        // boardViews,
     },
 };
 </script>
