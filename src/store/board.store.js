@@ -63,20 +63,18 @@ export const boardStore = {
             context.commit({ type: 'setBoards', boards });
             // .then(boards => context.commit({type: 'setBoards', boards}))
         },
-     async updateTask(context,{task,groupIdx}){
-     
-         const idx=context.state.currBoard.groups[groupIdx].tasks.findIndex(taskToCheck=>{
-          return  taskToCheck.id===task.id;
-         })
-         context.state.currBoard.groups[groupIdx].tasks[idx]=task;
-         console.log( context.state.currBoard.groups[groupIdx].tasks[idx]);
-         await  context.dispatch( { type: 'saveBoard',board: context.state.currBoard });
-     },
-     async addTask(context,{task,groupIdx}){
-        context.state.currBoard.groups[groupIdx].tasks.push(task);
-        await context.dispatch( { type: 'saveBoard',board: context.state.currBoard });
-          
-     },
+        async updateTask(context, { task, groupIdx }) {
+            const idx = context.state.currBoard.groups[groupIdx].tasks.findIndex((taskToCheck) => {
+                return taskToCheck.id === task.id;
+            });
+            context.state.currBoard.groups[groupIdx].tasks[idx] = task;
+            console.log(context.state.currBoard.groups[groupIdx].tasks[idx]);
+            await context.dispatch({ type: 'saveBoard', board: context.state.currBoard });
+        },
+        async addTask(context, { task, groupIdx }) {
+            context.state.currBoard.groups[groupIdx].tasks.push(task);
+            await context.dispatch({ type: 'saveBoard', board: context.state.currBoard });
+        },
         async updateGroupName(context, { updatedGroup }) {
             const updateBoard = await boardService.updateGroup(
                 updatedGroup,
