@@ -7,6 +7,7 @@
             :key="idx"
             :task="task"
             :groupIdx="groupIdx"
+            @openTaskDetails="openTaskDetails"
         />
         <form @submit.prevent="addTask">
             <input
@@ -43,16 +44,21 @@ export default {
     },
 
   methods: {
+    openTaskDetails(taskId){
+      this.$emit('openTaskDetails',taskId)
+    },
     async addTask() {
       if (this.taskToAdd.title === "") return;
-      this.taskToAdd.createdAt = Date.now();
+      var ToAdd=JSON.parse(JSON.stringify(this.taskToAdd))
+      ToAdd.createdAt = Date.now();
       await this.$store.dispatch({
         type: "addTask",
-        task: this.taskToAdd,
+        task: ToAdd,
         groupIdx: this.groupIdx,
       });
       console.log("tasks", this.tasks);
-      this.taskToAdd.title === "";
+      this.taskToAdd.title= '';
+   
     },
   },
 };

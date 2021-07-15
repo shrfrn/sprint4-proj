@@ -67,6 +67,13 @@ export const boardStore = {
             );
             
             context.commit({ type: 'updateBoard', updateBoard });
+        }, 
+         async duplicateTask(context,  { task, groupIdx }) {
+            const updateBoard = await boardService.duplicateTask(
+                task,groupIdx,
+                context.state.currBoard._id
+            );
+            context.commit({ type: 'updateBoard', updateBoard });
         },
         async removeTask(context, { task, groupIdx }) {
           

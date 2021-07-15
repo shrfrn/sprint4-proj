@@ -17,6 +17,7 @@ export const boardService = {
     updateTask,
     addTask,
     removeTask,
+    duplicateTask
 };
 
 // Board service
@@ -91,12 +92,24 @@ async function addNewGroup(boardId) {
 }
 
 async function removeTask(task, groupIdx, currBoardId) {
+    
     const board = await getById(currBoardId);
     console.log(board.groups);
     const idx = board.groups[groupIdx].tasks.findIndex((taskToCheck) => {
         return taskToCheck.id === task.id;
     });
+    console.log(idx,'idx');
+    console.log('board.groups[groupIdx]',board.groups[groupIdx]);
     board.groups[groupIdx].tasks.splice(idx, 1);
+    return await storageService.put(KEY, board);
+}
+async function duplicateTask(task, groupIdx, currBoardId) {
+    task.title = 'Copy of ' + task.title;
+    const board = await getById(currBoardId);
+    const idx = board.groups[groupIdx].tasks.findIndex((gp) => gp.id === task.id);
+ 
+    task.id = utilService.makeId();
+    board.groups[groupIdx].tasks.splice(idx + 1, 0, task);
     return await storageService.put(KEY, board);
 }
 async function updateTask(task, groupIdx, currBoardId) {
