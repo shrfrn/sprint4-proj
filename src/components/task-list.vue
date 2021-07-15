@@ -22,20 +22,15 @@
 
 <script>
 import taskPreview from "./task-preview.vue";
+import{utilService} from "../services/util.service"
 export default {
   props: { tasks: Array, color: Object, groupIdx: Number },
   components: { taskPreview },
-  methods:{
-    async addTask(){
-      if(this.taskToAdd.title==="") return
-       await this.$store.dispatch({ type: "addTask", task: this.taskToAdd, groupIdx:this.groupIdx});
-       this.taskToAdd.title===""
-    }
-  },
+
   data() {
     return {
       taskToAdd: {
-        id: "eee",
+        id: utilService.makeId(),
         title: "",
         createdAt: null,
         columns: {
@@ -48,6 +43,15 @@ export default {
         borderColor: this.color.color,
       },
     };
+  },
+    methods:{
+    async addTask(){
+     
+      if(this.taskToAdd.title==="") return
+      this.taskToAdd.createdAt=Date.now()
+       await this.$store.dispatch({ type: "addTask", task: this.taskToAdd, groupIdx:this.groupIdx});
+       this.taskToAdd.title===""
+    }
   },
 };
 </script>
