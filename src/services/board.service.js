@@ -18,6 +18,7 @@ export const boardService = {
     updateTask,
     addTask,
     removeTask,
+    duplicateTask,
 };
 
 // Board service
@@ -97,13 +98,25 @@ async function addNewGroup(boardId) {
     return await storageService.put(KEY, board);
 }
 
-async function removeTask(task, groupIdx, currBoard) {
-    const board = await getById(currBoard._id);
-    const idx = board.groups[groupIdx].tasks.findIndex((taskToCheck) => taskToCheck.id === task.id);
-    console.log('idx :>> ', idx);
-    // console.log('board.groups[groupIdx].tasks :>> ', board.groups[groupIdx].tasks);
+async function removeTask(task, groupIdx, currBoardId) {
+    const board = await getById(currBoardId);
+    console.log(board.groups);
+    const idx = board.groups[groupIdx].tasks.findIndex((taskToCheck) => {
+        return taskToCheck.id === task.id;
+    });
+    console.log(idx, 'idx');
+    console.log('board.groups[groupIdx]', board.groups[groupIdx]);
     board.groups[groupIdx].tasks.splice(idx, 1);
     // console.log('board.groups[groupIdx].tasks :>> ', board.groups[groupIdx].tasks);
+    return await storageService.put(KEY, board);
+}
+async function duplicateTask(task, groupIdx, currBoardId) {
+    task.title = 'Copy of ' + task.title;
+    const board = await getById(currBoardId);
+    const idx = board.groups[groupIdx].tasks.findIndex((gp) => gp.id === task.id);
+
+    task.id = utilService.makeId();
+    board.groups[groupIdx].tasks.splice(idx + 1, 0, task);
     return await storageService.put(KEY, board);
 }
 async function updateTask(task, groupIdx, currBoardId) {
@@ -164,7 +177,18 @@ const gBoards = [
                         title: 'Board list',
                         createdAt: Date.now(),
                         columns: {
-                            delegates: ['Bobby', 'Puki', 'Baba', 'Nachi'],
+                            delegates: [
+                                {
+                                    _id: 'u103',
+                                    fullname: 'Sharon Macaron',
+                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+                                },
+                                {
+                                    _id: 'u104',
+                                    fullname: 'Eden Maran',
+                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+                                },
+                            ],
                             status: { txt: 'In progress', color: '#999598' },
                             date: Date.now(),
                         },
@@ -174,7 +198,13 @@ const gBoards = [
                         title: 'Board details',
                         createdAt: Date.now(),
                         columns: {
-                            delegates: ['Puki'],
+                            delegates: [
+                                {
+                                    _id: 'u103',
+                                    fullname: 'Sharon Macaron',
+                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+                                },
+                            ],
                             status: { txt: 'Done', color: '#235467' },
                             date: Date.now(),
                         },
@@ -184,7 +214,18 @@ const gBoards = [
                         title: 'Chat / Activities',
                         createdAt: Date.now(),
                         columns: {
-                            delegates: ['Bobby', 'Puki'],
+                            delegates: [
+                                {
+                                    _id: 'u103',
+                                    fullname: 'Sharon Macaron',
+                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+                                },
+                                {
+                                    _id: 'u104',
+                                    fullname: 'Eden Maran',
+                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+                                },
+                            ],
                             status: { txt: 'Stuck', color: '#292929' },
                             date: Date.now(),
                         },
@@ -203,7 +244,13 @@ const gBoards = [
                         title: 'Board preview',
                         createdAt: Date.now(),
                         columns: {
-                            delegates: ['Bobby', 'Puki'],
+                            delegates: [
+                                {
+                                    _id: 'u104',
+                                    fullname: 'Eden Maran',
+                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+                                },
+                            ],
                             status: { txt: 'Done', color: '#235467' },
                             date: Date.now(),
                         },
@@ -213,7 +260,19 @@ const gBoards = [
                         title: 'group list',
                         createdAt: Date.now(),
                         columns: {
-                            delegates: ['Puki'],
+                            delegates: [
+                                {
+                                    _id: 'u105',
+                                    fullname: 'Muki Bartiki',
+                                    imgUrl:
+                                        'https://www.iconninja.com/files/980/282/508/female-blond-avatar-person-girl-user-woman-icon.png',
+                                },
+                                {
+                                    _id: 'u106',
+                                    fullname: 'Shimi halimi',
+                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+                                },
+                            ],
                             status: { txt: 'Done', color: '#235467' },
                             date: Date.now(),
                         },
@@ -223,7 +282,19 @@ const gBoards = [
                         title: 'group preview',
                         createdAt: Date.now(),
                         columns: {
-                            delegates: ['Bobby'],
+                            delegates: [
+                                {
+                                    _id: 'u105',
+                                    fullname: 'Muki Bartiki',
+                                    imgUrl:
+                                        'https://www.iconninja.com/files/980/282/508/female-blond-avatar-person-girl-user-woman-icon.png',
+                                },
+                                {
+                                    _id: 'u106',
+                                    fullname: 'Shimi halimi',
+                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+                                },
+                            ],
                             status: { txt: 'In progress', color: '#999598' },
                             date: Date.now(),
                         },
@@ -233,7 +304,19 @@ const gBoards = [
                         title: 'task preview',
                         createdAt: Date.now(),
                         columns: {
-                            delegates: ['Bobby', 'Puki'],
+                            delegates: [
+                                {
+                                    _id: 'u105',
+                                    fullname: 'Muki Bartiki',
+                                    imgUrl:
+                                        'https://www.iconninja.com/files/980/282/508/female-blond-avatar-person-girl-user-woman-icon.png',
+                                },
+                                {
+                                    _id: 'u106',
+                                    fullname: 'Shimi halimi',
+                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+                                },
+                            ],
                             status: { txt: 'Stuck', color: '#292929' },
                             date: Date.now(),
                         },
@@ -246,14 +329,35 @@ const gBoards = [
         ],
         members: [
             {
+                _id: 'u101',
+                fullname: 'Avior Hagibor',
+                imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+            },
+            {
                 _id: 'u102',
-                fullname: 'RV',
+                fullname: 'Rachel Bekarov',
                 imgUrl:
                     'https://www.iconninja.com/files/980/282/508/female-blond-avatar-person-girl-user-woman-icon.png',
             },
             {
                 _id: 'u103',
-                fullname: 'SF',
+                fullname: 'Sharon Macaron',
+                imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+            },
+            {
+                _id: 'u104',
+                fullname: 'Eden Maran',
+                imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+            },
+            {
+                _id: 'u105',
+                fullname: 'Muki Bartiki',
+                imgUrl:
+                    'https://www.iconninja.com/files/980/282/508/female-blond-avatar-person-girl-user-woman-icon.png',
+            },
+            {
+                _id: 'u106',
+                fullname: 'Shimi halimi',
                 imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
             },
         ],
@@ -363,18 +467,34 @@ const gBoards = [
         members: [
             {
                 _id: 'u101',
-                fullname: 'AK',
+                fullname: 'Avior Hagibor',
                 imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
             },
             {
                 _id: 'u102',
-                fullname: 'RV',
+                fullname: 'Rachel Bekarov',
                 imgUrl:
                     'https://www.iconninja.com/files/980/282/508/female-blond-avatar-person-girl-user-woman-icon.png',
             },
             {
                 _id: 'u103',
-                fullname: 'SF',
+                fullname: 'Sharon Macaron',
+                imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+            },
+            {
+                _id: 'u104',
+                fullname: 'Eden Maran',
+                imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+            },
+            {
+                _id: 'u105',
+                fullname: 'Muki Bartiki',
+                imgUrl:
+                    'https://www.iconninja.com/files/980/282/508/female-blond-avatar-person-girl-user-woman-icon.png',
+            },
+            {
+                _id: 'u106',
+                fullname: 'Shimi halimi',
                 imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
             },
         ],

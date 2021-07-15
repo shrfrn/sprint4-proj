@@ -75,6 +75,7 @@ export default {
     props: {
         groups: Array,
     },
+
     data() {
         return {
             isAllCollapse: false,
@@ -101,15 +102,16 @@ export default {
             ],
         };
     },
+
     created() {
         this.groupsCopy = JSON.parse(JSON.stringify(this.groups));
     },
+
     watch: {
         groups(newVal) {
             this.groupsCopy = JSON.parse(JSON.stringify(newVal));
         },
     },
-
     components: {
         taskList,
         draggable,
@@ -158,6 +160,9 @@ export default {
         },
         changeColor(group) {
             this.$emit('changeColor', group);
+        },
+        openTaskDetails(taskId) {
+            this.$emit('openTaskDetails', taskId);
         },
     },
 };

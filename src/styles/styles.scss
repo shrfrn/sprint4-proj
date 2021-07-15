@@ -20,11 +20,14 @@
 // @import 'components/homepage';
 // @import 'components/add-toy';
 // @import 'components/filter-toy';
-// @import 'components/toy-detail';
-// @import 'components/toy-preview';
+@import 'components/task-details';
+@import 'components/board-details';
 @import 'components/task-list';
 @import 'components/task-preview';
 @import 'components/board-app';
 @import 'components/navbar';
 @import 'components/status-picker';
 @import 'components/status-column';
+@import 'components/person-column';
+@import 'components/person-picker';
+@import 'components/person-preview';
