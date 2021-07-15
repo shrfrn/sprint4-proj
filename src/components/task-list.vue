@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
     <section class="task-list">
         <task-preview
             class="style-task"
@@ -23,6 +24,33 @@
 <script>
 import taskPreview from './task-preview.vue';
 import { utilService } from '../services/util.service';
+=======
+  <section class="task-list">
+    
+    <task-preview
+      class="style-task"
+      :style="styleObject"
+      v-for="(task, idx) in tasks"
+      :key="idx"
+      :task="task"
+      :groupIdx="groupIdx"
+    />
+    <form @submit.prevent="addTask">
+      <input
+        class="style-task"
+        :style="styleObject"
+        type="text"
+        placeholder="+Add"
+        v-model="taskToAdd.title"
+      />
+    </form>
+  </section>
+</template>
+
+<script>
+import taskPreview from "./task-preview.vue";
+import { utilService } from "../services/util.service";
+>>>>>>> 36d9d8e516e0f4da2b7c89fcd5fd39d5ab5702e5
 export default {
     props: { tasks: Array, color: Object, groupIdx: Number },
     components: { taskPreview },
@@ -52,7 +80,29 @@ export default {
             });
             this.taskToAdd.title === '';
         },
+<<<<<<< HEAD
     },
+=======
+      },
+      styleObject: {
+        borderColor: this.color.color,
+      },
+    };
+  },
+  methods: {
+    async addTask() {
+      if (this.taskToAdd.title === "") return;
+      this.taskToAdd.createdAt = Date.now();
+      await this.$store.dispatch({
+        type: "addTask",
+        task: this.taskToAdd,
+        groupIdx: this.groupIdx,
+      });
+      console.log("tasks", this.tasks);
+      this.taskToAdd.title === "";
+    },
+  },
+>>>>>>> 36d9d8e516e0f4da2b7c89fcd5fd39d5ab5702e5
 };
 </script>
 

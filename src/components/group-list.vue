@@ -1,58 +1,55 @@
 <template>
     <section v-if="groups" class="group-list">
         <ul v-for="(group, idx) in groups" :key="group.id">
-            <el-dropdown>
-                <el-button size="mini">
-                    <i class="el-icon-arrow-down el-icon--center"></i>
-                </el-button>
-                <el-dropdown-menu trigger="click" size="medium" slot="dropdown">
-                    <el-dropdown-item @click.native="collapseGroup">
-                        Collapse All Groups
-                    </el-dropdown-item>
-
-                    <el-dropdown-item @click.native="openGroup">Open All Groups</el-dropdown-item>
-
-                    <el-dropdown-item @click.native="setToEdit(group, group.id)">
-                        Rename Group
-                    </el-dropdown-item>
-
-                    <el-dropdown-item @click.native="removeGroup(group)">
-                        Delete Group
-                    </el-dropdown-item>
-
-                    <el-dropdown-item @click.native="duplicateGroup(group)">
-                        Duplicate Group
-                    </el-dropdown-item>
-
-                    <el-dropdown-item>
-                        <el-color-picker
-                            @change="changeColor(group)"
-                            v-model="group.style.color"
-                            show-alpha
-                            :predefine="predefineColors"
+            <div class="group-details">
+                <el-dropdown>
+                    <el-button size="mini">
+                        <i class="el-icon-arrow-down el-icon--center"></i>
+                    </el-button>
+                    <el-dropdown-menu trigger="click" size="medium" slot="dropdown">
+                        <el-dropdown-item @click.native="collapseGroup"
+                            >Collapse Group</el-dropdown-item
                         >
-                        </el-color-picker>
-                    </el-dropdown-item>
-                </el-dropdown-menu>
-            </el-dropdown>
-            <li
-                :style="{ color: group.style.color }"
-                @click="setToEdit(group, group.id)"
-                v-show="!isEditingState || currEditedGroup != group.id"
-            >
-                {{ group.title }}
-            </li>
-            <input
-                :ref="group.id"
-                v-show="isEditingState && currEditedGroup == group.id"
-                @blur="updateGroupName(group)"
-                @keydown.enter="updateGroupName(group)"
-                type="text"
-                v-model="group.title"
-            />
-            <div v-if="!isCollapse">
-                <task-list :tasks="group.tasks" :color="group.style" :groupIdx="idx" />
+                        <el-dropdown-item @click.native="openGroup">Open Group</el-dropdown-item>
+                        <el-dropdown-item @click.native="setToEdit(group, group.id)"
+                            >Rename Group</el-dropdown-item
+                        >
+                        <el-dropdown-item @click.native="removeGroup(group)"
+                            >Delete Group</el-dropdown-item
+                        >
+                        <el-dropdown-item @click.native="duplicateGroup(group)"
+                            >Duplicate Group</el-dropdown-item
+                        >
+                        <el-dropdown-item>
+                            <el-color-picker
+                                @change="changeColor(group)"
+                                v-model="group.style.color"
+                                show-alpha
+                                :predefine="predefineColors"
+                            >
+                            </el-color-picker>
+                        </el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+                <li
+                    :style="{ color: group.style.color }"
+                    @click="setToEdit(group, group.id)"
+                    v-show="!isEditingState || currEditedGroup != group.id"
+                >
+                    {{ group.title }}
+                </li>
+                <input
+                    :ref="group.id"
+                    v-show="isEditingState && currEditedGroup == group.id"
+                    @blur="updateGroupName(group)"
+                    @keydown.enter="updateGroupName(group)"
+                    type="text"
+                    v-model="group.title"
+                />
             </div>
+            <template v-if="!isCollapse">
+                <task-list :tasks="group.tasks" :color="group.style" :groupIdx="idx" />
+            </template>
         </ul>
     </section>
 </template>

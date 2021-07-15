@@ -14,6 +14,9 @@ export const boardService = {
     removeGroup,
     duplicateGroup,
     addNewGroup,
+    updateTask,
+    addTask,
+    removeTask,
 };
 
 // Board service
@@ -82,6 +85,31 @@ async function addNewGroup(boardId) {
     return await storageService.put(KEY, board);
 }
 
+async function removeTask(task, groupIdx, currBoardId) {
+    const board = await getById(currBoardId);
+    console.log(board.groups);
+    const idx = board.groups[groupIdx].tasks.findIndex((taskToCheck) => {
+        return taskToCheck.id === task.id;
+    });
+    board.groups[groupIdx].tasks.splice(idx, 1);
+    return await storageService.put(KEY, board);
+}
+async function updateTask(task, groupIdx, currBoardId) {
+    const board = await getById(currBoardId);
+
+    const idx = board.groups[groupIdx].tasks.findIndex((taskToCheck) => {
+        return taskToCheck.id === task.id;
+    });
+    board.groups[groupIdx].tasks[idx] = task;
+    return await storageService.put(KEY, board);
+}
+async function addTask(task, groupIdx, currBoardId) {
+    const board = await getById(currBoardId);
+
+    board.groups[groupIdx].tasks.push(task);
+
+    return await storageService.put(KEY, board);
+}
 // function getEmptyToy() {
 //     return {
 //         name: '',

@@ -1,14 +1,18 @@
 .group-list {
+    margin-top: 20px;
     ul {
-        @include flex(start, center, row);
+        @include flex(start, start, column);
         gap: 5px;
         list-style-type: none;
         font-family: Lato;
         font-weight: 600;
         padding-inline: 20px;
         // background-color: #e4e4e4;
-        margin-bottom: 5px;
-
+        margin-bottom: 15px;
+        .group-details{
+            @include flex(start, start, row);
+        }
+        
         li {
             padding: 5px 10px;
 
