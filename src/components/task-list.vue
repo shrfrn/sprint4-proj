@@ -1,5 +1,6 @@
 <template>
   <section class="task-list">
+    
     <task-preview
       class="style-task"
       :style="styleObject"
@@ -22,7 +23,7 @@
 
 <script>
 import taskPreview from "./task-preview.vue";
-import{utilService} from "../services/util.service"
+import { utilService } from "../services/util.service";
 export default {
   props: { tasks: Array, color: Object, groupIdx: Number },
   components: { taskPreview },
@@ -44,14 +45,18 @@ export default {
       },
     };
   },
-    methods:{
-    async addTask(){
-     
-      if(this.taskToAdd.title==="") return
-      this.taskToAdd.createdAt=Date.now()
-       await this.$store.dispatch({ type: "addTask", task: this.taskToAdd, groupIdx:this.groupIdx});
-       this.taskToAdd.title===""
-    }
+  methods: {
+    async addTask() {
+      if (this.taskToAdd.title === "") return;
+      this.taskToAdd.createdAt = Date.now();
+      await this.$store.dispatch({
+        type: "addTask",
+        task: this.taskToAdd,
+        groupIdx: this.groupIdx,
+      });
+      console.log("tasks", this.tasks);
+      this.taskToAdd.title === "";
+    },
   },
 };
 </script>

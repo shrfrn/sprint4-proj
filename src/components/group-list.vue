@@ -1,7 +1,8 @@
 <template>
   <section v-if="groups" class="group-list">
     <ul v-for="(group,idx) in groups" :key="group.id">
-      <el-dropdown>
+    <div class="group-details"> 
+       <el-dropdown>
         <el-button size="mini">
           <i class="el-icon-arrow-down el-icon--center"></i>
         </el-button>
@@ -46,15 +47,15 @@
         @keydown.enter="updateGroupName(group)"
         type="text"
         v-model="group.title"
-      />
-   <div  v-if="!isCollapse" >
+      /></div>
+   <template  v-if="!isCollapse" >
       <task-list
       
         :tasks="group.tasks"
         :color="group.style"
         :groupIdx="idx"
       />
-      </div>
+   </template>
     </ul>
   </section>
 </template>
