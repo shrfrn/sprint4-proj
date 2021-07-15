@@ -12,8 +12,7 @@
         />
 
         <router-view />
-      
-        <delegate-column :delegates="delegates" />
+        <delegate-column :delegates="delegates" :members="members"/>
         <status-column :value="status" />
         <!-- <status-column :status="status" /> -->
         <date-column :date="date" />
@@ -44,7 +43,16 @@ export default {
             return JSON.parse(JSON.stringify(this.$store.getters.currBoard));
         },
         delegates() {
+            const delegates = this.$store.getters.currBoard.groups[0].tasks[0].columns['delegates']
+            const names = delegates.map(delegate => delegate.fullname)
+            console.log('delegates:' , names);
             return this.$store.getters.currBoard.groups[0].tasks[0].columns['delegates'];
+        },
+        members() {
+            const members = this.$store.getters.currBoard.members
+            const names = members.map(member => member.fullname)
+            console.log('members:' , names);
+            return this.$store.getters.currBoard.members;
         },
         status() {
             return this.$store.getters.currBoard.groups[0].tasks[0].columns['status'];

@@ -1,7 +1,7 @@
 <template>
     <section class="status-column" v-if="hasStatus">
-        <span @click="toggleStatusPicker" :style="statusColor">{{value.txt}}</span>
-        <status-picker @input="onSelectStatus" v-if="this.isPickerOpen" v-model="value" class="status-picker" />
+        <span @click="toggleStatusPicker" :style="statusColor">{{newStatus.txt}}</span>
+        <status-picker @input="onSelectStatus" v-if="this.isPickerOpen" v-model="newStatus" class="status-picker" />
     </section>
 </template>
 
@@ -23,7 +23,6 @@ export default {
     computed: {
         hasStatus() { return !!this.value},
         statusColor(){ 
-            console.log('in statusColor');
             return {'background-color': this.newStatus.color}
         },
     },
@@ -34,16 +33,14 @@ export default {
         toggleStatusPicker(){
             this.isPickerOpen = !this.isPickerOpen
         },
-        onSelectStatus(value){
-            // this.value = value
+        onSelectStatus(){
             this.toggleStatusPicker()
-            this.$emit('input', value)
-            console.log('status:', value);
+            this.$emit('input', this.newStatus)
         },
     },
     created(){
         this.newStatus = JSON.parse(JSON.stringify(this.value)) 
-        console.log(this.value);
+        console.log('prop:',this.value, 'copy:', this.newStatus);
     },
     components: {
         statusPicker,
