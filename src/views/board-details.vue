@@ -31,12 +31,15 @@ import dateColumn from '../components/date.column.vue';
 export default {
     data() {
         return {
-            board: null,
+            // board: null,
             idx: 1,
         };
     },
 
     computed: {
+        board() {
+            return JSON.parse(JSON.stringify(this.$store.getters.currBoard));
+        },
         delegates() {
             return this.$store.getters.currBoard.groups[0].tasks[0].columns['delegates'];
         },
@@ -57,7 +60,7 @@ export default {
             try {
                 const { boardId } = this.$route.params;
                 await this.$store.dispatch({ type: 'loadBoard', boardId });
-                this.board = this.$store.getters.currBoard;
+                // this.board = this.$store.getters.currBoard;
             } catch (error) {
                 console.log('Couldnt load board');
             }
@@ -66,7 +69,7 @@ export default {
         async addNewGroup() {
             try {
                 await this.$store.dispatch({ type: 'addNewGroup' });
-                this.loadBoard();
+                // this.loadBoard();
             } catch (err) {
                 console.log('Couldnt Added the new Group', err);
             }
@@ -81,7 +84,7 @@ export default {
         async removeGroup(group) {
             try {
                 await this.$store.dispatch({ type: 'removeGroup', group });
-                this.loadBoard();
+                // this.loadBoard();
             } catch (err) {
                 console.log('Couldnt remove the group', err);
             }
@@ -92,7 +95,7 @@ export default {
                     type: 'duplicateGroup',
                     duplicatedGroup,
                 });
-                this.loadBoard();
+                // this.loadBoard();
             } catch (err) {
                 console.log('Couldnt duplicate the group', err);
             }
@@ -100,7 +103,7 @@ export default {
         async changeColor(group) {
             try {
                 await this.$store.dispatch({ type: 'updateGroup', group });
-                this.loadBoard();
+                // this.loadBoard();
             } catch (err) {
                 console.log('Couldnt change the color of the group', err);
             }
