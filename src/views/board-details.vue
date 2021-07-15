@@ -113,7 +113,7 @@ export default {
         },
         openTaskDetails(taskId){
             const board=this.$store.getters.currBoard;
-             this.$router.push(`/boards/${board._id}/task/${taskId}`,taskId)
+             this.$router.push(`/boards/${board._id}/task/${taskId}`)
         }
         
     },
