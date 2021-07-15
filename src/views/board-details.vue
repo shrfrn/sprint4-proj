@@ -11,7 +11,8 @@
 
         <router-view />
         <delegate-column :delegates="delegates" />
-        <status-column :status="status" />
+        <status-column :value="status" />
+        <!-- <status-column :status="status" /> -->
         <date-column :date="date" />
     </section>
 </template>

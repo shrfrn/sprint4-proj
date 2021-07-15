@@ -8,7 +8,7 @@ export const boardService = {
     getById,
     remove,
     save,
-    // getEmptyToy,
+    getEmptyBoard,
     getEmptyFilter,
     updateGroup,
     removeGroup,
@@ -74,15 +74,11 @@ async function duplicateGroup(duplicatedGroup, currBoard) {
     return await storageService.put(KEY, board);
 }
 
-// function getEmptyToy() {
-//     return {
-//         name: '',
-//         price: '',
-//         type: '',
-//         createdAt: '',
-//         inStock: true,
-//     }
-// }
+function getEmptyBoard() {
+    const newBoard = JSON.parse(JSON.stringify(gBoards[0]))
+    newBoard._id = null
+    return newBoard
+}
 
 function getEmptyFilter() {
     return {

@@ -1,7 +1,7 @@
 <template>
 <section class="board-list">
     <section class="board-list-actions">
-        <article>Add board</article>
+        <article @click="addBoard">Add board</article>
         <article>Filter</article>
         <article>Search</article>
     </section>
@@ -14,12 +14,23 @@
 
 <script>
 import boardPreview from './board-preview.vue'
+import {boardService} from '@/services/board.service.js'
+
 export default {
     props: {
         boards: {
             type: Array,
             required: true,
         },
+    },
+    methods: {
+        addBoard(){
+            const boardTitle = prompt('Enter board title')
+            const newBoard = boardService.getEmptyBoard()
+
+            newBoard.title = boardTitle
+            this.$store.dispatch({type: 'saveBoard', board: newBoard})
+        }
     },
     async created() {
         await this.$store.dispatch({type: 'loadBoards'})
