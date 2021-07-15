@@ -1,12 +1,14 @@
 <template>
     <section v-if="board" class="board-details">
         <board-header :board="board" @addNewGroup="addNewGroup" />
+      
         <group-list
             :groups="board.groups"
             @updateGroupName="updateGroupName"
             @removeGroup="removeGroup"
             @duplicateGroup="duplicateGroup"
             @changeColor="changeColor"
+            @openTaskDetails="openTaskDetails"
         />
 
         <router-view />
@@ -117,6 +119,11 @@ export default {
                 console.log('Couldnt change the color of the group', err);
             }
         },
+        openTaskDetails(taskId){
+            const board=this.$store.getters.currBoard;
+             this.$router.push(`/boards/${board._id}/task/${taskId}`,taskId)
+        }
+        
     },
     watch: {
         '$route.params.boardId': {
