@@ -42,19 +42,19 @@ export default {
         };
     },
 
-  methods: {
-    async addTask() {
-      if (this.taskToAdd.title === "") return;
-      this.taskToAdd.createdAt = Date.now();
-      await this.$store.dispatch({
-        type: "addTask",
-        task: this.taskToAdd,
-        groupIdx: this.groupIdx,
-      });
-      console.log("tasks", this.tasks);
-      this.taskToAdd.title === "";
+    methods: {
+        async addTask() {
+            if (this.taskToAdd.title === '') return;
+            this.taskToAdd.createdAt = Date.now();
+            await this.$store.dispatch({
+                type: 'addTask',
+                task: this.taskToAdd,
+                groupIdx: this.groupIdx,
+            });
+            console.log('tasks', this.tasks);
+            this.taskToAdd.title === '';
+        },
     },
-  },
 };
 </script>
 

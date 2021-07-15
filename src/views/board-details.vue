@@ -1,12 +1,13 @@
 <template>
     <section v-if="board" class="board-details">
-        <board-header :board="board" @addNewGroup="addNewGroup" />
+        <board-header :board="board" @addNewGroup="addNewGroup" @updateTitles="updateTitles" />
         <group-list
             :groups="board.groups"
             @updateGroupName="updateGroupName"
             @removeGroup="removeGroup"
             @duplicateGroup="duplicateGroup"
             @changeColor="changeColor"
+            @updateDrag="updateDrag"
         />
 
         <router-view />
@@ -21,7 +22,6 @@
 // import { boardService } from '../services/board.service';
 
 import boardHeader from '../components/board-header.vue';
-
 import groupList from '../components/group-list.vue';
 import delegateColumn from '../components/delegate.column.vue';
 import statusColumn from '../components/status.column.vue';
@@ -63,6 +63,20 @@ export default {
                 // this.board = this.$store.getters.currBoard;
             } catch (error) {
                 console.log('Couldnt load board');
+            }
+        },
+        async updateDrag(updatedGroups) {
+            try {
+                await this.$store.dispatch({ type: 'saveGroups', updatedGroups });
+            } catch (err) {
+                console.log('Couldnt updated the order of the groups', err);
+            }
+        },
+        async updateTitles(board) {
+            try {
+                await this.$store.dispatch({ type: 'saveBoard', board });
+            } catch (err) {
+                console.log('Couldnt updated the titles', err);
             }
         },
 

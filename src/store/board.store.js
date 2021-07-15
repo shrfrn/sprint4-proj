@@ -1,6 +1,7 @@
 import { boardService } from '@/services/board.service.js';
 
 export const boardStore = {
+    strict: true,
     state: {
         boards: [],
         filterBy: null,
@@ -24,7 +25,7 @@ export const boardStore = {
             const idx = state.boards.findIndex((board) => board._id === updateBoard._id);
             state.boards.splice(idx, 1, updateBoard);
             state.currBoard = updateBoard;
-            console.log(state.currBoard.groups ,'bbb');
+            console.log('state.currBoard.groups', state.currBoard.groups);
         },
     },
     actions: {
@@ -41,7 +42,6 @@ export const boardStore = {
             const newBoard = await boardService.save(board);
             await context.dispatch({ type: 'loadBoards' });
             context.commit({ type: 'loadBoard', board: newBoard });
-
         },
         async removeBoard(context, { boardId }) {
             await boardService.remove(boardId);
@@ -55,26 +55,28 @@ export const boardStore = {
         },
         async updateTask(context, { task, groupIdx }) {
             const updateBoard = await boardService.updateTask(
-                task,groupIdx,
+                task,
+                groupIdx,
                 context.state.currBoard._id
             );
             context.commit({ type: 'updateBoard', updateBoard });
         },
         async addTask(context, { task, groupIdx }) {
             const updateBoard = await boardService.addTask(
-                task,groupIdx,
+                task,
+                groupIdx,
                 context.state.currBoard._id
             );
-            
+
             context.commit({ type: 'updateBoard', updateBoard });
         },
         async removeTask(context, { task, groupIdx }) {
-          
             const updateBoard = await boardService.removeTask(
-                task,groupIdx,
-                context.state.currBoard._id
+                task,
+                groupIdx,
+                context.state.currBoard
             );
-            
+
             context.commit({ type: 'updateBoard', updateBoard });
         },
         async updateGroupName(context, { updatedGroup }) {
@@ -102,6 +104,11 @@ export const boardStore = {
         async addNewGroup(context) {
             const updateBoard = await boardService.addNewGroup(context.state.currBoard._id);
             console.log('updateBoard :>> ', updateBoard);
+            context.commit({ type: 'updateBoard', updateBoard });
+        },
+
+        async saveGroups(context, {updatedGroups}) {
+            const updateBoard = await boardService.updateGroups(updatedGroups, context.state.currBoard);
             context.commit({ type: 'updateBoard', updateBoard });
         },
         // async addReview(context, {review}){

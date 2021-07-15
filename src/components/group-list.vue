@@ -1,69 +1,86 @@
 <template>
     <section v-if="groups" class="group-list">
-        <ul v-for="(group, idx) in groups" :key="group.id">
-            <div class="group-details">
-                <el-dropdown>
-                    <el-button size="mini">
-                        <i class="el-icon-arrow-down el-icon--center"></i>
-                    </el-button>
-                    <el-dropdown-menu trigger="click" size="medium" slot="dropdown">
-                        <el-dropdown-item @click.native="collapseGroup"
-                            >Collapse Group</el-dropdown-item
+        <draggable v-model="groupsCopy" ghost-class="ghost" @start="onStart" @end="onEnd">
+            <transition-group type="transition" name="flip-list">
+                <ul class="sortable" v-for="(group, idx) in groupsCopy" :key="group.id">
+                    <div class="group-details">
+                        <el-dropdown>
+                            <el-button size="mini">
+                                <i class="el-icon-arrow-down el-icon--center"></i>
+                            </el-button>
+                            <el-dropdown-menu trigger="click" size="medium" slot="dropdown">
+                                <el-dropdown-item @click.native="collapseSingleGroup(group.id)">
+                                    Collapse this group
+                                </el-dropdown-item>
+                                <el-dropdown-item @click.native="openSingleGroup(group.id)">
+                                    Open this group
+                                </el-dropdown-item>
+                                <el-dropdown-item @click.native="collapseGroups">
+                                    Collapse All Groups
+                                </el-dropdown-item>
+                                <el-dropdown-item @click.native="openGroups">
+                                    Open All Groups
+                                </el-dropdown-item>
+                                <el-dropdown-item @click.native="setToEdit(group, group.id)">
+                                    Rename Group
+                                </el-dropdown-item>
+                                <el-dropdown-item @click.native="removeGroup(group)">
+                                    Delete Group
+                                </el-dropdown-item>
+                                <el-dropdown-item @click.native="duplicateGroup(group)">
+                                    Duplicate Group
+                                </el-dropdown-item>
+                                <el-dropdown-item>
+                                    <el-color-picker
+                                        @change="changeColor(group)"
+                                        v-model="group.style.color"
+                                        show-alpha
+                                        :predefine="predefineColors"
+                                    >
+                                    </el-color-picker>
+                                </el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+
+                        <li
+                            :style="{ color: group.style.color }"
+                            @click="setToEdit(group, group.id)"
+                            v-show="!isEditingState || currEditedGroup != group.id"
                         >
-                        <el-dropdown-item @click.native="openGroup">Open Group</el-dropdown-item>
-                        <el-dropdown-item @click.native="setToEdit(group, group.id)"
-                            >Rename Group</el-dropdown-item
-                        >
-                        <el-dropdown-item @click.native="removeGroup(group)"
-                            >Delete Group</el-dropdown-item
-                        >
-                        <el-dropdown-item @click.native="duplicateGroup(group)"
-                            >Duplicate Group</el-dropdown-item
-                        >
-                        <el-dropdown-item>
-                            <el-color-picker
-                                @change="changeColor(group)"
-                                v-model="group.style.color"
-                                show-alpha
-                                :predefine="predefineColors"
-                            >
-                            </el-color-picker>
-                        </el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
-                <li
-                    :style="{ color: group.style.color }"
-                    @click="setToEdit(group, group.id)"
-                    v-show="!isEditingState || currEditedGroup != group.id"
-                >
-                    {{ group.title }}
-                </li>
-                <input
-                    :ref="group.id"
-                    v-show="isEditingState && currEditedGroup == group.id"
-                    @blur="updateGroupName(group)"
-                    @keydown.enter="updateGroupName(group)"
-                    type="text"
-                    v-model="group.title"
-                />
-            </div>
-            <template v-if="!isCollapse">
-                <task-list :tasks="group.tasks" :color="group.style" :groupIdx="idx" />
-            </template>
-        </ul>
+                            {{ group.title }}
+                        </li>
+                        <input
+                            :ref="group.id"
+                            v-show="isEditingState && currEditedGroup == group.id"
+                            @blur="updateGroupName(group)"
+                            @keydown.enter="updateGroupName(group)"
+                            type="text"
+                            v-model="group.title"
+                        />
+                    </div>
+                    <template v-if="!isAllCollapse && !collapsedGroups.includes(group.id)">
+                        <task-list :tasks="group.tasks" :color="group.style" :groupIdx="idx" />
+                    </template>
+                </ul>
+            </transition-group>
+        </draggable>
     </section>
 </template>
 
 <script>
 import taskList from './task-list.vue';
+import draggable from 'vuedraggable';
+
 export default {
     props: {
         groups: Array,
     },
     data() {
         return {
-            groupToEdit: {},
-            isCollapse: false,
+            isAllCollapse: false,
+            groupsCopy: null,
+            collapsedGroups: [],
+            isGroupCollapse: null,
             isEditingState: false,
             currEditedGroup: null,
             predefineColors: [
@@ -84,26 +101,46 @@ export default {
             ],
         };
     },
-    created() {},
+    created() {
+        this.groupsCopy = JSON.parse(JSON.stringify(this.groups));
+    },
+    watch: {
+        groups(newVal) {
+            this.groupsCopy = JSON.parse(JSON.stringify(newVal));
+        },
+    },
+
     components: {
         taskList,
+        draggable,
     },
 
     methods: {
-        collapseGroup() {
-            this.isCollapse = true;
-            // console.log('this.isCollapse :>> ', this.isCollapse);
+        onEnd() {
+            this.$emit('updateDrag', this.groupsCopy);
+            this.isAllCollapse = false;
         },
-        openGroup() {
-            this.isCollapse = false;
-            // console.log('this.isCollapse :>> ', this.isCollapse);
+        onStart() {
+            this.isAllCollapse = true;
+        },
+        collapseSingleGroup(groupId) {
+            this.collapsedGroups.push(groupId);
+        },
+        openSingleGroup(groupId) {
+            const idx = this.collapsedGroups.findIndex((id) => id === groupId);
+            this.collapsedGroups.splice(idx, 1);
+        },
+        collapseGroups() {
+            this.isAllCollapse = true;
+        },
+        openGroups() {
+            this.isAllCollapse = false;
+            this.collapsedGroups = [];
         },
         setToEdit(group, groupId) {
             setTimeout(() => {
                 this.$refs[groupId][0].focus();
             }, 0);
-            // console.log('this.$refs :>> ', this.$refs);
-            // this.groupToEdit = JSON.parse(JSON.stringify(group));
             this.currEditedGroup = group.id;
             this.isEditingState = true;
         },
@@ -125,5 +162,3 @@ export default {
     },
 };
 </script>
-
-<style></style>

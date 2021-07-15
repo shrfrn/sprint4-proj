@@ -5,18 +5,17 @@
                 <div class="main-title">
                     <h2
                         @click="setToEdit('title')"
-                        v-show="!isEditingState || currEditedTag != 'title'"
+                        v-show="!isEditingState || currEditedTag !== 'title'"
                     >
                         {{ board.title }}
                     </h2>
-                    <el-input
+                    <input
                         ref="title"
-                        v-show="isEditingState && currEditedTag == 'title'"
+                        v-show="isEditingState && currEditedTag === 'title'"
                         @blur="updateTag"
                         @keydown.enter="updateTag"
                         type="text"
                         v-model="board.title"
-                        value="value"
                     />
                     <el-button
                         icon="el-icon-view"
@@ -28,21 +27,21 @@
                 <div class="sub-title" v-if="isDecriptionShown">
                     <p
                         @click="setToEdit('description')"
-                        v-show="!isEditingState || currEditedTag != 'description'"
+                        v-show="!isEditingState || currEditedTag !== 'description'"
                     >
                         {{ board.description }}
                     </p>
-                    <el-input
+
+                    <input
                         ref="description"
                         @blur="updateTag"
-                        @keydown.enter.native="updateTag"
+                        @keydown.enter="updateTag"
                         v-show="isEditingState && currEditedTag === 'description'"
                         type="textarea"
                         :rows="2"
                         v-model="board.description"
                         value="value"
-                    >
-                    </el-input>
+                    />
                 </div>
             </div>
 
@@ -99,17 +98,18 @@ export default {
         };
     },
 
-    created() {},
-    computed: {},
+    // created() {},
+    // computed: {},
     methods: {
         setToEdit(tag) {
             this.isEditingState = true;
             this.currEditedTag = tag;
             setTimeout(() => {
                 this.$refs[tag].focus();
-            }, 10);
+            }, 0);
         },
         updateTag() {
+            this.$emit('updateTitles', this.board);
             this.isEditingState = false;
             this.currEditedTag = null;
         },
@@ -117,7 +117,6 @@ export default {
             this.isDecriptionShown = !this.isDecriptionShown;
         },
         addGroup() {
-            console.log('Adding');
             this.$emit('addNewGroup');
         },
     },
