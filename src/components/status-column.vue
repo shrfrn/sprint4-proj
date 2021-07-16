@@ -1,6 +1,6 @@
 <template>
     <section class="status-column" v-if="hasStatus">
-        <div @click="toggleStatusPicker" :style="statusColor">{{newStatus.txt}}</div>
+        <div class="status-text" @click="toggleStatusPicker" :style="statusColor">{{newStatus.txt}}</div>
         <transition name="status-picker">
             <status-picker @input="onSelectStatus" v-if="this.isPickerOpen" v-model="newStatus" class="status-picker" />
         </transition>
@@ -42,8 +42,15 @@ export default {
     },
     created(){
         this.newStatus = JSON.parse(JSON.stringify(this.value)) 
-        console.log('prop:',this.value, 'copy:', this.newStatus);
+        console.log('prop:',this.value, 'copy:', this.newStatus)
     },
+
+    watch: {
+        value(newVal) {
+            this.newStatus = JSON.parse(JSON.stringify(newVal))
+        },
+    },
+
     components: {
         statusPicker,
     }

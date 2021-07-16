@@ -10,12 +10,7 @@
             @updateDrag="updateDrag"
             @openTaskDetails="openTaskDetails"
         />
-
         <router-view />
-        <delegate-column v-model="delegates" :members="members" />
-        <status-column v-model="status" />
-        <!-- <status-column :status="status" /> -->
-        <date-column :date="date" />
     </section>
 </template>
 
@@ -24,9 +19,6 @@
 
 import boardHeader from '../components/board-header.vue';
 import groupList from '../components/group-list.vue';
-import delegateColumn from '../components/delegate.column.vue';
-import statusColumn from '../components/status.column.vue';
-import dateColumn from '../components/date.column.vue';
 // import boardViews from '../components/board-views.vue';
 
 export default {
@@ -171,9 +163,6 @@ export default {
     components: {
         boardHeader,
         groupList,
-        delegateColumn,
-        statusColumn,
-        dateColumn,
     },
 };
 </script>

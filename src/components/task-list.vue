@@ -46,8 +46,8 @@ export default {
         createdAt: null,
         columns: {
           delegates: [],
-          status: "",
-          date: null,
+          status: {},
+          date: 0,
         },
       },
     };
@@ -66,20 +66,21 @@ export default {
     },
     async addTask() {
       if (this.taskToAdd.title === "") return;
-      var ToAdd = JSON.parse(JSON.stringify(this.taskToAdd));
-      ToAdd.createdAt = Date.now();
+      var ToAdd = JSON.parse(JSON.stringify(this.taskToAdd))
+      ToAdd.createdAt = Date.now()
       await this.$store.dispatch({
         type: "addTask",
         task: ToAdd,
         groupIdx: this.groupIdx,
       });
       console.log("tasks", this.tasks);
-      this.taskToAdd.title = "";
+      this.taskToAdd.title = ""
     },
     async onEnd() {
-             await this.$store.dispatch({ type: 'saveTasks', saveTasks:this.TasksCopy,groupIdx: this.groupIdx, });
+        this.tasks = this.TasksCopy
+        await this.$store.dispatch({ type: 'saveTasks', saveTasks:this.TasksCopy,groupIdx: this.groupIdx, });
           
-        },
+    },
   },
 };
 </script>
