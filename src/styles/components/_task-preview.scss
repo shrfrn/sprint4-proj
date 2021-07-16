@@ -36,4 +36,15 @@
     &:hover {
         background-color: rgb(230, 230, 230);
     }
+    .dropdown{
+        border-radius: 10px;
+    }
+    .el-dropdown {
+        button {
+            @include flex(center, center, row);
+            width: 20px;
+            height: 20px;
+            
+        }
+    }
 }

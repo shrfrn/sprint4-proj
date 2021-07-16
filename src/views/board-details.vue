@@ -1,18 +1,18 @@
 <template>
     <section v-if="board" class="board-details">
-        <board-header :board="board" @addNewGroup="addNewGroup" />
-      
+        <board-header :board="board" @addNewGroup="addNewGroup" @updateTitles="updateTitles" />
         <group-list
             :groups="board.groups"
             @updateGroupName="updateGroupName"
             @removeGroup="removeGroup"
             @duplicateGroup="duplicateGroup"
             @changeColor="changeColor"
+            @updateDrag="updateDrag"
             @openTaskDetails="openTaskDetails"
         />
 
         <router-view />
-        <delegate-column :delegates="delegates" :members="members"/>
+        <delegate-column :delegates="delegates" :members="members" />
         <status-column :value="status" />
         <!-- <status-column :status="status" /> -->
         <date-column :date="date" />
@@ -23,7 +23,6 @@
 // import { boardService } from '../services/board.service';
 
 import boardHeader from '../components/board-header.vue';
-
 import groupList from '../components/group-list.vue';
 import delegateColumn from '../components/delegate.column.vue';
 import statusColumn from '../components/status.column.vue';
@@ -43,15 +42,15 @@ export default {
             return JSON.parse(JSON.stringify(this.$store.getters.currBoard));
         },
         delegates() {
-            const delegates = this.$store.getters.currBoard.groups[0].tasks[0].columns['delegates']
-            const names = delegates.map(delegate => delegate.fullname)
-            console.log('delegates:' , names);
+            const delegates = this.$store.getters.currBoard.groups[0].tasks[0].columns['delegates'];
+            const names = delegates.map((delegate) => delegate.fullname);
+            console.log('delegates:', names);
             return this.$store.getters.currBoard.groups[0].tasks[0].columns['delegates'];
         },
         members() {
-            const members = this.$store.getters.currBoard.members
-            const names = members.map(member => member.fullname)
-            console.log('members:' , names);
+            const members = this.$store.getters.currBoard.members;
+            const names = members.map((member) => member.fullname);
+            console.log('members:', names);
             return this.$store.getters.currBoard.members;
         },
         status() {
@@ -74,6 +73,20 @@ export default {
                 // this.board = this.$store.getters.currBoard;
             } catch (error) {
                 console.log('Couldnt load board');
+            }
+        },
+        async updateDrag(updatedGroups) {
+            try {
+                await this.$store.dispatch({ type: 'saveGroups', updatedGroups });
+            } catch (err) {
+                console.log('Couldnt updated the order of the groups', err);
+            }
+        },
+        async updateTitles(board) {
+            try {
+                await this.$store.dispatch({ type: 'saveBoard', board });
+            } catch (err) {
+                console.log('Couldnt updated the titles', err);
             }
         },
 
@@ -120,6 +133,7 @@ export default {
             }
         },
         openTaskDetails(taskId){
+           
             const board=this.$store.getters.currBoard;
              this.$router.push(`/boards/${board._id}/task/${taskId}`)
         }
