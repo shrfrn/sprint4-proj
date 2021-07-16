@@ -22,7 +22,7 @@ export default {
                if (task.id===taskId)  this.currTask=task;
             })
         })
-        console.log('currTask',this.currTask);
+     
          
   },
   methods: {

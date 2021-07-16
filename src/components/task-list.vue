@@ -27,7 +27,6 @@
 
 <script>
 import taskPreview from './task-preview.vue';
-import { utilService } from '../services/util.service';
 import draggable from 'vuedraggable';
 export default {
     props: { tasks: Array, color: Object, groupIdx: Number },
@@ -36,19 +35,11 @@ export default {
     data() {
         return {
             TasksCopy: null,
-            taskToAdd: {
-                id: utilService.makeId(),
-                title: '',
-                createdAt: null,
-                columns: {
-                    delegates: [],
-                    status: {},
-                    date: 0,
-                },
-            },
+            taskToAdd: null,
         };
     },
     created() {
+        this.taskToAdd = JSON.parse(JSON.stringify(this.$store.getters.getEmptyTask));
         this.TasksCopy = JSON.parse(JSON.stringify(this.tasks));
     },
     watch: {

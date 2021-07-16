@@ -1,4 +1,8 @@
 .person-column {
     position: relative;
     width: 250px;
+    .empty-users{
+        color: gray;
+        font-size: 21px;
+    }
 }

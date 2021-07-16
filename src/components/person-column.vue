@@ -7,7 +7,7 @@
                 </span>
             </section>
             <section v-else>
-                <span>Empty</span>
+                <span><i class="far fa-user-circle empty-users"></i></span>
             </section>
         </section>
             <person-picker 

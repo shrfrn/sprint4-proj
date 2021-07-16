@@ -1,0 +1,37 @@
+.home {
+    height: 100vh;
+    background-color: #3f3f91;
+    #nav {
+        @include flex(flex-end);
+background-color: #595ad4;
+        gap: 20px;
+    }
+    section {
+        background-image: url("~@/assets/img/monday1.png");
+        background-size: cover;
+        height: 82%;
+        width: 100%;
+
+        /* right: 0; */
+        z-index: -1;
+    }
+
+    button {
+        cursor: pointer;
+        height: 50px;
+        width: 208px;
+        margin-top: 20px;
+        border-radius: 15px;
+        border: none;
+        background-color: rgb(253, 253, 253);
+        color: #595ad4;
+        font-size: 19px;
+        box-shadow: 0 0 10px black;
+        transition: 1s;
+        margin-top: -60px;
+        &:hover {
+            opacity: 0.7;
+            color: rgb(121, 121, 121);
+        }
+    }
+}

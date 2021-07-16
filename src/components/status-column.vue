@@ -42,7 +42,7 @@ export default {
     },
     created(){
         this.newStatus = JSON.parse(JSON.stringify(this.value)) 
-        console.log('prop:',this.value, 'copy:', this.newStatus)
+ 
     },
 
     watch: {

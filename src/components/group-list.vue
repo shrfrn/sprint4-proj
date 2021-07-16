@@ -10,27 +10,28 @@
                             </el-button>
                             <el-dropdown-menu trigger="click" size="medium" slot="dropdown">
                                 <el-dropdown-item @click.native="collapseSingleGroup(group.id)">
-                                    Collapse this group
+                                  <i class="fas fa-compress-alt"></i>  Collapse this group
                                 </el-dropdown-item>
                                 <el-dropdown-item @click.native="openSingleGroup(group.id)">
-                                    Open this group
+                                <i class="fas fa-expand-alt"></i>  Open this group
                                 </el-dropdown-item>
                                 <el-dropdown-item @click.native="collapseGroups">
-                                    Collapse All Groups
+                                   <i class="fas fa-compress-alt"></i>  Collapse All Groups
                                 </el-dropdown-item>
                                 <el-dropdown-item @click.native="openGroups">
-                                    Open All Groups
+                                   <i class="fas fa-expand-alt"></i>  Open All Groups
                                 </el-dropdown-item>
                                 <el-dropdown-item @click.native="setToEdit(group, group.id)">
-                                    Rename Group
+                                  <i class="fas fa-pen"></i>  Rename Group
                                 </el-dropdown-item>
                                 <el-dropdown-item @click.native="removeGroup(group)">
-                                    Delete Group
+                                  <i class="far fa-trash-alt"></i>  Delete Group
                                 </el-dropdown-item>
                                 <el-dropdown-item @click.native="duplicateGroup(group)">
-                                    Duplicate Group
+                                  <i class="far fa-copy"></i>  Duplicate Group
                                 </el-dropdown-item>
-                                <el-dropdown-item>
+                                <el-dropdown-item class="color-change">
+                                  <i class="fas fa-palette"></i> change color
                                     <el-color-picker
                                         @change="changeColor(group)"
                                         v-model="group.style.color"
@@ -49,7 +50,7 @@
                         >
                             {{ group.title }}
                         </li>
-                        <input
+                        <input class="input"
                             :ref="group.id"
                             v-show="isEditingState && currEditedGroup == group.id"
                             @blur="updateGroupName(group)"
