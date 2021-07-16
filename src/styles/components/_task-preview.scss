@@ -26,7 +26,8 @@
             }
         }
     }
-    .dinamic {
+    .dynamic-column {
+        @include flex(center, center);
         width: 150px;
         height: 100%;
         flex: 1;

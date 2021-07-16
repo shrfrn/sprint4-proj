@@ -28,7 +28,7 @@
             ref="editTitle"
             type="text"
             @change="togglehover(false)"
-            v-model="title"
+            v-model="currTask.title"
           />
         </form>
       </template>
@@ -38,14 +38,16 @@
       </template>
       <button @click="openTaskDetails">chat</button>
     </div>
-    <div class="dinamic">ss</div>
-    <div class="dinamic">ss</div>
-    <div class="dinamic">ss</div>
-    <div class="dinamic">ss</div>
+    <person-column class="dynamic-column" @input="updateTask" v-model="currTask.columns['delegates']" :members="boardMembers"></person-column>
+    <status-column class="dynamic-column" @input="updateTask" v-model="currTask.columns['status']" ></status-column>
+    <div class="dynamic-column">ss</div>
+    <div class="dynamic-column">ss</div>
   </section>
 </template>
 
 <script>
+import personColumn from '@/components/person-column'
+import statusColumn from '@/components/status-column'
 export default {
   props: {
     task: Object,
@@ -53,14 +55,30 @@ export default {
   },
   data() {
     return {
-      isEditTitle: false,
-      title:this.task.title,
-    //   currTask: this.task,
-      isHover: false,
-    };
+        title: this.task.title,
+        currTask: this.task,
+        isHover: false,
+        isEditTitle: false,
+    }
+  },
+  created(){
+      this.currTask = JSON.parse(JSON.stringify(this.task))
+      console.log('currTask', this.currTask);
   },
   mounted() {
     if (this.$refs.editTitle) this.$refs.editTitle.focus();
+  },
+  
+  watch: {
+      task(newVal) {
+        this.currTask = JSON.parse(JSON.stringify(newVal));
+      },
+  },
+
+  computed:{
+      boardMembers(){
+          return this.$store.getters.currBoard.members
+      }
   },
   methods: {
     toggleEdit() {
@@ -72,17 +90,14 @@ export default {
     },
     openTaskDetails(){
         this.$emit('openTaskDetails',this.task.id)
-       
     },
     async updateTask() {
-        var taskToUpdate=JSON.parse(JSON.stringify(this.task));
-        taskToUpdate.title=this.title
-      await this.$store.dispatch({
-        type: "updateTask",
-        task: taskToUpdate,
-        groupIdx: this.groupIdx,
-      });
-      this.toggleEdit();
+        await this.$store.dispatch({
+            type: "updateTask",
+            task: this.currTask,
+            groupIdx: this.groupIdx,
+        });
+        this.toggleEdit();
     },
     async removeTask() {
       await this.$store.dispatch({
@@ -98,6 +113,10 @@ export default {
         groupIdx: this.groupIdx,
       });
     },
+  },
+  components: {
+      personColumn,
+      statusColumn,
   },
 };
 </script>
