@@ -58,7 +58,7 @@ async function getById(id, filterBy = { txt: '' }) {
 
     // group.title.toLowerCase().includes(filterBy.txt)
     // if (!filteredGroups.length)
-    // board.groups = filteredGroups;
+    // board.oups = filteredGroups;
     // return await storageService.get(KEY, id);
     // return await httpService.get('toy/' + id)
 }
