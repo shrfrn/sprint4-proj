@@ -82,9 +82,13 @@ export const boardStore = {
             const updateBoard = await boardService.removeTask(
                 task,
                 groupIdx,
-                context.state.currBoard
+                context.state.currBoard._id
             );
 
+            context.commit({ type: 'updateBoard', updateBoard });
+        }, 
+          async saveTasks(context, {saveTasks,groupIdx}) {
+            const updateBoard = await boardService.updateTasks(saveTasks, context.state.currBoard._id,groupIdx);
             context.commit({ type: 'updateBoard', updateBoard });
         },
         async updateGroupName(context, { updatedGroup }) {
@@ -134,5 +138,8 @@ export const boardStore = {
         currBoard(state) {
             return state.currBoard;
         },
+        getTask(){
+    
+        }
     },
 };

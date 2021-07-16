@@ -14,6 +14,7 @@
 @import 'components/board.list';
 @import 'components/board.preview';
 @import 'components/board-header';
+@import 'components/task-preview';
 @import 'components/group-list';
 // @import 'components/main-header';
 // @import 'components/main-footer';
@@ -23,11 +24,13 @@
 @import 'components/task-details';
 @import 'components/board-details';
 @import 'components/task-list';
-@import 'components/task-preview';
+
 @import 'components/board-app';
 @import 'components/navbar';
 @import 'components/status-picker';
 @import 'components/status-column';
+@import 'components/status-item';
 @import 'components/person-column';
 @import 'components/person-picker';
 @import 'components/person-preview';
+

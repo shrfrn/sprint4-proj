@@ -1,6 +1,6 @@
 <template>
   <section class="task-preview">
-    <el-dropdown>
+    <el-dropdown class="dropdown">
       <el-button size="mini">
         <i class="el-icon-arrow-down el-icon--center"></i>
       </el-button>

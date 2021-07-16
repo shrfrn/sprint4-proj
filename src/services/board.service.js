@@ -19,6 +19,7 @@ export const boardService = {
     addTask,
     removeTask,
     duplicateTask,
+    updateTasks,
 };
 
 // Board service
@@ -135,6 +136,12 @@ async function addTask(task, groupIdx, currBoardId) {
 
     return await storageService.put(KEY, board);
 }
+async function updateTasks(saveTasks, currBoardId,groupIdx) {
+    const board = await getById(currBoardId);
+    board.groups[groupIdx].tasks = saveTasks;
+    return await storageService.put(KEY, board);
+}
+
 // function getEmptyToy() {
 //     return {
 //         name: '',

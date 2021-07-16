@@ -1,7 +1,9 @@
 <template>
     <section class="status-column" v-if="hasStatus">
-        <span @click="toggleStatusPicker" :style="statusColor">{{newStatus.txt}}</span>
-        <status-picker @input="onSelectStatus" v-if="this.isPickerOpen" v-model="newStatus" class="status-picker" />
+        <div @click="toggleStatusPicker" :style="statusColor">{{newStatus.txt}}</div>
+        <transition name="status-picker">
+            <status-picker @input="onSelectStatus" v-if="this.isPickerOpen" v-model="newStatus" class="status-picker" />
+        </transition>
     </section>
 </template>
 

@@ -1,12 +1,18 @@
 <template>
-    <section class="person-picker">
-        <section class="delegate-list">
-            <person-preview @item-selected="onRemoveDelegate" :person="delegate" v-for="delegate in newDelegates" :key="delegate._id" />
+    <transition name="person-picker">
+        <section class="person-picker">
+            <section class="delegate-list">
+                <transition-group name="person-list">
+                    <person-preview @item-selected="onRemoveDelegate" :person="delegate" v-for="delegate in newDelegates" :key="delegate._id" />
+                </transition-group>
+            </section>
+            <section class="member-list">
+                <transition-group name="person-list">
+                    <person-preview @item-selected="onAddDelegate" :person="member" v-for="member in newMembers" :key="member._id" />
+                </transition-group>
+            </section>
         </section>
-        <section class="member-list">
-            <person-preview @item-selected="onAddDelegate" :person="member" v-for="member in newMembers" :key="member._id" />
-        </section>
-    </section>
+    </transition>
 </template>
 
 <script>
@@ -33,36 +39,32 @@ export default {
         this.newDelegates = JSON.parse(JSON.stringify(this.delegates))
         console.log('newDelegates', this.newDelegates);
         this.newMembers = this.members.filter(member => {
-        return !this.newDelegates.some(delegate => delegate._id === member._id)
+            return !this.newDelegates.some(delegate => delegate._id === member._id)
         })
-        console.log('newMembers', this.newMembers);
     },
     methods: {
         onRemoveDelegate(delegateId){
             const idx = this.newDelegates.findIndex(delegate => delegate._id === delegateId)
             const person = this.newDelegates.splice(idx, 1)[0]
             this.newMembers.unshift(person)
+            
             this.isDirty = true
+            this.$emit('change', this.newDelegates)
         },
         onAddDelegate(memberId){
             const idx = this.newMembers.findIndex(member => member._id === memberId)
             const person = this.newMembers.splice(idx, 1)[0]
             this.newDelegates.unshift(person)
+
             this.isDirty = true
-            console.log('person', person);
-            console.log('delegates:', this.newDelegates.length);
-            console.log('members:', this.members.length);
+            this.$emit('change', this.newDelegates)
         },
     },
     beforeDestroy(){
-        if(this.isDirty) this.$emit('input', this.delegates)
+        if(this.isDirty) this.$emit('input', this.newDelegates)
     },
     components: {
         personPreview,
     },
 }
 </script>
-
-<style>
-
-</style>
