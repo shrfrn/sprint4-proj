@@ -1,6 +1,16 @@
-.person-picker{
+.person-preview{
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     width: 100%;
-    background-color: lightgray;
+    padding: .3rem;
+    transition: .2s;
+    cursor: pointer;
+
+    & > *{
+        margin-left: .5rem;
+    }
+
+    &:hover {
+        background-color: lightgray;
+    }
 }

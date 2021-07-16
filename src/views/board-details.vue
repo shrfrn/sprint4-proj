@@ -12,8 +12,8 @@
         />
 
         <router-view />
-        <delegate-column :delegates="delegates" :members="members" />
-        <status-column :value="status" />
+        <delegate-column v-model="delegates" :members="members" />
+        <status-column v-model="status" />
         <!-- <status-column :status="status" /> -->
         <date-column :date="date" />
     </section>
@@ -41,21 +41,41 @@ export default {
         board() {
             return JSON.parse(JSON.stringify(this.$store.getters.currBoard));
         },
-        delegates() {
-            const delegates = this.$store.getters.currBoard.groups[0].tasks[0].columns['delegates'];
-            const names = delegates.map((delegate) => delegate.fullname);
-            console.log('delegates:', names);
-            return this.$store.getters.currBoard.groups[0].tasks[0].columns['delegates'];
+        delegates: {
+            get: function(){
+                const delegates = this.$store.getters.currBoard.groups[0].tasks[0].columns['delegates'];
+                return JSON.parse(JSON.stringify(delegates))
+            },
+            set: function(newVal){
+                // this.$store.dispatch({type: updateTask, task, groupId})
+                console.log('new delegate list:', newVal);
+            }
         },
+        // delegates() {
+        //     const delegates = this.$store.getters.currBoard.groups[0].tasks[0].columns['delegates'];
+        //     console.log('delegates:', delegates);
+        //     return JSON.parse(JSON.stringify(delegates))
+        //     // const names = delegates.map((delegate) => delegate.fullname);
+        //     // return this.$store.getters.currBoard.groups[0].tasks[0].columns['delegates'];
+        // },
         members() {
             const members = this.$store.getters.currBoard.members;
             const names = members.map((member) => member.fullname);
             console.log('members:', names);
             return this.$store.getters.currBoard.members;
         },
-        status() {
-            return this.$store.getters.currBoard.groups[0].tasks[0].columns['status'];
+        status: {
+            get: function(){
+                return this.$store.getters.currBoard.groups[0].tasks[0].columns['status'];
+            },
+            set: function(newVal) {
+                // this.$store.dispatch({type: updateTask, task, groupId})
+                console.log('new status:', newVal);
+            },
         },
+        // status() {
+        //     return this.$store.getters.currBoard.groups[0].tasks[0].columns['status'];
+        // },
         date() {
             return this.$store.getters.currBoard.groups[0].tasks[0].columns['date'];
         },
