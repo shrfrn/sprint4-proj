@@ -1,6 +1,11 @@
 <template>
     <section v-if="board" class="board-details">
-        <board-header :board="board" @addNewGroup="addNewGroup" @updateTitles="updateTitles" />
+        <board-header
+            :board="board"
+            @addNewGroup="addNewGroup"
+            @updateTitles="updateTitles"
+            @setFilter="setFilter"
+        />
         <group-list
             :groups="board.groups"
             @updateGroupName="updateGroupName"
@@ -12,10 +17,10 @@
         />
 
         <router-view />
-        <delegate-column v-model="delegates" :members="members" />
-        <status-column v-model="status" />
+        <!-- <delegate-column v-model="delegates" :members="members" />
+        <status-column v-model="status" /> -->
         <!-- <status-column :status="status" /> -->
-        <date-column :date="date" />
+        <!-- <date-column :date="date" /> -->
     </section>
 </template>
 
@@ -24,16 +29,16 @@
 
 import boardHeader from '../components/board-header.vue';
 import groupList from '../components/group-list.vue';
-import delegateColumn from '../components/delegate.column.vue';
-import statusColumn from '../components/status.column.vue';
-import dateColumn from '../components/date.column.vue';
+// import delegateColumn from '../components/delegate.column.vue';
+// import statusColumn from '../components/status.column.vue';
+// import dateColumn from '../components/date.column.vue';
 // import boardViews from '../components/board-views.vue';
 
 export default {
     data() {
         return {
-            // board: null,
             idx: 1,
+            groupsToShow: [],
         };
     },
 
@@ -42,22 +47,17 @@ export default {
             return JSON.parse(JSON.stringify(this.$store.getters.currBoard));
         },
         delegates: {
-            get: function(){
-                const delegates = this.$store.getters.currBoard.groups[0].tasks[0].columns['delegates'];
-                return JSON.parse(JSON.stringify(delegates))
+            get: function() {
+                const delegates = this.$store.getters.currBoard.groups[0].tasks[0].columns[
+                    'delegates'
+                ];
+                return JSON.parse(JSON.stringify(delegates));
             },
-            set: function(newVal){
+            set: function(newVal) {
                 // this.$store.dispatch({type: updateTask, task, groupId})
                 console.log('new delegate list:', newVal);
-            }
+            },
         },
-        // delegates() {
-        //     const delegates = this.$store.getters.currBoard.groups[0].tasks[0].columns['delegates'];
-        //     console.log('delegates:', delegates);
-        //     return JSON.parse(JSON.stringify(delegates))
-        //     // const names = delegates.map((delegate) => delegate.fullname);
-        //     // return this.$store.getters.currBoard.groups[0].tasks[0].columns['delegates'];
-        // },
         members() {
             const members = this.$store.getters.currBoard.members;
             const names = members.map((member) => member.fullname);
@@ -65,7 +65,7 @@ export default {
             return this.$store.getters.currBoard.members;
         },
         status: {
-            get: function(){
+            get: function() {
                 return this.$store.getters.currBoard.groups[0].tasks[0].columns['status'];
             },
             set: function(newVal) {
@@ -73,9 +73,6 @@ export default {
                 console.log('new status:', newVal);
             },
         },
-        // status() {
-        //     return this.$store.getters.currBoard.groups[0].tasks[0].columns['status'];
-        // },
         date() {
             return this.$store.getters.currBoard.groups[0].tasks[0].columns['date'];
         },
@@ -113,7 +110,6 @@ export default {
         async addNewGroup() {
             try {
                 await this.$store.dispatch({ type: 'addNewGroup' });
-                // this.loadBoard();
             } catch (err) {
                 console.log('Couldnt Added the new Group', err);
             }
@@ -128,7 +124,6 @@ export default {
         async removeGroup(group) {
             try {
                 await this.$store.dispatch({ type: 'removeGroup', group });
-                // this.loadBoard();
             } catch (err) {
                 console.log('Couldnt remove the group', err);
             }
@@ -139,7 +134,6 @@ export default {
                     type: 'duplicateGroup',
                     duplicatedGroup,
                 });
-                // this.loadBoard();
             } catch (err) {
                 console.log('Couldnt duplicate the group', err);
             }
@@ -147,17 +141,17 @@ export default {
         async changeColor(group) {
             try {
                 await this.$store.dispatch({ type: 'updateGroup', group });
-                // this.loadBoard();
             } catch (err) {
                 console.log('Couldnt change the color of the group', err);
             }
         },
-        openTaskDetails(taskId){
-           
-            const board=this.$store.getters.currBoard;
-             this.$router.push(`/boards/${board._id}/task/${taskId}`)
-        }
-        
+        openTaskDetails(taskId) {
+            const board = this.$store.getters.currBoard;
+            this.$router.push(`/boards/${board._id}/task/${taskId}`);
+        },
+        setFilter(filterBy) {
+            this.groupsToShow = this.board.groups.filter((gp) => gp.title.includes(filterBy.txt));
+        },
     },
     watch: {
         '$route.params.boardId': {
@@ -171,9 +165,9 @@ export default {
     components: {
         boardHeader,
         groupList,
-        delegateColumn,
-        statusColumn,
-        dateColumn,
+        // delegateColumn,
+        // statusColumn,
+        // dateColumn,
     },
 };
 </script>

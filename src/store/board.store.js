@@ -20,6 +20,7 @@ export const boardStore = {
         },
         setFilter(state, { filterBy }) {
             state.filterBy = { ...filterBy };
+            console.log('state.filterBy :>> ', state.filterBy);
         },
         updateBoard(state, { updateBoard }) {
             const idx = state.boards.findIndex((board) => board._id === updateBoard._id);
@@ -49,8 +50,8 @@ export const boardStore = {
             // .then(() => context.commit({type: 'removeBoard', boardId}))
         },
         async setFilter(context, { filterBy }) {
-            const boards = await boardService.query(filterBy);
-            context.commit({ type: 'setBoards', boards });
+            // const boards = await boardService.query(filterBy);
+            context.commit({ type: 'setFilter', filterBy });
             // .then(boards => context.commit({type: 'setBoards', boards}))
         },
         async updateTask(context, { task, groupIdx }) {
@@ -86,9 +87,13 @@ export const boardStore = {
             );
 
             context.commit({ type: 'updateBoard', updateBoard });
-        }, 
-          async saveTasks(context, {saveTasks,groupIdx}) {
-            const updateBoard = await boardService.updateTasks(saveTasks, context.state.currBoard._id,groupIdx);
+        },
+        async saveTasks(context, { saveTasks, groupIdx }) {
+            const updateBoard = await boardService.updateTasks(
+                saveTasks,
+                context.state.currBoard._id,
+                groupIdx
+            );
             context.commit({ type: 'updateBoard', updateBoard });
         },
         async updateGroupName(context, { updatedGroup }) {
@@ -126,6 +131,7 @@ export const boardStore = {
             );
             context.commit({ type: 'updateBoard', updateBoard });
         },
+
         // async addReview(context, {review}){
         //     review = await reviewService.addReview(review)
         //     context.commit({type: 'addReview', review})
@@ -138,8 +144,6 @@ export const boardStore = {
         currBoard(state) {
             return state.currBoard;
         },
-        getTask(){
-    
-        }
+        getTask() {},
     },
 };

@@ -38,17 +38,6 @@
                         v-show="isEditingState && currEditedTag === 'description'"
                         v-model="board.description"
                     />
-
-                    <!-- <el-input
-                        ref="description"
-                        @blur="updateTag"
-                        @keydown.enter="updateTag"
-                        v-show="isEditingState && currEditedTag === 'description'"
-                        type="textarea"
-                        rows="3"
-                        cols="50"
-                        v-model="board.description"
-                    ></el-input> -->
                 </div>
             </div>
 
@@ -64,7 +53,12 @@
             <el-button type="primary" plain @click.native="addGroup">
                 New Group
             </el-button>
-            <el-input placeholder="Search something" prefix-icon="el-icon-search"></el-input>
+            <el-input
+                @input="setFilter"
+                v-model="filterBy.txt"
+                placeholder="Search something"
+                prefix-icon="el-icon-search"
+            ></el-input>
 
             <!-- PERSON -->
             <el-dropdown>
@@ -102,6 +96,7 @@ export default {
             isEditingState: false,
             currEditedTag: null,
             isDecriptionShown: true,
+            filterBy: { txt: '' },
         };
     },
 
@@ -125,6 +120,9 @@ export default {
         },
         addGroup() {
             this.$emit('addNewGroup');
+        },
+        setFilter() {
+            this.$emit('setFilter', this.filterBy);
         },
     },
     components: {
