@@ -160,6 +160,7 @@ const gBoards = [
     {
         _id: 'b101',
         title: 'Frontend',
+        description: 'This is very awesome!',
         createdAt: Date.now(),
         createdBy: {
             _id: 'u101',

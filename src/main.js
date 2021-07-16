@@ -9,6 +9,7 @@ import locale from 'element-ui/lib/locale/lang/en';
 import Avatar from 'vue-avatar';
 import draggable from 'vuedraggable';
 import './styles/styles.scss';
+
 Vue.config.productionTip = false;
 
 Vue.use(ElementUI, { locale });

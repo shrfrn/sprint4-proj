@@ -1,6 +1,7 @@
 <template>
     <article @click="setBoard(miniBoard._id)" class="board-preview">
-        {{ miniBoard._id }}
+        <i class="fas fa-th-list"></i>
+        <span>{{ miniBoard.title }}</span>
     </article>
 </template>
 

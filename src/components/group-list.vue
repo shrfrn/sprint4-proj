@@ -118,21 +118,23 @@ export default {
     },
 
     methods: {
+        onStart() {
+            this.isAllCollapse = true;
+        },
         onEnd() {
             this.$emit('updateDrag', this.groupsCopy);
             this.isAllCollapse = false;
-        },
-        onStart() {
-            this.isAllCollapse = true;
         },
         collapseSingleGroup(groupId) {
             this.collapsedGroups.push(groupId);
         },
         openSingleGroup(groupId) {
+            this.isAllCollapse = false;
             const idx = this.collapsedGroups.findIndex((id) => id === groupId);
             this.collapsedGroups.splice(idx, 1);
         },
         collapseGroups() {
+            this.collapsedGroups = this.groups.map((gp) => gp.id);
             this.isAllCollapse = true;
         },
         openGroups() {

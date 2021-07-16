@@ -17,11 +17,7 @@
                         type="text"
                         v-model="board.title"
                     />
-                    <el-button
-                        icon="el-icon-view"
-                        circle
-                        @click.native="toggleDescription"
-                    ></el-button>
+                    <i class="fas fa-info-circle" @click="toggleDescription"></i>
                 </div>
 
                 <div class="sub-title" v-if="isDecriptionShown">
@@ -32,32 +28,43 @@
                         {{ board.description }}
                     </p>
 
-                    <input
+                    <textarea
+                        ref="description"
+                        type="textarea"
+                        rows="4"
+                        cols="50"
+                        @blur="updateTag"
+                        @keydown.enter="updateTag"
+                        v-show="isEditingState && currEditedTag === 'description'"
+                        v-model="board.description"
+                    />
+
+                    <!-- <el-input
                         ref="description"
                         @blur="updateTag"
                         @keydown.enter="updateTag"
                         v-show="isEditingState && currEditedTag === 'description'"
                         type="textarea"
-                        :rows="2"
+                        rows="3"
+                        cols="50"
                         v-model="board.description"
-                        value="value"
-                    />
+                    ></el-input> -->
                 </div>
             </div>
 
             <div class="members">
                 <span class="avatar" v-for="member in board.members" :key="member._id">
-                    <avatar :src="member.imgUrl" :username="member.fullname"></avatar>
+                    <avatar :size="30" :src="member.imgUrl" :username="member.fullname"></avatar>
                 </span>
             </div>
         </div>
 
         <div class="board-actions">
             <!-- <div class="board-filter"> -->
-            <el-button type="primary" size="medium" plain @click.native="addGroup">
+            <el-button type="primary" plain @click.native="addGroup">
                 New Group
             </el-button>
-            <el-button type="primary" icon="el-icon-search">Search</el-button>
+            <el-input placeholder="Search something" prefix-icon="el-icon-search"></el-input>
 
             <!-- PERSON -->
             <el-dropdown>

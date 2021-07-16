@@ -69,10 +69,11 @@ export const boardStore = {
             );
 
             context.commit({ type: 'updateBoard', updateBoard });
-        }, 
-         async duplicateTask(context,  { task, groupIdx }) {
+        },
+        async duplicateTask(context, { task, groupIdx }) {
             const updateBoard = await boardService.duplicateTask(
-                task,groupIdx,
+                task,
+                groupIdx,
                 context.state.currBoard._id
             );
             context.commit({ type: 'updateBoard', updateBoard });
@@ -114,8 +115,11 @@ export const boardStore = {
             context.commit({ type: 'updateBoard', updateBoard });
         },
 
-        async saveGroups(context, {updatedGroups}) {
-            const updateBoard = await boardService.updateGroups(updatedGroups, context.state.currBoard);
+        async saveGroups(context, { updatedGroups }) {
+            const updateBoard = await boardService.updateGroups(
+                updatedGroups,
+                context.state.currBoard
+            );
             context.commit({ type: 'updateBoard', updateBoard });
         },
         // async addReview(context, {review}){

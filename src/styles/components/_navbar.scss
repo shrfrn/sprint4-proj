@@ -1,20 +1,27 @@
 .navbar {
-    background-color: #2b2f4c;
-    width: 70px;
     @include flex(space-between, start, column);
-    // display: flex;
-    // flex-direction: column;
-    // justify-content: space-between;
+    background-color: #2b2f4c;
+    width: 66px;
     padding: 20px 0;
+
+    .task-action {
+        .logo-monday {
+            width: 30px;
+        }
+    }
     .task-action,
     .user-action {
         @include flex(center, center, column);
+
+        .fas {
+            font-size: 15px;
+        }
 
         gap: 10px;
         margin: 0 auto;
         a {
             @include flex(center, center, row);
-           
+
             height: 50px;
             width: 50px;
             border-radius: 5px;
