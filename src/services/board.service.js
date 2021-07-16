@@ -55,10 +55,6 @@ async function getById(id, filterBy = { txt: '' }) {
     console.log('board After filter:>> ', board);
     board.groups = filteredGroups;
     return board;
-
-    // group.title.toLowerCase().includes(filterBy.txt)
-    // if (!filteredGroups.length)
-    // board.oups = filteredGroups;
     // return await storageService.get(KEY, id);
     // return await httpService.get('toy/' + id)
 }

@@ -37,8 +37,11 @@ export default {
         addBoard() {
             const boardTitle = prompt('Enter board title');
             const newBoard = boardService.getEmptyBoard();
-
             newBoard.title = boardTitle;
+            this.$message({
+                message: `Congrats, ${newBoard.title} added successfully.`,
+                type: 'success',
+            });
             this.$store.dispatch({ type: 'saveBoard', board: newBoard });
         },
     },

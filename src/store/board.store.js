@@ -40,6 +40,7 @@ export const boardStore = {
         async saveBoard(context, { board }) {
             const newBoard = await boardService.save(board);
             await context.dispatch({ type: 'loadBoards' });
+
             context.commit({ type: 'loadBoard', board: newBoard });
         },
         async removeBoard(context, { boardId }) {

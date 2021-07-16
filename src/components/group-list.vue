@@ -59,7 +59,12 @@
                         />
                     </div>
                     <template v-if="!isAllCollapse && !collapsedGroups.includes(group.id)">
-                        <task-list :tasks="group.tasks" :color="group.style" :groupIdx="idx"  @openTaskDetails="openTaskDetails" />
+                        <task-list
+                            :tasks="group.tasks"
+                            :color="group.style"
+                            :groupIdx="idx"
+                            @openTaskDetails="openTaskDetails"
+                        />
                     </template>
                 </ul>
             </transition-group>
@@ -164,7 +169,6 @@ export default {
             this.$emit('changeColor', group);
         },
         openTaskDetails(taskId) {
-       
             this.$emit('openTaskDetails', taskId);
         },
     },
