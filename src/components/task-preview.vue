@@ -6,15 +6,15 @@
       </el-button>
       <el-dropdown-menu trigger="click" size="medium" slot="dropdown">
         <el-dropdown-item @click.native="removeTask"
-          >Remove task</el-dropdown-item
+          ><i class="far fa-trash-alt"></i>Remove task</el-dropdown-item
         >
         <el-dropdown-item @click.native="toggleEdit(true)"
-          >Rename title</el-dropdown-item
+          ><i class="fas fa-pen"></i>Rename title</el-dropdown-item
         >
         <el-dropdown-item @click.native="duplicateTask"
-          >Duplicate task</el-dropdown-item
+          ><i class="far fa-copy"></i>Duplicate task</el-dropdown-item
         >
-        <el-dropdown-item @click.native="openTaskDetails">Open chat</el-dropdown-item>
+        <el-dropdown-item @click.native="openTaskDetails"><i class="fas fa-info" ></i>Open chat</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
     <div
@@ -32,11 +32,11 @@
           />
         </form>
       </template>
-      <template v-else>
+      <section class="title-task" v-else>
         <p>{{ task.title }}</p>
-        <button @click="toggleEdit(true)" v-if="isHover">edit</button>
-      </template>
-      <button @click="openTaskDetails">chat</button>
+        <button @click="toggleEdit(true)" v-if="isHover">Edit</button>
+      </section>
+     <i class="far fa-comment open-chat"  @click="openTaskDetails"></i>
     </div>
     <person-column class="dynamic-column" @input="updateTask" v-model="currTask.columns['delegates']" :members="boardMembers"></person-column>
     <status-column class="dynamic-column" @input="updateTask" v-model="currTask.columns['status']" ></status-column>
@@ -63,7 +63,7 @@ export default {
   },
   created(){
       this.currTask = JSON.parse(JSON.stringify(this.task))
-      console.log('currTask', this.currTask);
+    
   },
   mounted() {
     if (this.$refs.editTitle) this.$refs.editTitle.focus();

@@ -148,6 +148,8 @@ export const boardStore = {
         currBoard(state) {
             return state.currBoard;
         },
-        getTask() {},
+        getEmptyTask() {
+            return boardService.getEmptyTask()
+        },
     },
 };

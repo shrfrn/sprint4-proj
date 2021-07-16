@@ -1,11 +1,20 @@
 .task-preview {
-   
     background-color: whitesmoke;
     margin: 2px;
     height: 40px;
     padding-inline-start: 5px;
     transition: 0.5s;
     @include flex(start, start, row);
+
+    .open-chat {
+        cursor: pointer;
+        transition: 0.3s;
+        color: rgb(161, 161, 161);
+        font-size: 18px;
+        &:hover {
+            color: rgb(45, 113, 223);
+        }
+    }
     .task-title {
         @include flex(space-between, center, row);
         padding-inline-end: 10px;
@@ -13,16 +22,23 @@
         flex: 2;
         border-inline-end: 1px white solid;
         cursor: grab;
-        button{
-            border:none;
-            background-color: transparent;
-            cursor: pointer;
-            height: 60%;
-            width: 40px;
-            border-radius: 5px;
-            transition: 0.5s;
-            &:hover{
-                background-color: whitesmoke;
+        .title-task {
+            @include flex(start, center, row);
+            gap: 10px;
+            button {
+                border: none;
+                background-color: transparent;
+                cursor: pointer;
+                height: 25px;
+                width: 40px;
+                border-radius: 5px;
+                transition: 0.5s;
+
+                font-family: lato;
+                color: gray;
+                &:hover {
+                    background-color: rgb(253, 252, 252);
+                }
             }
         }
     }
@@ -37,7 +53,7 @@
     &:hover {
         background-color: rgb(230, 230, 230);
     }
-    .dropdown{
+    .dropdown {
         border-radius: 10px;
     }
     .el-dropdown {
@@ -45,7 +61,6 @@
             @include flex(center, center, row);
             width: 20px;
             height: 20px;
-            
         }
     }
 }

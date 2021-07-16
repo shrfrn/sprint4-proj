@@ -44,6 +44,7 @@
         }
 
         .el-dropdown {
+          
             button {
                 @include flex(center, center, row);
                 width: 30px;
@@ -52,7 +53,7 @@
             }
         }
 
-        input {
+        .input {
             border: none;
             box-shadow: 0 0 1px 1px #dbdbdb;
             background: transparent;

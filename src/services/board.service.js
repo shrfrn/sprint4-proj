@@ -20,6 +20,7 @@ export const boardService = {
     removeTask,
     duplicateTask,
     updateTasks,
+    getEmptyTask
 };
 
 // Board service
@@ -160,6 +161,18 @@ async function updateTasks(saveTasks, currBoardId, groupIdx) {
     const board = await getById(currBoardId);
     board.groups[groupIdx].tasks = saveTasks;
     return await storageService.put(KEY, board);
+}
+function getEmptyTask(){
+    return {
+        id: utilService.makeId(),
+        title: "",
+        createdAt: null,
+        columns: {
+          delegates: [],
+          status: {},
+          date: 0,
+        },
+      }
 }
 
 function getEmptyFilter() {
