@@ -4,7 +4,6 @@ export const boardStore = {
     strict: true,
     state: {
         boards: [],
-        filterBy: null,
         currBoard: null,
     },
     mutations: {
@@ -18,9 +17,8 @@ export const boardStore = {
             const idx = state.boards.findIndex((board) => board._id === boardId);
             state.boards.splice(idx, 1);
         },
-        setFilter(state, { filterBy }) {
-            state.filterBy = { ...filterBy };
-            console.log('state.filterBy :>> ', state.filterBy);
+        setFilter(state, { filteredBoard }) {
+            state.currBoard = filteredBoard;
         },
         updateBoard(state, { updateBoard }) {
             const idx = state.boards.findIndex((board) => board._id === updateBoard._id);
@@ -50,9 +48,15 @@ export const boardStore = {
             // .then(() => context.commit({type: 'removeBoard', boardId}))
         },
         async setFilter(context, { filterBy }) {
-            // const boards = await boardService.query(filterBy);
-            context.commit({ type: 'setFilter', filterBy });
-            // .then(boards => context.commit({type: 'setBoards', boards}))
+            try {
+                const filteredBoard = await boardService.getById(
+                    context.state.currBoard._id,
+                    filterBy
+                );
+                context.commit({ type: 'setFilter', filteredBoard });
+            } catch (err) {
+                console.log('couldnt filtered', err);
+            }
         },
         async updateTask(context, { task, groupIdx }) {
             const updateBoard = await boardService.updateTask(

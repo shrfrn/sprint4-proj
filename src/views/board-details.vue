@@ -30,7 +30,6 @@ export default {
     data() {
         return {
             idx: 1,
-            groupsToShow: [],
         };
     },
 
@@ -142,7 +141,12 @@ export default {
             this.$router.push(`/boards/${board._id}/task/${taskId}`);
         },
         setFilter(filterBy) {
-            this.groupsToShow = this.board.groups.filter((gp) => gp.title.includes(filterBy.txt));
+            console.log('filterBy :>> ', filterBy);
+            this.$store.dispatch({ type: 'setFilter', filterBy });
+
+            // this.groupsToShow = this.board.groups.filter((group) =>
+            //     group.title.includes(filterBy.txt)
+            // );
         },
     },
     watch: {

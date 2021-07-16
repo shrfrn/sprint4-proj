@@ -36,8 +36,30 @@ async function query() {
     // return await httpService.get('toy', {filterBy})
 }
 
-async function getById(id) {
-    return await storageService.get(KEY, id);
+async function getById(id, filterBy = { txt: '' }) {
+    const board = await storageService.get(KEY, id);
+    const regex = new RegExp(filterBy.txt, 'i');
+
+    var filteredGroups = [];
+    board.groups.forEach((group) => {
+        if (regex.test(group.title)) {
+            filteredGroups.push(group);
+        } else {
+            let filteredTasks = group.tasks.filter((task) => regex.test(task.title));
+            if (filteredTasks.length) {
+                filteredGroups.tasks = filteredTasks;
+                filteredGroups.push(group);
+            }
+        }
+    });
+    console.log('board After filter:>> ', board);
+    board.groups = filteredGroups;
+    return board;
+
+    // group.title.toLowerCase().includes(filterBy.txt)
+    // if (!filteredGroups.length)
+    // board.oups = filteredGroups;
+    // return await storageService.get(KEY, id);
     // return await httpService.get('toy/' + id)
 }
 
