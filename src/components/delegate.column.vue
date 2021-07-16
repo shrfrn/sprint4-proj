@@ -1,13 +1,14 @@
 <template>
     <section class="person-column" v-if="hasDelegates">
-        <span @click="togglePersonPicker" v-for="delegate in delegates" :key="delegate._id">
+        <span @click="togglePersonPicker" v-for="delegate in newDelegates" :key="delegate._id">
             <avatar :username="delegate.fullname" :inline="true" :size="30" :src="delegate.imgUrl"></avatar>
         </span>
         <person-picker 
-            :delegates="delegates"
+            :delegates="value"
             :members="members"
             v-if="this.isPickerOpen" 
-            @input="onDelegateListChange" />
+            @change="onDelegateListChange"
+            @input="onNewDelegateList" />
     </section>
 </template>
 
@@ -17,7 +18,7 @@ import Avatar from 'vue-avatar'
 import personPicker from '@/components/person-picker'
 export default {
     props: {
-        delegates: {
+        value: {
             type: Array,
             required: true,
         },
@@ -29,19 +30,27 @@ export default {
     },
     data(){
         return {
+            newDelegates: [],
             isPickerOpen: false,
         }
+    },
+    created(){
+        this.newDelegates = JSON.parse(JSON.stringify(this.value))
     },
     methods: {
         togglePersonPicker(){
             this.isPickerOpen = !this.isPickerOpen
         },
-        onDelegateListChange(newDelegates){
+        onNewDelegateList(newDelegates){
+            console.log('newDelegates', newDelegates);
             this.$emit('input', newDelegates)
+        },
+        onDelegateListChange(newDelegates){
+            this.newDelegates = newDelegates
         },
     },
     computed: {
-        hasDelegates() { return !!this.delegates.length},
+        hasDelegates() { return !!this.value.length},
     },
     components: {
         personPicker,
