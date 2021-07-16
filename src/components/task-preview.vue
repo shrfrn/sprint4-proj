@@ -8,7 +8,7 @@
         <el-dropdown-item @click.native="removeTask"
           >Remove task</el-dropdown-item
         >
-        <el-dropdown-item @click.native="toggleEdit"
+        <el-dropdown-item @click.native="toggleEdit(true)"
           >Rename title</el-dropdown-item
         >
         <el-dropdown-item @click.native="duplicateTask"
@@ -23,18 +23,18 @@
       @mouseleave="togglehover(false)"
     >
       <template v-if="isEditTitle">
-        <form @submit.prevent="updateTask" @change.prevent="togglehover(false)">
+        <form @submit.prevent="updateTask" @change.prevent="toggleEdit(false)">
           <input
             ref="editTitle"
             type="text"
-            @change="togglehover(false)"
+            @change="toggleEdit(false)"
             v-model="currTask.title"
           />
         </form>
       </template>
       <template v-else>
         <p>{{ task.title }}</p>
-        <button @click="toggleEdit" v-if="isHover">edit</button>
+        <button @click="toggleEdit(true)" v-if="isHover">edit</button>
       </template>
       <button @click="openTaskDetails">chat</button>
     </div>
@@ -81,8 +81,8 @@ export default {
       }
   },
   methods: {
-    toggleEdit() {
-      this.isEditTitle = !this.isEditTitle;
+    toggleEdit(isTrue) {
+      this.isEditTitle = isTrue;
       if (this.$refs.editTitle) this.$refs.editTitle.focus();
     },
     togglehover(isTrue) {
@@ -97,7 +97,7 @@ export default {
             task: this.currTask,
             groupIdx: this.groupIdx,
         });
-        this.toggleEdit();
+        this.toggleEdit(false);
     },
     async removeTask() {
       await this.$store.dispatch({
