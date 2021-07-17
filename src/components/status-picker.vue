@@ -18,9 +18,10 @@ export default {
         return {
             newStatus: null,
             statuses: [
-                {id: 's001', txt: 'Done', color: '#987987'},
-                {id: 's002', txt: 'In progress', color: '#646465'},
-                {id: 's003', txt: 'Stuck', color: '#652412'},
+                {id: 's001', txt: 'Done', color: '#33d391'},
+                {id: 's002', txt: 'In progress', color: '#fdbc64'},
+                {id: 's003', txt: 'Stuck', color: '#e8697d'},
+                {id: 's000', txt: '', color: '#c4c4c4'}, // unspecified - default
             ],
 
         }

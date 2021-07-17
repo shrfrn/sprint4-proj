@@ -1,6 +1,6 @@
 <template>
     <section class="task-list">
-        <draggable v-model="TasksCopy" ghost-class="ghost" @end="onEnd">
+        <draggable v-model="tasksCopy" ghost-class="ghost" @end="onEnd">
             <transition-group type="transition" name="flip-list">
                 <task-preview
                     class="style-task"
@@ -34,17 +34,19 @@ export default {
 
     data() {
         return {
-            TasksCopy: null,
+            tasksCopy: null,
             taskToAdd: null,
         };
     },
     created() {
         this.taskToAdd = JSON.parse(JSON.stringify(this.$store.getters.getEmptyTask));
-        this.TasksCopy = JSON.parse(JSON.stringify(this.tasks));
+        this.tasksCopy = JSON.parse(JSON.stringify(this.tasks));
     },
     watch: {
         tasks(newVal) {
-            this.TasksCopy = JSON.parse(JSON.stringify(newVal));
+            // console.log('in tasks watcher newVal:', newVal);
+            // console.log('in tasks watcher this.tasksCopy:', this.tasksCopy);
+            this.tasksCopy = JSON.parse(JSON.stringify(newVal));
         },
     },
     methods: {
@@ -64,10 +66,10 @@ export default {
             this.taskToAdd.title = '';
         },
         async onEnd() {
-            this.tasks = this.TasksCopy;
+            this.tasks = this.tasksCopy;
             await this.$store.dispatch({
                 type: 'saveTasks',
-                saveTasks: this.TasksCopy,
+                saveTasks: this.tasksCopy,
                 groupIdx: this.groupIdx,
             });
         },

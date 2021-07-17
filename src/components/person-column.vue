@@ -1,19 +1,23 @@
 <template>
     <section class="person-column" >   
         <section @click="togglePersonPicker">
-            <section v-if="hasDelegates">
+
+            <section class="avatar-list" v-if="hasDelegates">
                 <span v-for="delegate in newDelegates" :key="delegate._id">
                     <avatar :username="delegate.fullname" :inline="true" :size="30" :src="delegate.imgUrl"></avatar>
                 </span>
             </section>
+
             <section v-else>
-                <span><i class="far fa-user-circle empty-users"></i></span>
+                <span><i class="far fa-user-circle empty-delegate-list"></i></span>
             </section>
+
         </section>
             <person-picker 
                 :delegates="value"
-                :members="members"
+                :members="board.members"
                 v-if="this.isPickerOpen" 
+                @person-picker-close="togglePersonPicker"
                 @change="onDelegateListChange"
                 @input="onNewDelegateList" />
     </section>
@@ -26,11 +30,11 @@ import personPicker from '@/components/person-picker'
 export default {
     props: {
         value: {
-            type: Array,
-            required: true,
+            // type: Array,
+            // required: true,
         },
-        members: {
-            type: Array,
+        board: {
+            type: Object,
             required: true,
         },
 
@@ -42,7 +46,7 @@ export default {
         }
     },
     created(){
-        this.newDelegates = JSON.parse(JSON.stringify(this.value))
+        if(this.value) this.newDelegates = JSON.parse(JSON.stringify(this.value))
     },
     watch: {
         value(newValue){
@@ -51,6 +55,7 @@ export default {
     },
     methods: {
         togglePersonPicker(){
+            console.log('togglePersonPicker');
             this.isPickerOpen = !this.isPickerOpen
         },
         onNewDelegateList(newDelegates){
@@ -61,7 +66,7 @@ export default {
         },
     },
     computed: {
-        hasDelegates() { return !!this.value.length },
+        hasDelegates() { return !!this.newDelegates.length },
     },
     components: {
         personPicker,

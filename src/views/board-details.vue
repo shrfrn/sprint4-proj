@@ -29,7 +29,7 @@ import groupList from '../components/group-list.vue';
 export default {
     data() {
         return {
-            idx: 1,
+            // idx: 1,
         };
     },
 
@@ -37,33 +37,31 @@ export default {
         board() {
             return JSON.parse(JSON.stringify(this.$store.getters.currBoard));
         },
-        delegates: {
-            get: function() {
-                const delegates = this.$store.getters.currBoard.groups[0].tasks[0].columns[
-                    'delegates'
-                ];
-                return JSON.parse(JSON.stringify(delegates));
-            },
-            set: function(newVal) {
-                // this.$store.dispatch({type: updateTask, task, groupId})
-                console.log('new delegate list:', newVal);
-            },
-        },
-        members() {
-            const members = this.$store.getters.currBoard.members;
-            const names = members.map((member) => member.fullname);
-            console.log('members:', names);
-            return this.$store.getters.currBoard.members;
-        },
-        status: {
-            get: function() {
-                return this.$store.getters.currBoard.groups[0].tasks[0].columns['status'];
-            },
-            set: function(newVal) {
-                // this.$store.dispatch({type: updateTask, task, groupId})
-                console.log('new status:', newVal);
-            },
-        },
+        // delegates: {
+        //     get: function() {
+        //         const delegates = this.$store.getters.currBoard.groups[0].tasks[0].columns[ 'delegates'];
+        //         return JSON.parse(JSON.stringify(delegates));
+        //     },
+        //     set: function(newVal) {
+        //         // this.$store.dispatch({type: updateTask, task, groupId})
+        //         console.log('new delegate list:', newVal);
+        //     },
+        // },
+        // members() {
+        //     const members = this.$store.getters.currBoard.members;
+        //     const names = members.map((member) => member.fullname);
+        //     console.log('members:', names);
+        //     return this.$store.getters.currBoard.members;
+        // },
+        // status: {
+        //     get: function() {
+        //         return this.$store.getters.currBoard.groups[0].tasks[0].columns['status'];
+        //     },
+        //     set: function(newVal) {
+        //         // this.$store.dispatch({type: updateTask, task, groupId})
+        //         console.log('new status:', newVal);
+        //     },
+        // },
         date() {
             return this.$store.getters.currBoard.groups[0].tasks[0].columns['date'];
         },
