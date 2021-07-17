@@ -1,7 +1,7 @@
 <template>
     <transition name="person-picker">
         <section class="person-picker">
-            <section class="delegate-list">
+            <section @keydown.esc="end" class="delegate-list">
                 <transition-group name="person-list">
                     <person-preview @item-selected="onRemoveDelegate" :person="delegate" v-for="delegate in newDelegates" :key="delegate._id" />
                 </transition-group>
@@ -20,8 +20,8 @@ import personPreview from '@/components/person-preview'
 export default {
     props: {
         delegates: {
-            type: Array,
-            required: true,
+            // type: Array,
+            // required: true,
         },
         members: {
             type: Array,
@@ -36,11 +36,12 @@ export default {
         }
     },
     created(){
-        this.newDelegates = JSON.parse(JSON.stringify(this.delegates))
+        if(this.delegates && this.delegates.length) this.newDelegates = JSON.parse(JSON.stringify(this.delegates))
         console.log('newDelegates', this.newDelegates);
         this.newMembers = this.members.filter(member => {
             return !this.newDelegates.some(delegate => delegate._id === member._id)
         })
+        console.log('newMembers', this.newMembers);
     },
     methods: {
         onRemoveDelegate(delegateId){
@@ -58,6 +59,10 @@ export default {
 
             this.isDirty = true
             this.$emit('change', this.newDelegates)
+        },
+        end(){
+            console.log('end');
+            this.$emit('person-picker-close')
         },
     },
     beforeDestroy(){

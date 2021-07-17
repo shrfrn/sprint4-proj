@@ -1,6 +1,6 @@
 <template>
     <section class="status-item" :style="itemColor">
-        <span @click="itemSelect">{{status.txt}}</span>
+        <div @click="itemSelect">{{status.txt}}</div>
     </section>
 </template>
 

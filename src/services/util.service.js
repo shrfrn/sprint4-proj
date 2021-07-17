@@ -2,6 +2,7 @@ export const utilService = {
     makeId,
     getRandomInt,
     displayedTimestamp,
+    msToShortDate,
 }
 
 function makeId(length = 5) {
@@ -34,4 +35,13 @@ function displayedTimestamp(ts) {
     }
     
     return `${dd + 1} - ${mm + 1} - ${yyyy}`
+}
+function msToShortDate(columnData){
+    const date = new Date(columnData)
+
+    const dd = ('0' + (date.getDate() + 1)).slice(-2)
+    const mm = ('0' + (date.getMonth() + 1)).slice(-2)
+    const yyyy = ('0' + date.getFullYear()).slice(-4)
+
+    return `${dd}/${mm}/${yyyy}`
 }

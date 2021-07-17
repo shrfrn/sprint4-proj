@@ -117,6 +117,8 @@ export default {
 
     watch: {
         groups(newVal) {
+            // console.log('in group list watcher groupsCopy.tasks', this.groupsCopy[0].tasks);
+            console.log('in group list watcher newVal.tasks', newVal);
             this.groupsCopy = JSON.parse(JSON.stringify(newVal));
         },
     },
@@ -164,6 +166,9 @@ export default {
         removeGroup(group) {
             this.$emit('removeGroup', group);
         },
+        // duplicateGroup(group) {
+        //     this.$emit('duplicateGroup', group);
+        // },
         duplicateGroup(group) {
             const duplicatedGroup = JSON.parse(JSON.stringify(group));
             this.$emit('duplicateGroup', duplicatedGroup);

@@ -18,6 +18,7 @@ export const boardStore = {
             state.boards.splice(idx, 1);
         },
         setFilter(state, { filteredBoard }) {
+            console.log('in store: filterBoard =', filteredBoard);
             state.currBoard = filteredBoard;
         },
         updateBoard(state, { updateBoard }) {
@@ -112,6 +113,15 @@ export const boardStore = {
             const updateBoard = await boardService.removeGroup(group, context.state.currBoard);
             context.commit({ type: 'updateBoard', updateBoard });
         },
+        // async duplicateGroup(context, { group }) {
+        //     const groupCopy = JSON.parse(JSON.stringify(group))
+        //     console.log('group copy ok');
+        //     let boardCopy = JSON.parse(JSON.stringify(context.getters.currBoard))
+        //     console.log('board copy ok');
+        //     boardCopy.groups.push(groupCopy)
+        //     await boardService.save(boardCopy)
+        //     context.commit({ type: 'loadBoard', boardCopy });
+        // },
         async duplicateGroup(context, { duplicatedGroup }) {
             const updateBoard = await boardService.duplicateGroup(
                 duplicatedGroup,
@@ -149,8 +159,8 @@ export const boardStore = {
         currBoard(state) {
             return state.currBoard;
         },
-        getEmptyTask() {
-            return boardService.getEmptyTask()
+        getEmptyTask(state) {
+            return boardService.getEmptyTask(state.currBoard)
         },
     },
 };

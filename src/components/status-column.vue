@@ -12,13 +12,17 @@ import statusPicker from '@/components/status-picker'
 export default {
     props: {
         value: {
+            // type: Object,
+            // required: true,
+        },
+        board: {
             type: Object,
             required: true,
         },
     },
     data() {
         return {
-            newStatus: { txt: '', color: '#ffffff'},
+            newStatus: { txt: '', color: '#c4c4c4'},
             isPickerOpen: false,
         }
     },
@@ -41,8 +45,8 @@ export default {
         },
     },
     created(){
-        this.newStatus = JSON.parse(JSON.stringify(this.value)) 
- 
+        if(this.value) this.newStatus = JSON.parse(JSON.stringify(this.value)) 
+        else this.newStatus = { id: 's000', txt: '', color: '#c4c4c4' } // unspecified - default
     },
 
     watch: {

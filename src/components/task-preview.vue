@@ -38,16 +38,28 @@
       </section>
      <i class="far fa-comment open-chat"  @click="openTaskDetails"></i>
     </div>
-    <person-column class="dynamic-column" @input="updateTask" v-model="currTask.columns['delegates']" :members="boardMembers"></person-column>
+    <component 
+        v-for="column in currBoard.columns" 
+        :key="column" 
+        :is="componentType(column)"
+        class="dynamic-column"
+        @input="updateTask"
+        :board="currBoard"
+        v-model="currTask.columns[column]" />
+
+    <!-- <person-column class="dynamic-column" @input="updateTask" v-model="currTask.columns['delegates']" :members="boardMembers"></person-column>
     <status-column class="dynamic-column" @input="updateTask" v-model="currTask.columns['status']" ></status-column>
+    <date-column class="dynamic-column" @input="updateTask" v-model="currTask.columns['date']" ></date-column> -->
     <div class="dynamic-column">ss</div>
     <div class="dynamic-column">ss</div>
   </section>
 </template>
 
 <script>
+import {columnHelpers} from '@/services/column.helpers.js'
 import personColumn from '@/components/person-column'
 import statusColumn from '@/components/status-column'
+import dateColumn from '@/components/date-column'
 export default {
   props: {
     task: Object,
@@ -78,7 +90,10 @@ export default {
   computed:{
       boardMembers(){
           return this.$store.getters.currBoard.members
-      }
+      },
+      currBoard(){
+          return this.$store.getters.currBoard
+      },
   },
   methods: {
     toggleEdit(isTrue) {
@@ -113,10 +128,15 @@ export default {
         groupIdx: this.groupIdx,
       });
     },
+    componentType(column){
+        return columnHelpers.componentType(column)
+    },
+    
   },
   components: {
       personColumn,
       statusColumn,
+      dateColumn,
   },
 };
 </script>

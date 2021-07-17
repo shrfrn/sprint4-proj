@@ -1,5 +1,6 @@
 // import {httpService} from '@/services/http.service.js'
 import { storageService } from '@/services/async-storage.service.js';
+import { columnHelpers } from '@/services/column.helpers.js';
 import { utilService } from './util.service.js';
 
 const KEY = 'somedayBoard';
@@ -38,26 +39,30 @@ async function query() {
 }
 
 async function getById(id, filterBy = { txt: '' }) {
-    const board = await storageService.get(KEY, id);
-    const regex = new RegExp(filterBy.txt, 'i');
+
+    const board = await storageService.get(KEY, id)
+    const regex = new RegExp(filterBy.txt, 'i')
 
     var filteredGroups = [];
-    board.groups.forEach((group) => {
+    board.groups.forEach(group => {
         if (regex.test(group.title)) {
-            filteredGroups.push(group);
+            filteredGroups.push(group)
         } else {
-            let filteredTasks = group.tasks.filter((task) => regex.test(task.title));
+            let filteredTasks = 
+            group.tasks.filter(task => regex.test(task.title) || 
+            board.columns.some(column => regex.test(columnHelpers[column].txt(task.columns[column]))))
+
             if (filteredTasks.length) {
-                filteredGroups.tasks = filteredTasks;
-                filteredGroups.push(group);
+                group.tasks = filteredTasks
+                filteredGroups.push(group)
             }
         }
-    });
-    console.log('board After filter:>> ', board);
-    board.groups = filteredGroups;
-    return board;
+    })
+    board.groups = filteredGroups
+    return board
     // return await storageService.get(KEY, id);
     // return await httpService.get('toy/' + id)
+    
 }
 
 async function remove(id) {
@@ -105,8 +110,16 @@ async function duplicateGroup(duplicatedGroup, currBoard) {
 }
 
 function getEmptyBoard() {
-    const newBoard = JSON.parse(JSON.stringify(gBoards[0]));
+    const newBoard = JSON.parse(JSON.stringify(gBoards[0]))
     newBoard._id = null;
+    console.log(newBoard);
+    newBoard.groups.forEach(group => {
+        group.id = utilService.makeId()
+        group.tasks.forEach(task => {
+            task.id = utilService.makeId()
+            newBoard.columns.forEach(column => task.columns[column] = columnHelpers[column].init())
+        })
+    })
     return newBoard;
 }
 async function addNewGroup(boardId) {
@@ -133,9 +146,9 @@ async function duplicateTask(task, groupIdx, currBoardId) {
     const board = await getById(currBoardId);
     const idx = board.groups[groupIdx].tasks.findIndex((gp) => gp.id === task.id);
 
-    task.id = utilService.makeId();
-    board.groups[groupIdx].tasks.splice(idx + 1, 0, task);
-    return await storageService.put(KEY, board);
+    task.id = utilService.makeId()
+    board.groups[groupIdx].tasks.splice(idx + 1, 0, task)
+    return await storageService.put(KEY, board)
 }
 async function updateTask(task, groupIdx, currBoardId) {
     const board = await getById(currBoardId);
@@ -158,17 +171,15 @@ async function updateTasks(saveTasks, currBoardId, groupIdx) {
     board.groups[groupIdx].tasks = saveTasks;
     return await storageService.put(KEY, board);
 }
-function getEmptyTask(){
-    return {
+function getEmptyTask(currBoard){
+    const newTask = {
         id: utilService.makeId(),
         title: "",
-        createdAt: null,
-        columns: {
-          delegates: [],
-          status: {},
-          date: 0,
-        },
+        createdAt: 0,
+        columns: {},
       }
+      currBoard.columns.forEach(column => newTask.columns[column] = columnHelpers[column].init())
+      return newTask
 }
 
 function getEmptyFilter() {
@@ -193,7 +204,7 @@ const gBoards = [
             fullname: 'Muki Suflaki',
             imgUrl: 'http://some-img.jpg',
         },
-        columns: ['delegates', 'date', 'status'],
+        columns: ['status', 'date', 'delegates'],
         groups: [
             {
                 id: 'g101',
@@ -216,7 +227,7 @@ const gBoards = [
                                     imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
                                 },
                             ],
-                            status: { txt: 'In progress', color: '#999598' },
+                            status: { txt: 'In progress', color: '#fdbc64' },
                             date: Date.now(),
                         },
                     },
@@ -224,7 +235,7 @@ const gBoards = [
                         id: 't102',
                         title: 'Board details',
                         createdAt: Date.now(),
-                        columns: {
+                        columns: {  
                             delegates: [
                                 {
                                     _id: 'u103',
@@ -232,7 +243,7 @@ const gBoards = [
                                     imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
                                 },
                             ],
-                            status: { txt: 'Done', color: '#235467' },
+                            status: { txt: 'Done', color: '#33d391' },
                             date: Date.now(),
                         },
                     },
@@ -253,7 +264,7 @@ const gBoards = [
                                     imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
                                 },
                             ],
-                            status: { txt: 'Stuck', color: '#292929' },
+                            status: { txt: 'Stuck', color: '#e8697d' },
                             date: Date.now(),
                         },
                     },
@@ -278,7 +289,7 @@ const gBoards = [
                                     imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
                                 },
                             ],
-                            status: { txt: 'Done', color: '#235467' },
+                            status: { txt: 'Done', color: '#33d391' },
                             date: Date.now(),
                         },
                     },
@@ -300,7 +311,7 @@ const gBoards = [
                                     imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
                                 },
                             ],
-                            status: { txt: 'Done', color: '#235467' },
+                            status: { txt: 'Done', color: '#33d391' },
                             date: Date.now(),
                         },
                     },
@@ -322,7 +333,7 @@ const gBoards = [
                                     imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
                                 },
                             ],
-                            status: { txt: 'In progress', color: '#999598' },
+                            status: { txt: 'In progress', color: '#fdbc64' },
                             date: Date.now(),
                         },
                     },
@@ -344,7 +355,7 @@ const gBoards = [
                                     imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
                                 },
                             ],
-                            status: { txt: 'Stuck', color: '#292929' },
+                            status: { txt: 'Stuck', color: '#e8697d' },
                             date: Date.now(),
                         },
                     },
@@ -388,6 +399,12 @@ const gBoards = [
                 imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
             },
         ],
+        statuses: [
+            { id: 's001', txt: 'Done', color: '#33d391' },
+            { id: 's002', txt: 'In progress', color: '#fdbc64' },
+            { id: 's003', txt: 'Stuck', color: '#e8697d' },
+            { id: 's000', txt: '', color: '#c4c4c4' }, // unspecified - default
+        ],
         styles: {},
     },
     {
@@ -411,8 +428,19 @@ const gBoards = [
                         title: 'Board service',
                         createdAt: Date.now(),
                         columns: {
-                            delegates: ['Muki', 'Puki'],
-                            status: { txt: 'Done', color: '#235467' },
+                            delegates: [
+                                {
+                                    _id: 'u103',
+                                    fullname: 'Sharon Macaron',
+                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+                                },
+                                {
+                                    _id: 'u104',
+                                    fullname: 'Eden Maran',
+                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+                                },
+                            ],
+                            status: { txt: 'In progress', color: '#fdbc64' },
                             date: Date.now(),
                         },
                     },
@@ -421,8 +449,19 @@ const gBoards = [
                         title: 'Socket details',
                         createdAt: Date.now(),
                         columns: {
-                            delegates: ['Bobby', 'Puki'],
-                            status: { txt: 'Done', color: '#235467' },
+                            delegates: [
+                                {
+                                    _id: 'u103',
+                                    fullname: 'Sharon Macaron',
+                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+                                },
+                                {
+                                    _id: 'u104',
+                                    fullname: 'Eden Maran',
+                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+                                },
+                            ],
+                            status: { txt: 'In progress', color: '#fdbc64' },
                             date: Date.now(),
                         },
                     },
@@ -431,8 +470,19 @@ const gBoards = [
                         title: 'User Service',
                         createdAt: Date.now(),
                         columns: {
-                            delegates: ['Muki'],
-                            status: { txt: 'Stuck', color: '#292929' },
+                            delegates: [
+                                {
+                                    _id: 'u103',
+                                    fullname: 'Sharon Macaron',
+                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+                                },
+                                {
+                                    _id: 'u104',
+                                    fullname: 'Eden Maran',
+                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+                                },
+                            ],
+                            status: { txt: 'In progress', color: '#fdbc64' },
                             date: Date.now(),
                         },
                     },
@@ -450,8 +500,19 @@ const gBoards = [
                         title: 'Create Mongo DB',
                         createdAt: Date.now(),
                         columns: {
-                            delegates: ['Bobby'],
-                            status: { txt: 'Done', color: '#235467' },
+                            delegates: [
+                                {
+                                    _id: 'u103',
+                                    fullname: 'Sharon Macaron',
+                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+                                },
+                                {
+                                    _id: 'u104',
+                                    fullname: 'Eden Maran',
+                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+                                },
+                            ],
+                            status: { txt: 'In progress', color: '#fdbc64' },
                             date: Date.now(),
                         },
                     },
@@ -460,8 +521,19 @@ const gBoards = [
                         title: 'write aggrigations',
                         createdAt: Date.now(),
                         columns: {
-                            delegates: ['Bobby'],
-                            status: { txt: 'Stuck', color: '#292929' },
+                            delegates: [
+                                {
+                                    _id: 'u103',
+                                    fullname: 'Sharon Macaron',
+                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+                                },
+                                {
+                                    _id: 'u104',
+                                    fullname: 'Eden Maran',
+                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+                                },
+                            ],
+                            status: { txt: 'In progress', color: '#fdbc64' },
                             date: Date.now(),
                         },
                     },
@@ -470,8 +542,19 @@ const gBoards = [
                         title: 'filter and sort',
                         createdAt: Date.now(),
                         columns: {
-                            delegates: ['Bobby', 'Puki'],
-                            status: { txt: 'In progress', color: '#999598' },
+                            delegates: [
+                                {
+                                    _id: 'u103',
+                                    fullname: 'Sharon Macaron',
+                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+                                },
+                                {
+                                    _id: 'u104',
+                                    fullname: 'Eden Maran',
+                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+                                },
+                            ],
+                            status: { txt: 'In progress', color: '#fdbc64' },
                             date: Date.now(),
                         },
                     },
@@ -480,8 +563,19 @@ const gBoards = [
                         title: 'Port to Atlas',
                         createdAt: Date.now(),
                         columns: {
-                            delegates: ['Bobby'],
-                            status: { txt: 'Stuck', color: '#292929' },
+                            delegates: [
+                                {
+                                    _id: 'u103',
+                                    fullname: 'Sharon Macaron',
+                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+                                },
+                                {
+                                    _id: 'u104',
+                                    fullname: 'Eden Maran',
+                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+                                },
+                            ],
+                            status: { txt: 'In progress', color: '#fdbc64' },
                             date: Date.now(),
                         },
                     },
@@ -524,6 +618,12 @@ const gBoards = [
                 fullname: 'Shimi halimi',
                 imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
             },
+        ],
+        statuses: [
+            { id: 's001', txt: 'Done', color: '#33d391' },
+            { id: 's002', txt: 'In progress', color: '#fdbc64' },
+            { id: 's003', txt: 'Stuck', color: '#e8697d' },
+            { id: 's000', txt: '', color: '#c4c4c4' }, // unspecified - default
         ],
         styles: {},
     },
