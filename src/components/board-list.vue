@@ -1,16 +1,16 @@
 <template>
     <section class="board-list">
-        <p class="title">Workspaces</p>
+        <p class="title">Boards</p>
         <section class="board-list-actions">
             <article class="action" @click="addBoard">
                 <i class="fas fa-plus fa-sm"></i>
                 <span>Add board</span>
             </article>
-            <article class="action">
+            <article class="action" @click="filter">
                 <i class="fas fa-filter fa-sm"></i>
                 <span>Filter</span>
             </article>
-            <article class="action">
+            <article class="action" @click="search">
                 <i class="fas fa-search fa-sm"></i>
                 <span>Search</span>
             </article>
@@ -35,14 +35,46 @@ export default {
     },
     methods: {
         addBoard() {
-            const boardTitle = prompt('Enter board title');
-            const newBoard = boardService.getEmptyBoard();
-            newBoard.title = boardTitle;
+            this.$prompt('Please Enter Board Name', 'Add Board', {
+                confirmButtonText: 'OK',
+                cancelButtonText: 'Cancel',
+                inputPattern: /\w*[a-zA-Z]\w*/,
+                inputErrorMessage: 'Invalid Name',
+            })
+                .then(({ value }) => {
+                    const newBoard = boardService.getEmptyBoard();
+                    const boardTitle = value;
+                    newBoard.title = boardTitle;
+                    this.$store.dispatch({ type: 'saveBoard', board: newBoard });
+                    this.$message({
+                        type: 'success',
+                        message: 'Your Board Name is: ' + value,
+                    });
+                })
+                .catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Input canceled',
+                    });
+                });
+        },
+
+        filter() {
             this.$message({
-                message: `Congrats, ${newBoard.title} added successfully.`,
-                type: 'success',
+                showClose: true,
+                duration: 2000,
+                message: 'Oops, this feature is not available yet.',
+                type: 'error',
             });
-            this.$store.dispatch({ type: 'saveBoard', board: newBoard });
+            // this.$message.error('Oops, this feature is not available yet.');
+        },
+        search() {
+            this.$message({
+                showClose: true,
+                duration: 2000,
+                message: 'Oops, this feature is not available yet.',
+                type: 'error',
+            });
         },
     },
     async created() {

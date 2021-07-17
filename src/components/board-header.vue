@@ -62,7 +62,9 @@
 
             <!-- PERSON -->
             <el-dropdown>
-                <el-button type="primary"> <i class="el-icon-s-custom"></i> Person </el-button>
+                <el-button @click.native="isntAvaliable" type="primary">
+                    <i class="el-icon-s-custom"></i> Person
+                </el-button>
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item v-for="member in board.members" :key="member._id">{{
                         member.fullname
@@ -72,7 +74,9 @@
 
             <!-- FILTER -->
             <el-dropdown>
-                <el-button type="primary"> <i class="el-icon-sort"></i> Filter </el-button>
+                <el-button @click.native="isntAvaliable" type="primary">
+                    <i class="el-icon-sort"></i> Filter
+                </el-button>
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item value="all">All</el-dropdown-item>
                     <el-dropdown-item value="status">Status</el-dropdown-item>
@@ -103,6 +107,14 @@ export default {
     // created() {},
     // computed: {},
     methods: {
+        isntAvaliable() {
+            this.$message({
+                showClose: true,
+                duration: 2000,
+                message: 'Oops, this feature is not available yet.',
+                type: 'error',
+            });
+        },
         setToEdit(tag) {
             this.isEditingState = true;
             this.currEditedTag = tag;

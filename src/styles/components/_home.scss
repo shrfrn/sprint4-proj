@@ -3,11 +3,23 @@
     background-color: #3f3f91;
     #nav {
         @include flex(flex-end);
-background-color: #595ad4;
+        background-color: #595ad4;
         gap: 20px;
+
+        a {
+            font-family: Roboto;
+            font-weight: 900;
+            color: #060638;
+            transition: 0.3s;
+
+            &:hover {
+                color: #b4b4e7;
+                transform: scale(110%, 110%);
+            }
+        }
     }
     section {
-        background-image: url("~@/assets/img/monday1.png");
+        background-image: url('~@/assets/img/monday1.png');
         background-size: cover;
         height: 82%;
         width: 100%;
@@ -26,6 +38,9 @@ background-color: #595ad4;
         background-color: rgb(253, 253, 253);
         color: #595ad4;
         font-size: 19px;
+        font-family: Roboto;
+        text-transform: capitalize;
+        font-weight: 600;
         box-shadow: 0 0 10px black;
         transition: 1s;
         margin-top: -60px;
