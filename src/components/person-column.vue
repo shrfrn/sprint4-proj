@@ -3,9 +3,9 @@
         <section @click="togglePersonPicker">
 
             <section class="avatar-list" v-if="hasDelegates">
-                <span v-for="delegate in newDelegates" :key="delegate._id">
-                    <avatar :username="delegate.fullname" :inline="true" :size="30" :src="delegate.imgUrl"></avatar>
-                </span>
+                <div v-for="delegate in newDelegates" :key="delegate._id">
+                    <avatar :username="delegate.fullname" :inline="true" :size="27" :src="delegate.imgUrl"></avatar>
+                </div>
             </section>
 
             <section v-else>

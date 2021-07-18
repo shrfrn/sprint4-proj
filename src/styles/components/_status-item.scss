@@ -3,4 +3,9 @@
     height: 2rem;
     padding: .3rem;
     color: whitesmoke;
+    font-weight: 100;
+
+    &:hover {
+        font-weight: 600;
+    }
 }

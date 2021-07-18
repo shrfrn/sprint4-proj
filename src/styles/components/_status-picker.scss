@@ -1,6 +1,6 @@
 .status-picker{
     position: absolute;
-    top: 1.6rem;
+    top: 2.5rem;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -10,6 +10,7 @@
     width: 100%;
     background-color: whitesmoke;
     border: 1px solid lightgray;
+    box-shadow: 4px 4px 6px -3px rgba(0, 0, 0, 0.26);
     gap: 5px;
     padding: .3rem;
     transition: .2s;

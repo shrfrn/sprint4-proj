@@ -5,7 +5,7 @@
                 <task-preview
                     class="style-task"
                     :style="{ borderColor: color.color }"
-                    v-for="(task, idx) in tasks"
+                    v-for="(task, idx) in tasksCopy"
                     :key="idx"
                     :task="task"
                     :groupIdx="groupIdx"
@@ -66,7 +66,7 @@ export default {
             this.taskToAdd.title = '';
         },
         async onEnd() {
-            this.tasks = this.tasksCopy;
+            // this.tasks = this.tasksCopy;
             await this.$store.dispatch({
                 type: 'saveTasks',
                 saveTasks: this.tasksCopy,
