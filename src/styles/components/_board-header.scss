@@ -2,7 +2,6 @@
     @include flex(center, start, column);
     gap: 15px;
     padding: 16px 30px 0 30px;
-    width: 90%;
 
     .board-info {
         @include flex(space-between, start, row);
@@ -79,8 +78,36 @@
         }
 
         .members {
-            @include flex(center, center, row);
-            gap: 0px;
+            @include flex(center, center, column);
+            gap: 6px;
+            cursor: pointer;
+
+            .members-avatars {
+                @include flex(center, center, row);
+                position: relative;
+            }
+
+            .members-preview {
+                border: 2px solid #676879;
+                border-radius: 6px;
+                padding: 5px 10px;
+                p {
+                    margin-bottom: 5px;
+                    font-family: Roboto;
+                    font-weight: 600;
+                }
+
+                ul {
+                    list-style-type: none;
+                }
+
+                li {
+                    @include flex(start, center, row);
+                    gap: 5px;
+                    margin-bottom: 5px;
+                    font-size: 15px;
+                }
+            }
         }
 
         h2,
@@ -97,7 +124,18 @@
 
     .board-actions {
         @include flex(start, center, row);
-        // width: 100%;
         gap: 5px;
+
+        .el-dropdown {
+            .btn-filter {
+                background-color: transparent;
+                color: #323338;
+                border: none;
+
+                &:hover {
+                    background-color: #e6e9ef;
+                }
+            }
+        }
     }
 }

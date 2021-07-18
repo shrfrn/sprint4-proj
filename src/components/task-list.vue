@@ -1,11 +1,11 @@
 <template>
     <section class="task-list">
-        <draggable v-model="tasksCopy" ghost-class="ghost" @end="onEnd">
+        <draggable v-model="tasksCopy" ghost-class="ghost" group="tasks" @end="onEnd">
             <transition-group type="transition" name="flip-list">
                 <task-preview
-                    class="style-task"
+                    class="style-task sortable"
                     :style="{ borderColor: color.color }"
-                    v-for="(task, idx) in tasks"
+                    v-for="(task, idx) in tasksCopy"
                     :key="idx"
                     :task="task"
                     :groupIdx="groupIdx"
@@ -66,7 +66,7 @@ export default {
             this.taskToAdd.title = '';
         },
         async onEnd() {
-            this.tasks = this.tasksCopy;
+            // this.tasks = this.tasksCopy;
             await this.$store.dispatch({
                 type: 'saveTasks',
                 saveTasks: this.tasksCopy,

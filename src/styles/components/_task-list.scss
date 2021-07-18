@@ -1,12 +1,28 @@
 .task-list {
     width: 100%;
-    form{
+
+    .flip-list-move {
+        transition: transform 0.5s;
+    }
+
+    .ghost {
+        border-left: 5px solid #555;
+        background: #fbf6c8;
+        box-shadow: 10px 10px 5px -1px rgba(0, 0, 0, 0.14);
+        opacity: 0;
+        transition: transform 0.5s;
+    }
+
+    .sortable-drag {
+        opacity: 0;
+    }
+
+    form {
         position: relative;
         left: 0;
         margin-left: -2px;
     }
     input {
-
         position: relative;
         left: 0;
         height: 35px;

@@ -275,7 +275,7 @@ const gBoards = [
                             ],
                             status: { txt: 'Done', color: '#33d391' },
                             date: Date.now(),
-                            tags:['front-end'],
+                            tags: ['front-end'],
                         },
                     },
                     {
@@ -680,12 +680,13 @@ function _getNewGroup() {
         tasks: [
             {
                 id: utilService.makeId(),
-                title: 'You can add the task here',
+                title: 'You can add new task here',
                 createdAt: Date.now(),
                 columns: {
-                    delegates: ['Bobby'],
-                    status: { txt: '', color: '#c2c2c2' },
+                    delegate: [],
+                    status: { txt: '', color: '#c4c4c4' },
                     date: Date.now(),
+                    tags: [],
                 },
             },
         ],
