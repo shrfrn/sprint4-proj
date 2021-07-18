@@ -28,7 +28,10 @@
         gap: 5px;
         list-style-type: none;
         font-family: Lato;
-        font-weight: 600;
+        .group-title{
+            font-weight: 600;
+        }
+        
         // padding-inline: 20px;
         margin: 0;
         margin-bottom: 15px;

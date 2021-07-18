@@ -53,8 +53,8 @@
         <!-- <person-column class="dynamic-column" @input="updateTask" v-model="currTask.columns['delegates']" :members="boardMembers"></person-column>
     <status-column class="dynamic-column" @input="updateTask" v-model="currTask.columns['status']" ></status-column>
     <date-column class="dynamic-column" @input="updateTask" v-model="currTask.columns['date']" ></date-column> -->
-        <div class="dynamic-column">ss</div>
-        <div class="dynamic-column">ss</div>
+        <!-- <div class="dynamic-column">ss</div>
+        <div class="dynamic-column">ss</div> -->
     </section>
 </template>
 

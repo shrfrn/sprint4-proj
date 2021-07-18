@@ -62,7 +62,7 @@ export default {
                 task: ToAdd,
                 groupIdx: this.groupIdx,
             });
-            console.log('tasks', this.tasks);
+            console.log('tasks', this.tasksCopy);
             this.taskToAdd.title = '';
         },
         async onEnd() {
@@ -76,5 +76,3 @@ export default {
     },
 };
 </script>
-
-<style></style>
