@@ -34,7 +34,7 @@
         </form>
       </template>
       <section class="title-task" v-else>
-        <p>{{ task.title }}</p>
+        <p>{{ currTask.title }}</p>
         <button @click="toggleEdit(true)" v-if="isHover">Edit</button>
       </section>
      <i class="far fa-comment open-chat"  @click="openTaskDetails"></i>
@@ -51,8 +51,8 @@
         <!-- <person-column class="dynamic-column" @input="updateTask" v-model="currTask.columns['delegates']" :members="boardMembers"></person-column>
     <status-column class="dynamic-column" @input="updateTask" v-model="currTask.columns['status']" ></status-column>
     <date-column class="dynamic-column" @input="updateTask" v-model="currTask.columns['date']" ></date-column> -->
-        <div class="dynamic-column">ss</div>
-        <div class="dynamic-column">ss</div>
+        <!-- <div class="dynamic-column">ss</div>
+        <div class="dynamic-column">ss</div> -->
     </section>
 </template>
 

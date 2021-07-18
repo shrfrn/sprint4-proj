@@ -47,7 +47,7 @@
                             </el-dropdown-menu>
                         </el-dropdown>
 
-                        <li
+                        <li class="group-title"
                             :style="{ color: group.style.color }"
                             @click="setToEdit(group, group.id)"
                             v-show="!isEditingState || currEditedGroup != group.id"
