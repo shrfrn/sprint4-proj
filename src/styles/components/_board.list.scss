@@ -47,23 +47,6 @@
         @include flex(center, start, column);
         gap: 5px;
         width: 100%;
-
-        .board-preview {
-            @include flex(start, center, row);
-            font-size: 1rem;
-            gap: 10px;
-            width: 100%;
-            padding-left: 6px;
-            transition: 0.2s;
-            height: 32px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: rem(15px);
-
-            &:hover {
-                background-color: #c5c7d0;
-            }
-        }
     }
 }
 

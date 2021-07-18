@@ -50,10 +50,11 @@
 
         <div class="board-actions">
             <!-- <div class="board-filter"> -->
-            <el-button type="primary" plain @click.native="addGroup">
+            <el-button size="small" type="primary" plain @click.native="addGroup">
                 New Group
             </el-button>
             <el-input
+                size="small"
                 @input="setFilter"
                 v-model="filterBy.txt"
                 placeholder="Search something"
@@ -62,7 +63,7 @@
 
             <!-- PERSON -->
             <el-dropdown>
-                <el-button @click.native="isntAvaliable" type="primary">
+                <el-button size="small" @click.native="isntAvaliable" type="primary">
                     <i class="el-icon-s-custom"></i> Person
                 </el-button>
                 <el-dropdown-menu slot="dropdown">
@@ -74,8 +75,8 @@
 
             <!-- FILTER -->
             <el-dropdown>
-                <el-button @click.native="isntAvaliable" type="primary">
-                    <i class="el-icon-sort"></i> Filter
+                <el-button size="small" @click.native="isntAvaliable" type="primary">
+                    <i class="fas fa-filter"></i> Filter
                 </el-button>
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item value="all">All</el-dropdown-item>

@@ -22,7 +22,7 @@
                 </router-link>
             </el-tooltip>
         </section>
-        <section class="user-details">Hi Rachel</section>
+        <section class="user-details">Hi Guest</section>
 
         <section class="user-action">
             <el-tooltip class="item" effect="dark" content="Calender" placement="right">

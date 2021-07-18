@@ -4,7 +4,13 @@
     height: 40px;
     padding-inline-start: 5px;
     transition: 0.5s;
-    @include flex(start, start, row);
+    @include flex(start, center, row);
+    gap: 5px;
+    position: relative;
+
+    .date-picker .el-input__inner {
+        box-shadow: none;
+    }
 
     .open-chat {
         cursor: pointer;
@@ -59,8 +65,11 @@
     .el-dropdown {
         button {
             @include flex(center, center, row);
-            width: 20px;
-            height: 20px;
+            border: none;
+            border-radius: 50%;
+            margin: 0;
+            padding: 0;
+            border-radius: 50%;
         }
     }
 }

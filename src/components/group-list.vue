@@ -5,8 +5,8 @@
                 <ul class="sortable" v-for="(group, idx) in groupsCopy" :key="group.id">
                     <div class="group-details">
                         <el-dropdown>
-                            <el-button size="mini">
-                                <i class="el-icon-arrow-down el-icon--center"></i>
+                            <el-button class="btn-more-groups" size="mini">
+                                <i class="fas fa-chevron-circle-down"></i>
                             </el-button>
                             <el-dropdown-menu trigger="click" size="medium" slot="dropdown">
                                 <el-dropdown-item @click.native="collapseSingleGroup(group.id)">
@@ -15,14 +15,17 @@
                                 <el-dropdown-item @click.native="collapseGroups">
                                     <i class="fas fa-compress-alt"></i> Collapse All Groups
                                 </el-dropdown-item>
-                                <el-dropdown-item @click.native="openSingleGroup(group.id)">
+                                <el-dropdown-item divided @click.native="openSingleGroup(group.id)">
                                     <i class="fas fa-expand-alt"></i> Open this group
                                 </el-dropdown-item>
 
                                 <el-dropdown-item @click.native="openGroups">
                                     <i class="fas fa-expand-alt"></i> Open All Groups
                                 </el-dropdown-item>
-                                <el-dropdown-item @click.native="setToEdit(group, group.id)">
+                                <el-dropdown-item
+                                    divided
+                                    @click.native="setToEdit(group, group.id)"
+                                >
                                     <i class="fas fa-pen"></i> Rename Group
                                 </el-dropdown-item>
                                 <el-dropdown-item @click.native="removeGroup(group)">
@@ -31,7 +34,7 @@
                                 <el-dropdown-item @click.native="duplicateGroup(group)">
                                     <i class="far fa-copy"></i> Duplicate Group
                                 </el-dropdown-item>
-                                <el-dropdown-item class="color-change">
+                                <el-dropdown-item divided class="color-change">
                                     <i class="fas fa-palette"></i> change color
                                     <el-color-picker
                                         @change="changeColor(group)"
