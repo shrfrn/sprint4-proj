@@ -1,12 +1,15 @@
 <template>
     <section v-if="groups" class="group-list">
-        <draggable v-model="groupsCopy" ghost-class="ghost" @end="onEnd">
+        <draggable v-model="groupsCopy" ghost-class="ghost" @start="onStart" @end="onEnd">
             <transition-group type="transition" name="flip-list">
                 <ul class="sortable" v-for="(group, idx) in groupsCopy" :key="group.id">
                     <div class="group-details">
                         <el-dropdown trigger="click">
                             <el-button class="btn-more-groups" size="mini">
-                                <i class="fas fa-chevron-circle-down"></i>
+                                <i
+                                    :style="{ color: group.style.color }"
+                                    class=" group-dropdown-menu fas fa-chevron-circle-down"
+                                ></i>
                             </el-button>
                             <el-dropdown-menu trigger="click" size="medium" slot="dropdown">
                                 <el-dropdown-item @click.native="collapseSingleGroup(group.id)">
@@ -47,7 +50,8 @@
                             </el-dropdown-menu>
                         </el-dropdown>
 
-                        <li class="group-title"
+                        <li
+                            class="group-title"
                             :style="{ color: group.style.color }"
                             @click="setToEdit(group, group.id)"
                             v-show="!isEditingState || currEditedGroup != group.id"
