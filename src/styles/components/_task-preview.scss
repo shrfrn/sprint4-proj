@@ -1,6 +1,7 @@
 .task-preview {
     background-color: whitesmoke;
     margin: 2px;
+    margin-left: 22px;
     height: 34px;
     padding-inline-start: 5px;
     transition: 1s;
@@ -12,6 +13,8 @@
 
     // }
     .dropdown {
+        position: absolute;
+        left: -20px;
         .el-button {
             @include flex(center, center, row);
             border: none;
@@ -68,7 +71,7 @@
         @include flex(center, center);
         width: 150px;
         height: 100%;
-        flex: 1;
+        // flex: 1;
         cursor: pointer;
         border-inline-end: 1px white solid;
     }

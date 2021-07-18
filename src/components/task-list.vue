@@ -8,7 +8,7 @@
                     v-for="(task, idx) in tasksCopy"
                     :key="idx"
                     :task="task"
-                    :groupIdx="groupIdx"
+                    :groupId="groupId"
                     @openTaskDetails="openTaskDetails"
                 />
             </transition-group>
@@ -29,7 +29,7 @@
 import taskPreview from './task-preview.vue';
 import draggable from 'vuedraggable';
 export default {
-    props: { tasks: Array, color: Object, groupIdx: Number },
+    props: { tasks: Array, color: Object, groupId: String },
     components: { taskPreview, draggable },
 
     data() {
@@ -60,7 +60,7 @@ export default {
             await this.$store.dispatch({
                 type: 'addTask',
                 task: ToAdd,
-                groupIdx: this.groupIdx,
+                groupId: this.groupId,
             });
             console.log('tasks', this.tasksCopy);
             this.taskToAdd.title = '';
@@ -70,7 +70,7 @@ export default {
             await this.$store.dispatch({
                 type: 'saveTasks',
                 saveTasks: this.tasksCopy,
-                groupIdx: this.groupIdx,
+                groupId: this.groupId,
             });
         },
     },

@@ -156,47 +156,53 @@ async function addNewGroup(boardId) {
     board.groups.splice(0, 0, newGroup);
     return await storageService.put(KEY, board);
 }
-
-async function removeTask(task, groupIdx, currBoardId) {
+function getGroupbyId(board, groupId) {
+    console.log(board);
+   return board.groups.findIndex(group => {
+       return group.id === groupId
+    })
+}
+async function removeTask(task, groupId, currBoardId) {
     const board = await getById(currBoardId);
-    console.log(board.groups);
-    const idx = board.groups[groupIdx].tasks.findIndex((taskToCheck) => {
+    const gIdx=getGroupbyId(board,groupId);
+    
+    const idx = board.groups[gIdx].tasks.findIndex((taskToCheck) => {
         return taskToCheck.id === task.id;
     });
-    console.log(idx, 'idx');
-    console.log('board.groups[groupIdx]', board.groups[groupIdx]);
-    board.groups[groupIdx].tasks.splice(idx, 1);
-    // console.log('board.groups[groupIdx].tasks :>> ', board.groups[groupIdx].tasks);
+   
+    board.groups[gIdx].tasks.splice(idx, 1);
     return await storageService.put(KEY, board);
 }
-async function duplicateTask(task, groupIdx, currBoardId) {
+async function duplicateTask(task, groupId, currBoardId) {
     task.title = 'Copy of ' + task.title;
     const board = await getById(currBoardId);
-    const idx = board.groups[groupIdx].tasks.findIndex((gp) => gp.id === task.id);
+    const gIdx=getGroupbyId(board,groupId);
+    const idx = board.groups[gIdx].tasks.findIndex((gp) => gp.id === task.id);
 
     task.id = utilService.makeId();
-    board.groups[groupIdx].tasks.splice(idx + 1, 0, task);
+    board.groups[gIdx].tasks.splice(idx + 1, 0, task);
     return await storageService.put(KEY, board);
 }
-async function updateTask(task, groupIdx, currBoardId) {
+async function updateTask(task, groupId, currBoardId) {
     const board = await getById(currBoardId);
-
-    const idx = board.groups[groupIdx].tasks.findIndex((taskToCheck) => {
+    const gIdx=getGroupbyId(board,groupId);
+    const idx = board.groups[gIdx].tasks.findIndex((taskToCheck) => {
         return taskToCheck.id === task.id;
     });
-    board.groups[groupIdx].tasks[idx] = task;
+    board.groups[gIdx].tasks[idx] = task;
     return await storageService.put(KEY, board);
 }
-async function addTask(task, groupIdx, currBoardId) {
+async function addTask(task, groupId, currBoardId) {
     const board = await getById(currBoardId);
-
-    board.groups[groupIdx].tasks.push(task);
+    const gIdx=getGroupbyId(board,groupId);
+    board.groups[gIdx].tasks.push(task);
 
     return await storageService.put(KEY, board);
 }
-async function updateTasks(saveTasks, currBoardId, groupIdx) {
+async function updateTasks(saveTasks, currBoardId, groupId) {
     const board = await getById(currBoardId);
-    board.groups[groupIdx].tasks = saveTasks;
+    const gIdx=getGroupbyId(board,groupId);
+    board.groups[gIdx].tasks = saveTasks;
     return await storageService.put(KEY, board);
 }
 function getEmptyTask(currBoard) {

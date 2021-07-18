@@ -1,6 +1,6 @@
 <template>
     <section class="task-preview">
-        <el-dropdown class="dropdown" trigger="click">
+        <el-dropdown  class="dropdown " trigger="click">
             <el-button size="mini">
                 <i class="fas fa-caret-square-down"></i>
             </el-button>
@@ -67,7 +67,7 @@ import tagsColumn from '@/components/tags-column';
 export default {
     props: {
         task: Object,
-        groupIdx: Number,
+        groupId: String,
     },
     data() {
         return {
@@ -113,7 +113,7 @@ export default {
             await this.$store.dispatch({
                 type: 'updateTask',
                 task: this.currTask,
-                groupIdx: this.groupIdx,
+                groupId: this.groupId,
             });
             this.toggleEdit(false);
         },
@@ -121,14 +121,14 @@ export default {
             await this.$store.dispatch({
                 type: 'removeTask',
                 task: this.task,
-                groupIdx: this.groupIdx,
+                groupId: this.groupId,
             });
         },
         async duplicateTask() {
             await this.$store.dispatch({
                 type: 'duplicateTask',
                 task: this.task,
-                groupIdx: this.groupIdx,
+                groupId: this.groupId,
             });
         },
         componentType(column) {

@@ -74,45 +74,45 @@ export const boardStore = {
                 console.log('couldnt filtered', err);
             }
         },
-        async updateTask(context, { task, groupIdx }) {
+        async updateTask(context, { task, groupId }) {
             const updateBoard = await boardService.updateTask(
                 task,
-                groupIdx,
+                groupId,
                 context.state.currBoard._id
             );
             context.commit({ type: 'updateBoard', updateBoard });
         },
-        async addTask(context, { task, groupIdx }) {
+        async addTask(context, { task, groupId }) {
             const updateBoard = await boardService.addTask(
                 task,
-                groupIdx,
+                groupId,
                 context.state.currBoard._id
             );
 
             context.commit({ type: 'updateBoard', updateBoard });
         },
-        async duplicateTask(context, { task, groupIdx }) {
+        async duplicateTask(context, { task, groupId }) {
             const updateBoard = await boardService.duplicateTask(
                 task,
-                groupIdx,
+                groupId,
                 context.state.currBoard._id
             );
             context.commit({ type: 'updateBoard', updateBoard });
         },
-        async removeTask(context, { task, groupIdx }) {
+        async removeTask(context, { task, groupId }) {
             const updateBoard = await boardService.removeTask(
                 task,
-                groupIdx,
+                groupId,
                 context.state.currBoard._id
             );
 
             context.commit({ type: 'updateBoard', updateBoard });
         },
-        async saveTasks(context, { saveTasks, groupIdx }) {
+        async saveTasks(context, { saveTasks, groupId }) {
             const updateBoard = await boardService.updateTasks(
                 saveTasks,
                 context.state.currBoard._id,
-                groupIdx
+                groupId
             );
             context.commit({ type: 'updateBoard', updateBoard });
         },
