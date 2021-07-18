@@ -1,6 +1,6 @@
 <template>
     <!-- <section v-if="hasDate"> -->
-        <el-date-picker
+        <el-date-picker class="date-column"
             v-model="newDate"
             @change="onDateChange"
             type="date"

@@ -10,7 +10,8 @@ export const boardService = {
     remove,
     save,
     getEmptyBoard,
-    getEmptyFilter,
+    getEmptyTask,
+    getEmptyFilter, // Everything under here should be in store.
     updateGroup,
     updateGroups,
     removeGroup,
@@ -21,7 +22,6 @@ export const boardService = {
     removeTask,
     duplicateTask,
     updateTasks,
-    getEmptyTask
 };
 
 // Board service
@@ -204,7 +204,7 @@ const gBoards = [
             fullname: 'Muki Suflaki',
             imgUrl: 'http://some-img.jpg',
         },
-        columns: ['status', 'date', 'delegates'],
+        columns: ['status', 'date', 'delegates', 'tags'],
         groups: [
             {
                 id: 'g101',
@@ -229,6 +229,7 @@ const gBoards = [
                             ],
                             status: { txt: 'In progress', color: '#fdbc64' },
                             date: Date.now(),
+                            tags: ['UI', 'DB'],
                         },
                     },
                     {
@@ -245,6 +246,7 @@ const gBoards = [
                             ],
                             status: { txt: 'Done', color: '#33d391' },
                             date: Date.now(),
+                            tags:['front-end'],
                         },
                     },
                     {
@@ -266,6 +268,7 @@ const gBoards = [
                             ],
                             status: { txt: 'Stuck', color: '#e8697d' },
                             date: Date.now(),
+                            tags: [],
                         },
                     },
                 ],
@@ -291,6 +294,7 @@ const gBoards = [
                             ],
                             status: { txt: 'Done', color: '#33d391' },
                             date: Date.now(),
+                            tags: [],
                         },
                     },
                     {
@@ -313,6 +317,7 @@ const gBoards = [
                             ],
                             status: { txt: 'Done', color: '#33d391' },
                             date: Date.now(),
+                            tags: ['UI'],
                         },
                     },
                     {
@@ -335,6 +340,7 @@ const gBoards = [
                             ],
                             status: { txt: 'In progress', color: '#fdbc64' },
                             date: Date.now(),
+                            tags: [],
                         },
                     },
                     {
@@ -357,6 +363,7 @@ const gBoards = [
                             ],
                             status: { txt: 'Stuck', color: '#e8697d' },
                             date: Date.now(),
+                            tags: [],
                         },
                     },
                 ],
@@ -405,6 +412,7 @@ const gBoards = [
             { id: 's003', txt: 'Stuck', color: '#e8697d' },
             { id: 's000', txt: '', color: '#c4c4c4' }, // unspecified - default
         ],
+        tags: ['front-end', 'back-end', 'UI', 'DB'],
         styles: {},
     },
     {
@@ -625,6 +633,7 @@ const gBoards = [
             { id: 's003', txt: 'Stuck', color: '#e8697d' },
             { id: 's000', txt: '', color: '#c4c4c4' }, // unspecified - default
         ],
+        tags: [],
         styles: {},
     },
 ];

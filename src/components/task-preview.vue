@@ -23,13 +23,14 @@
       @mouseleave="togglehover(false)"
     >
       <template v-if="isEditTitle">
-        <form @submit.prevent="updateTask" @change.prevent="toggleEdit(false)">
+        <form @submit.prevent="updateTask" >
           <input
             ref="editTitle"
             type="text"
-            @change="toggleEdit(false)"
             v-model="currTask.title"
+            @blur="toggleEdit(false)"
           />
+            <!-- @change="toggleEdit(false)" -->
         </form>
       </template>
       <section class="title-task" v-else>
@@ -60,6 +61,7 @@ import {columnHelpers} from '@/services/column.helpers.js'
 import personColumn from '@/components/person-column'
 import statusColumn from '@/components/status-column'
 import dateColumn from '@/components/date-column'
+import tagsColumn from '@/components/tags-column'
 export default {
   props: {
     task: Object,
@@ -137,6 +139,7 @@ export default {
       personColumn,
       statusColumn,
       dateColumn,
+      tagsColumn,
   },
 };
 </script>

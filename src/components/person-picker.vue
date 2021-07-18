@@ -1,7 +1,7 @@
 <template>
     <transition name="person-picker">
-        <section class="person-picker">
-            <section @keydown.esc="end" class="delegate-list">
+        <section @keydown.esc="end" class="person-picker">
+            <section class="delegate-list">
                 <transition-group name="person-list">
                     <person-preview @item-selected="onRemoveDelegate" :person="delegate" v-for="delegate in newDelegates" :key="delegate._id" />
                 </transition-group>

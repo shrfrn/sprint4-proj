@@ -16,6 +16,11 @@ export const columnHelpers = {
         matches: _statusMatches,
         init: _initStatus,
     },
+    tags:{
+        txt: _tagsTxt,
+        matches: _tagsMatches,
+        init: _initTags,
+    },
 
     // This function returns the component name for the column type.
     // Used in task-preview.vue to load the correct dynamic components.
@@ -25,12 +30,12 @@ export const columnHelpers = {
             case 'delegates': return 'person-column'
             case 'status': return 'status-column'
             case 'date': return 'date-column'
+            case 'tags': return 'tags-column'
             default: console.log('bad column type - ', column)
         }
     },
 }
 function _delegateTxt(columnData){
-    // console.log('columnData', columnData);
     const names = columnData.map(person => person.fullname)
     return names.join(' ')
 }
@@ -57,4 +62,14 @@ function _statusMatches(columnData, dataToMatch){
 }
 function _initStatus(){
     return { id: 's000', txt: '', color: '#c4c4c4' }
+}
+function _tagsTxt(columnData){
+    const tags = columnData.map(tag => tag)
+    return tags.join(' ')
+}
+function _tagsMatches(columnData, dataToMatch){
+    return columnData.some(tag => tag === dataToMatch)
+}
+function _initTags(){
+    return []
 }
