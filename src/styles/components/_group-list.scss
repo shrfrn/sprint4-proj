@@ -27,14 +27,23 @@
         @include flex(start, start, column);
         gap: 5px;
         list-style-type: none;
-        font-family: Lato;
-        font-weight: 600;
+        font-family: Lato-Light;
+        .group-title {
+            font-weight: 600;
+        }
+
         // padding-inline: 20px;
         margin: 0;
         margin-bottom: 15px;
         .group-details {
             @include flex(start, center, row);
             margin-left: 20px;
+
+            .el-dropdown {
+                .group-dropdown-menu {
+                    margin: 0;
+                }
+            }
         }
 
         li {
@@ -51,8 +60,13 @@
                 @include flex(center, center, row);
                 border: none;
                 margin: 0;
+                margin-right: 13px;
                 padding: 0;
                 border-radius: 50%;
+            }
+
+            .group-dropdown-menu {
+                margin-right: 0;
             }
         }
 

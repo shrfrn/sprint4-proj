@@ -41,16 +41,36 @@
                 </div>
             </div>
 
-            <div class="members">
-                <span class="avatar" v-for="member in board.members" :key="member._id">
-                    <avatar :size="30" :src="member.imgUrl" :username="member.fullname"></avatar>
-                </span>
+            <div class="members" @click="showBoardMembers">
+                <div class="members-avatars">
+                    <span class="avatar" v-for="member in board.members" :key="member._id">
+                        <avatar
+                            :size="30"
+                            :src="member.imgUrl"
+                            :username="member.fullname"
+                        ></avatar>
+                    </span>
+                </div>
+
+                <div class="members-preview" v-if="isMembersShown">
+                    <p>Board Memebrs:</p>
+                    <ul v-for="member in board.members" :key="member._id">
+                        <li>
+                            <avatar
+                                :size="25"
+                                :src="member.imgUrl"
+                                :username="member.fullname"
+                            ></avatar>
+                            <span>{{ member.fullname }}</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
 
         <div class="board-actions">
             <!-- <div class="board-filter"> -->
-            <el-button size="small" type="primary" plain @click.native="addGroup">
+            <el-button size="small" type="primary" @click.native="addGroup">
                 New Group
             </el-button>
             <el-input
@@ -62,20 +82,30 @@
             ></el-input>
 
             <!-- PERSON -->
-            <el-dropdown>
-                <el-button size="small" @click.native="isntAvaliable" type="primary">
+            <el-dropdown trigger="click">
+                <el-button
+                    class="btn-filter"
+                    size="small"
+                    @click.native="isntAvaliable"
+                    type="primary"
+                >
                     <i class="el-icon-s-custom"></i> Person
                 </el-button>
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item v-for="member in board.members" :key="member._id">{{
-                        member.fullname
-                    }}</el-dropdown-item>
+                    <el-dropdown-item v-for="member in board.members" :key="member._id">
+                        {{ member.fullname }}
+                    </el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
 
             <!-- FILTER -->
-            <el-dropdown>
-                <el-button size="small" @click.native="isntAvaliable" type="primary">
+            <el-dropdown trigger="click">
+                <el-button
+                    class="btn-filter"
+                    size="small"
+                    @click.native="isntAvaliable"
+                    type="primary"
+                >
                     <i class="fas fa-filter"></i> Filter
                 </el-button>
                 <el-dropdown-menu slot="dropdown">
@@ -102,6 +132,7 @@ export default {
             currEditedTag: null,
             isDecriptionShown: true,
             filterBy: { txt: '' },
+            isMembersShown: false,
         };
     },
 
@@ -115,6 +146,10 @@ export default {
                 message: 'Oops, this feature is not available yet.',
                 type: 'error',
             });
+        },
+        showBoardMembers() {
+            console.log('hi');
+            this.isMembersShown = !this.isMembersShown;
         },
         setToEdit(tag) {
             this.isEditingState = true;

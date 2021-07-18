@@ -1,11 +1,11 @@
 .task-preview {
     background-color: whitesmoke;
     margin: 2px;
-    height: 40px;
+    height: 34px;
     padding-inline-start: 5px;
-    transition: 0.5s;
+    transition: 1s;
     @include flex(start, center, row);
-    gap: 5px;
+    // gap: 15px;
     position: relative;
 
     .date-picker .el-input__inner {
@@ -68,6 +68,7 @@
             border: none;
             border-radius: 50%;
             margin: 0;
+            margin-right: 15px;
             padding: 0;
             border-radius: 50%;
         }

@@ -1,9 +1,9 @@
 <template>
     <section class="task-list">
-        <draggable v-model="tasksCopy" ghost-class="ghost" @end="onEnd">
+        <draggable v-model="tasksCopy" ghost-class="ghost" group="tasks" @end="onEnd">
             <transition-group type="transition" name="flip-list">
                 <task-preview
-                    class="style-task"
+                    class="style-task sortable"
                     :style="{ borderColor: color.color }"
                     v-for="(task, idx) in tasksCopy"
                     :key="idx"
@@ -62,7 +62,7 @@ export default {
                 task: ToAdd,
                 groupIdx: this.groupIdx,
             });
-            console.log('tasks', this.tasks);
+            console.log('tasks', this.tasksCopy);
             this.taskToAdd.title = '';
         },
         async onEnd() {
@@ -76,5 +76,3 @@ export default {
     },
 };
 </script>
-
-<style></style>
