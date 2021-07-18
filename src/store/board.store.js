@@ -44,10 +44,24 @@ export const boardStore = {
 
             context.commit({ type: 'loadBoard', board: newBoard });
         },
+        async updateBoardName(context, { newTitle, boardId }) {
+            const updateBoard = await boardService.renameBoard(newTitle, boardId);
+            context.commit({ type: 'updateBoard', updateBoard });
+        },
         async removeBoard(context, { boardId }) {
+            console.log('boardId :>> ', boardId);
             await boardService.remove(boardId);
             context.commit({ type: 'removeBoard', boardId });
             // .then(() => context.commit({type: 'removeBoard', boardId}))
+        },
+        async addToFavorites(context, { boardId }) {
+            const updateBoard = await boardService.addToFavorites(boardId);
+            context.commit({ type: 'updateBoard', updateBoard });
+        },
+        async duplicateBoard(context, { boardId }) {
+            const boards = await boardService.duplicateBoard(boardId);
+            context.commit({ type: 'setBoards', boards });
+            // context.loadBoards();
         },
         async setFilter(context, { filterBy }) {
             try {
@@ -160,7 +174,7 @@ export const boardStore = {
             return state.currBoard;
         },
         getEmptyTask(state) {
-            return boardService.getEmptyTask(state.currBoard)
+            return boardService.getEmptyTask(state.currBoard);
         },
     },
 };

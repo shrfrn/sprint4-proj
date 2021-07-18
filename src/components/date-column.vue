@@ -24,23 +24,23 @@ export default {
             required: true,
         },
     },
-    data(){
+    data() {
         return {
             newDate: 0,
-        }
+        };
     },
     computed: {
-        hasDate() { 
-            return !!this.value
-        }
-    },
-    methods: {
-        onDateChange(){
-            this.$emit('input', this.newDate)
+        hasDate() {
+            return !!this.value;
         },
     },
-    created(){
-        if(this.value) this.newDate = this.value
-    }
-}
+    methods: {
+        onDateChange() {
+            this.$emit('input', this.newDate);
+        },
+    },
+    created() {
+        if (this.value) this.newDate = this.value;
+    },
+};
 </script>

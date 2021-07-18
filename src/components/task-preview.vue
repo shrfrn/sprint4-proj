@@ -48,12 +48,12 @@
         :board="currBoard"
         v-model="currTask.columns[column]" />
 
-    <!-- <person-column class="dynamic-column" @input="updateTask" v-model="currTask.columns['delegates']" :members="boardMembers"></person-column>
+        <!-- <person-column class="dynamic-column" @input="updateTask" v-model="currTask.columns['delegates']" :members="boardMembers"></person-column>
     <status-column class="dynamic-column" @input="updateTask" v-model="currTask.columns['status']" ></status-column>
     <date-column class="dynamic-column" @input="updateTask" v-model="currTask.columns['date']" ></date-column> -->
-    <div class="dynamic-column">ss</div>
-    <div class="dynamic-column">ss</div>
-  </section>
+        <div class="dynamic-column">ss</div>
+        <div class="dynamic-column">ss</div>
+    </section>
 </template>
 
 <script>
@@ -63,84 +63,82 @@ import statusColumn from '@/components/status-column'
 import dateColumn from '@/components/date-column'
 import tagsColumn from '@/components/tags-column'
 export default {
-  props: {
-    task: Object,
-    groupIdx: Number,
-  },
-  data() {
-    return {
-        title: this.task.title,
-        currTask: this.task,
-        isHover: false,
-        isEditTitle: false,
-    }
-  },
-  created(){
-      this.currTask = JSON.parse(JSON.stringify(this.task))
-    
-  },
-  mounted() {
-    if (this.$refs.editTitle) this.$refs.editTitle.focus();
-  },
-  
-  watch: {
-      task(newVal) {
-        this.currTask = JSON.parse(JSON.stringify(newVal));
-      },
-  },
+    props: {
+        task: Object,
+        groupIdx: Number,
+    },
+    data() {
+        return {
+            title: this.task.title,
+            currTask: this.task,
+            isHover: false,
+            isEditTitle: false,
+        };
+    },
+    created() {
+        this.currTask = JSON.parse(JSON.stringify(this.task));
+    },
+    mounted() {
+        if (this.$refs.editTitle) this.$refs.editTitle.focus();
+    },
 
-  computed:{
-      boardMembers(){
-          return this.$store.getters.currBoard.members
-      },
-      currBoard(){
-          return this.$store.getters.currBoard
-      },
-  },
-  methods: {
-    toggleEdit(isTrue) {
-      this.isEditTitle = isTrue;
-      if (this.$refs.editTitle) this.$refs.editTitle.focus();
+    watch: {
+        task(newVal) {
+            this.currTask = JSON.parse(JSON.stringify(newVal));
+        },
     },
-    togglehover(isTrue) {
-      this.isHover = isTrue;
+
+    computed: {
+        boardMembers() {
+            return this.$store.getters.currBoard.members;
+        },
+        currBoard() {
+            return this.$store.getters.currBoard;
+        },
     },
-    openTaskDetails(){
-        this.$emit('openTaskDetails',this.task.id)
+    methods: {
+        toggleEdit(isTrue) {
+            this.isEditTitle = isTrue;
+            if (this.$refs.editTitle) this.$refs.editTitle.focus();
+        },
+        togglehover(isTrue) {
+            this.isHover = isTrue;
+        },
+        openTaskDetails() {
+            this.$emit('openTaskDetails', this.task.id);
+        },
+        async updateTask() {
+            await this.$store.dispatch({
+                type: 'updateTask',
+                task: this.currTask,
+                groupIdx: this.groupIdx,
+            });
+            this.toggleEdit(false);
+        },
+        async removeTask() {
+            await this.$store.dispatch({
+                type: 'removeTask',
+                task: this.task,
+                groupIdx: this.groupIdx,
+            });
+        },
+        async duplicateTask() {
+            await this.$store.dispatch({
+                type: 'duplicateTask',
+                task: this.task,
+                groupIdx: this.groupIdx,
+            });
+        },
+        componentType(column) {
+            return columnHelpers.componentType(column);
+        },
     },
-    async updateTask() {
-        await this.$store.dispatch({
-            type: "updateTask",
-            task: this.currTask,
-            groupIdx: this.groupIdx,
-        });
-        this.toggleEdit(false);
+    components: {
+        personColumn,
+        statusColumn,
+        dateColumn,
+        tagsColumn,
     },
-    async removeTask() {
-      await this.$store.dispatch({
-        type: "removeTask",
-        task: this.task,
-        groupIdx: this.groupIdx,
-      });
-    },
-    async duplicateTask() {
-      await this.$store.dispatch({
-        type: "duplicateTask",
-        task: this.task,
-        groupIdx: this.groupIdx,
-      });
-    },
-    componentType(column){
-        return columnHelpers.componentType(column)
-    },
-    
-  },
-  components: {
-      personColumn,
-      statusColumn,
-      dateColumn,
-      tagsColumn,
-  },
 };
 </script>
 

@@ -15,9 +15,17 @@
                 <span>Search</span>
             </article>
         </section>
-        <hr />
+
         <section class="board-list-items">
-            <board-preview v-for="board in boards" :key="board._id" :miniBoard="board" />
+            <board-preview
+                v-for="board in boards"
+                :key="board._id"
+                :miniBoard="board"
+                @deleteBoard="deleteBoard"
+                @addToFavorites="addToFavorites"
+                @duplicateBoard="duplicateBoard"
+                @updateBoardName="updateBoardName"
+            />
         </section>
     </section>
 </template>
@@ -57,6 +65,24 @@ export default {
                         message: 'Input canceled',
                     });
                 });
+        },
+        updateBoardName(newTitle, boardId) {
+            console.log('newTitle :>> ', newTitle);
+            console.log('boardId :>> ', boardId);
+            this.$store.dispatch({ type: 'updateBoardName', newTitle, boardId });
+        },
+
+        deleteBoard(boardId) {
+            console.log('boardId :>> ', boardId);
+            this.$store.dispatch({ type: 'removeBoard', boardId });
+        },
+
+        addToFavorites(boardId) {
+            this.$store.dispatch({ type: 'addToFavorites', boardId });
+        },
+
+        duplicateBoard(boardId) {
+            this.$store.dispatch({ type: 'duplicateBoard', boardId });
         },
 
         filter() {
