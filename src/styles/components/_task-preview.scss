@@ -5,8 +5,24 @@
     padding-inline-start: 5px;
     transition: 1s;
     @include flex(start, center, row);
-    // gap: 15px;
     position: relative;
+
+    // .dropdown {
+    //     border-radius: 10px;
+
+    // }
+    .dropdown {
+        .el-button {
+            @include flex(center, center, row);
+            border: none;
+            border-radius: 50%;
+            margin: 0;
+            background-color: #ccc;
+            margin-right: 15px;
+            padding: 0;
+            border-radius: 50%;
+        }
+    }
 
     .date-picker .el-input__inner {
         box-shadow: none;
@@ -58,19 +74,5 @@
     }
     &:hover {
         background-color: rgb(230, 230, 230);
-    }
-    .dropdown {
-        border-radius: 10px;
-    }
-    .el-dropdown {
-        button {
-            @include flex(center, center, row);
-            border: none;
-            border-radius: 50%;
-            margin: 0;
-            margin-right: 15px;
-            padding: 0;
-            border-radius: 50%;
-        }
     }
 }
