@@ -60,7 +60,7 @@
                                 </el-dropdown-menu>
                             </el-dropdown>
                             <li
-                                class="group-title"
+                                class="group-title handle-group"
                                 :style="{ color: group.style.color }"
                                 @click="setToEdit(group, group.id)"
                                 v-show="!isEditingState || currEditedGroup != group.id"
@@ -78,7 +78,7 @@
                             />
                         </div>
 
-                        <li
+                        <!-- <li
                             class="group-title handle-group"
                             :style="{ color: group.style.color }"
                             @click="setToEdit(group, group.id)"
@@ -94,7 +94,7 @@
                             @keydown.enter="updateGroupName(group)"
                             type="text"
                             v-model="group.title"
-                        />
+                        /> -->
                     </div>
 
                     <task-list
