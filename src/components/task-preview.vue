@@ -49,21 +49,18 @@
             :board="currBoard"
             v-model="currTask.columns[column]"
         />
-
-        <!-- <person-column class="dynamic-column" @input="updateTask" v-model="currTask.columns['delegates']" :members="boardMembers"></person-column>
-    <status-column class="dynamic-column" @input="updateTask" v-model="currTask.columns['status']" ></status-column>
-    <date-column class="dynamic-column" @input="updateTask" v-model="currTask.columns['date']" ></date-column> -->
-        <!-- <div class="dynamic-column">ss</div>
-        <div class="dynamic-column">ss</div> -->
     </section>
 </template>
 
 <script>
-import { columnHelpers } from '@/services/column.helpers.js';
-import personColumn from '@/components/person-column';
-import statusColumn from '@/components/status-column';
-import dateColumn from '@/components/date-column';
-import tagsColumn from '@/components/tags-column';
+import { columnHelpers } from '@/services/column.helpers.js'
+import { utilService } from '@/services/util.service.js'
+
+import personColumn from '@/components/person-column'
+import statusColumn from '@/components/status-column'
+import dateColumn from '@/components/date-column'
+import tagsColumn from '@/components/tags-column'
+
 export default {
     props: {
         task: Object,
@@ -118,6 +115,7 @@ export default {
             this.toggleEdit(false);
         },
         async removeTask() {
+            console.log('removing');
             await this.$store.dispatch({
                 type: 'removeTask',
                 task: this.task,
@@ -125,9 +123,15 @@ export default {
             });
         },
         async duplicateTask() {
+
+            const taskCopy = JSON.parse(JSON.stringify(this.task))
+            taskCopy.title = 'Copy of ' + this.task.title
+            taskCopy.id = utilService.makeId()
+
             await this.$store.dispatch({
                 type: 'duplicateTask',
                 task: this.task,
+                taskCopy,
                 groupId: this.groupId,
             });
         },
@@ -143,5 +147,3 @@ export default {
     },
 };
 </script>
-
-<style></style>
