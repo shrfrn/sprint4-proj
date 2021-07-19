@@ -1,6 +1,6 @@
 <template>
     <section class="task-list">
-        <draggable v-model="tasksCopy" ghost-class="ghost" group="tasks" @end="onEnd">
+        <draggable v-model="tasksCopy" ghost-class="ghost" group="tasks" @end="onEnd"  handle=".handle-task">
             <transition-group type="transition" name="flip-list">
                 <task-preview
                     class="style-task sortable"
@@ -15,7 +15,7 @@
         </draggable>
         <form @submit.prevent="addTask">
             <input
-                class="style-task"
+                class="style-task add-input"
                 :style="{ borderColor: color.color }"
                 type="text"
                 placeholder="+ Add"
@@ -40,7 +40,7 @@ export default {
     },
     created() {
         // this.taskToAdd = JSON.parse(JSON.stringify(this.$store.getters.getEmptyTask));
-        this.taskToAdd = this.$store.getters.getEmptyTask
+        this.taskToAdd = JSON.parse(JSON.stringify(this.$store.getters.getEmptyTask));
         this.tasksCopy = JSON.parse(JSON.stringify(this.tasks));
     },
     watch: {
@@ -69,10 +69,10 @@ export default {
         },
         async onEnd() {
             // this.tasks = this.tasksCopy;
+            
             await this.$store.dispatch({
                 type: 'saveTasks',
-                saveTasks: this.tasksCopy,
-                groupId: this.groupId,
+               
             });
         },
     },

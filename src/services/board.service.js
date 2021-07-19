@@ -248,44 +248,67 @@ const gActivities = [
     {
         id: utilService.makeId(),
         itemId: 't101',
+        itemName: 'Board list',
         type: 'status',
         createdAt: Date.now(),
-        from: { info: 'In progress', more: '#fdbc64' },
-        to: { info: 'Done', more: '#33d391' }
+        createdBy: {
+            _id: 'u101',
+            fullname: 'Muki Suflaki',
+            imgUrl: 'http://some-img.jpg',
+        },
+        msg: 'status change from stuck to done'
     },
     {
         id: utilService.makeId(),
         itemId: 't101',
+        itemName: 'Board list',
         type: 'delegates',
         createdAt: Date.now(),
-        from: { info: 'added',more:'' },
-        to:
-        {info: 'Sharon Macaron', more: 'https://www.w3schools.com/howto/img_avatar.png', },
+        createdBy: {
+            _id: 'u101',
+            fullname: 'Muki Suflaki',
+            imgUrl: 'http://some-img.jpg',
+        },
+        msg: 'Sharon Macaron was added from the task'
     },
     {
         id: utilService.makeId(),
         itemId: 't101',
+        itemName: 'Board list',
         type: 'delegates',
         createdAt: Date.now(),
-        from: { info: 'deleted',more:'' },
-        to:
-        {info: 'Sharon Macaron', more: 'https://www.w3schools.com/howto/img_avatar.png', },
+        createdBy: {
+            _id: 'u101',
+            fullname: 'Muki Suflaki',
+            imgUrl: 'http://some-img.jpg',
+        },
+        msg: 'Sharon Macaron was deleted from the task'
     },
     {
         id: utilService.makeId(),
         itemId: 't101',
+        itemName: 'Board list',
         type: 'rename',
         createdAt: Date.now(),
-        from: { info: 'my task', more: '' },
-        to: { info: 'task me', more: '' }
+        createdBy: {
+            _id: 'u101',
+            fullname: 'Muki Suflaki',
+            imgUrl: 'http://some-img.jpg',
+        },
+        msg: 'the title renamed from task to board list'
     },
     {
         id: utilService.makeId(),
         itemId: 't101',
+        itemName: 'Board list',
         type: 'timeline',
         createdAt: Date.now(),
-        from: { info: Date.now(), more: '' },
-        to: { info: Date.now(), more: '' }
+        createdBy: {
+            _id: 'u101',
+            fullname: 'Rachel Bekarov',
+            imgUrl: 'http://some-img.jpg',
+        },
+        msg: 'change date from 11/07/2021 to 18/07/2021'
     },
 ]
 

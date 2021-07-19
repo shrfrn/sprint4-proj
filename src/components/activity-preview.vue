@@ -1,28 +1,28 @@
 <template>
   <section class="activity-preview">
-    <!-- {{ activity }} -->
-  
+    <!-- {{ activity.createdBy.fullname }}
+  -->
 
-    <div>{{ activity.itemId }}</div>
-    <div>{{ activity.type }}</div>
-  
-     <div>{{ activity.from.info }}</div>
-      <div>{{ activity.to.info }}</div>
+    <el-card shadow="hover" class="activity-card">
+         <avatar
+            class="person-preview-avatar"
+            :username="activity.createdBy.fullname"
+            :inline="true"
+            :size="30"
+            :src="activity.createdBy.imgUrl"
+        />
+      <span>{{ activity.msg }}</span>
+    </el-card>
   </section>
 </template>
 
-<script> 
-
+<script>
+import Avatar from 'vue-avatar';
 export default {
-   
   props: {
     activity: Object,
   },
-  methods: {
- 
-  },
-    components: {
-    
-    },
+  methods: {},
+  components: {Avatar},
 };
 </script>

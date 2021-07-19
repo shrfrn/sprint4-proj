@@ -38,7 +38,7 @@
             </el-tooltip>
 
             <el-tooltip class="item" effect="dark" content="Log Out" placement="right">
-                <router-link to="/boards/112" title="loguot">
+                <router-link to="/" title="loguot">
                     <i class="fas fa-sign-out-alt fa-lg"></i>
                 </router-link>
             </el-tooltip>

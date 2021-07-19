@@ -1,6 +1,6 @@
 <template>
     <section v-if="groups" class="group-list">
-        <draggable v-model="groupsCopy" ghost-class="ghost" @start="onStart" @end="onEnd">
+        <draggable v-model="groupsCopy" ghost-class="ghost" @start="onStart" @end="onEnd" handle=".handle-group">
             <transition-group type="transition" name="flip-list">
                 <ul class="sortable" v-for="group in groupsCopy" :key="group.id">
                     <div class="group-details">
@@ -51,7 +51,7 @@
                         </el-dropdown>
 
                         <li
-                            class="group-title"
+                            class="group-title handle-group"
                             :style="{ color: group.style.color }"
                             @click="setToEdit(group, group.id)"
                             v-show="!isEditingState || currEditedGroup != group.id"
@@ -68,14 +68,15 @@
                             v-model="group.title"
                         />
                     </div>
-                    <template v-if="!isAllCollapse && !collapsedGroups.includes(group.id)">
+                    
                         <task-list
+                        v-show="!isAllCollapse && !collapsedGroups.includes(group.id)"
                             :tasks="group.tasks"
                             :color="group.style"
                             :groupId="group.id"
                             @openTaskDetails="openTaskDetails"
                         />
-                    </template>
+                     
                 </ul>
             </transition-group>
         </draggable>
