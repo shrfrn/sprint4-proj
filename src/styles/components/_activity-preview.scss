@@ -1,0 +1,7 @@
+.activity-preview{
+    @include flex(space-between);
+    gap:10px;
+    div{
+        flex:1;
+    }
+}

@@ -1,8 +1,8 @@
 <template>
-    <section class="task-preview">
-        <el-dropdown  class="dropdown " trigger="click">
+    <section  class="task-preview">
+        <el-dropdown v-if="isHover"  class="dropdown "  trigger="click">
             <el-button size="mini">
-                <i class="fas fa-caret-square-down"></i>
+                <i class="fas fa-caret-square-down icon"></i>
             </el-button>
             <el-dropdown-menu trigger="click" size="medium" slot="dropdown">
                 <el-dropdown-item @click.native="removeTask"

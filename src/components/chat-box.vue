@@ -1,5 +1,5 @@
 <template>
-<section></section>
+<section>chat update</section>
 </template>
 
 <script>

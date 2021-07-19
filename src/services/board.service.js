@@ -25,6 +25,7 @@ export const boardService = {
     removeTask,
     duplicateTask,
     updateTasks,
+    getActivitiesByItem
 };
 
 // Board service
@@ -158,25 +159,25 @@ async function addNewGroup(boardId) {
 }
 function getGroupbyId(board, groupId) {
     console.log(board);
-   return board.groups.findIndex(group => {
-       return group.id === groupId
+    return board.groups.findIndex(group => {
+        return group.id === groupId
     })
 }
 async function removeTask(task, groupId, currBoardId) {
     const board = await getById(currBoardId);
-    const gIdx=getGroupbyId(board,groupId);
-    
+    const gIdx = getGroupbyId(board, groupId);
+
     const idx = board.groups[gIdx].tasks.findIndex((taskToCheck) => {
         return taskToCheck.id === task.id;
     });
-   
+
     board.groups[gIdx].tasks.splice(idx, 1);
     return await storageService.put(KEY, board);
 }
 async function duplicateTask(task, groupId, currBoardId) {
     task.title = 'Copy of ' + task.title;
     const board = await getById(currBoardId);
-    const gIdx=getGroupbyId(board,groupId);
+    const gIdx = getGroupbyId(board, groupId);
     const idx = board.groups[gIdx].tasks.findIndex((gp) => gp.id === task.id);
 
     task.id = utilService.makeId();
@@ -185,7 +186,7 @@ async function duplicateTask(task, groupId, currBoardId) {
 }
 async function updateTask(task, groupId, currBoardId) {
     const board = await getById(currBoardId);
-    const gIdx=getGroupbyId(board,groupId);
+    const gIdx = getGroupbyId(board, groupId);
     const idx = board.groups[gIdx].tasks.findIndex((taskToCheck) => {
         return taskToCheck.id === task.id;
     });
@@ -194,14 +195,14 @@ async function updateTask(task, groupId, currBoardId) {
 }
 async function addTask(task, groupId, currBoardId) {
     const board = await getById(currBoardId);
-    const gIdx=getGroupbyId(board,groupId);
+    const gIdx = getGroupbyId(board, groupId);
     board.groups[gIdx].tasks.push(task);
 
     return await storageService.put(KEY, board);
 }
 async function updateTasks(saveTasks, currBoardId, groupId) {
     const board = await getById(currBoardId);
-    const gIdx=getGroupbyId(board,groupId);
+    const gIdx = getGroupbyId(board, groupId);
     board.groups[gIdx].tasks = saveTasks;
     return await storageService.put(KEY, board);
 }
@@ -224,7 +225,55 @@ function getEmptyFilter() {
         sortBy: 'name',
     };
 }
-
+function getActivitiesByItem(itemId) {
+    return gActivities.filter(activity => {
+        return activity.itemId === itemId
+    })
+}
+const gActivities = [
+    {
+        id: utilService.makeId(),
+        itemId: 't101',
+        type: 'status',
+        createdAt: Date.now(),
+        from: { info: 'In progress', more: '#fdbc64' },
+        to: { info: 'Done', more: '#33d391' }
+    },
+    {
+        id: utilService.makeId(),
+        itemId: 't101',
+        type: 'delegates',
+        createdAt: Date.now(),
+        from: { info: 'added',more:'' },
+        to:
+        {info: 'Sharon Macaron', more: 'https://www.w3schools.com/howto/img_avatar.png', },
+    },
+    {
+        id: utilService.makeId(),
+        itemId: 't101',
+        type: 'delegates',
+        createdAt: Date.now(),
+        from: { info: 'deleted',more:'' },
+        to:
+        {info: 'Sharon Macaron', more: 'https://www.w3schools.com/howto/img_avatar.png', },
+    },
+    {
+        id: utilService.makeId(),
+        itemId: 't101',
+        type: 'rename',
+        createdAt: Date.now(),
+        from: { info: 'my task', more: '' },
+        to: { info: 'task me', more: '' }
+    },
+    {
+        id: utilService.makeId(),
+        itemId: 't101',
+        type: 'timeline',
+        createdAt: Date.now(),
+        from: { info: Date.now(), more: '' },
+        to: { info: Date.now(), more: '' }
+    },
+]
 // Data initailization
 
 const gBoards = [
