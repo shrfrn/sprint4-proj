@@ -18,7 +18,7 @@
                 class="style-task"
                 :style="{ borderColor: color.color }"
                 type="text"
-                placeholder="+Add"
+                placeholder="+ Add"
                 v-model="taskToAdd.title"
             />
         </form>
@@ -39,7 +39,8 @@ export default {
         };
     },
     created() {
-        this.taskToAdd = JSON.parse(JSON.stringify(this.$store.getters.getEmptyTask));
+        // this.taskToAdd = JSON.parse(JSON.stringify(this.$store.getters.getEmptyTask));
+        this.taskToAdd = this.$store.getters.getEmptyTask
         this.tasksCopy = JSON.parse(JSON.stringify(this.tasks));
     },
     watch: {
@@ -55,15 +56,16 @@ export default {
         },
         async addTask() {
             if (this.taskToAdd.title === '') return;
-            var ToAdd = JSON.parse(JSON.stringify(this.taskToAdd));
-            ToAdd.createdAt = Date.now();
+
+            // var ToAdd = JSON.parse(JSON.stringify(this.taskToAdd));
+            this.taskToAdd.createdAt = Date.now();
             await this.$store.dispatch({
                 type: 'addTask',
-                task: ToAdd,
+                task: this.taskToAdd,
                 groupId: this.groupId,
             });
             console.log('tasks', this.tasksCopy);
-            this.taskToAdd.title = '';
+            this.taskToAdd = this.$store.getters.getEmptyTask
         },
         async onEnd() {
             // this.tasks = this.tasksCopy;
