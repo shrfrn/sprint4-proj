@@ -1,6 +1,6 @@
 <template>
     <section class="task-preview">
-        <el-dropdown  class="dropdown " trigger="click">
+        <el-dropdown class="dropdown " trigger="click">
             <el-button size="mini">
                 <i class="fas fa-caret-square-down"></i>
             </el-button>

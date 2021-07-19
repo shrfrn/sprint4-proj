@@ -158,25 +158,25 @@ async function addNewGroup(boardId) {
 }
 function getGroupbyId(board, groupId) {
     console.log(board);
-   return board.groups.findIndex(group => {
-       return group.id === groupId
-    })
+    return board.groups.findIndex((group) => {
+        return group.id === groupId;
+    });
 }
 async function removeTask(task, groupId, currBoardId) {
     const board = await getById(currBoardId);
-    const gIdx=getGroupbyId(board,groupId);
-    
+    const gIdx = getGroupbyId(board, groupId);
+
     const idx = board.groups[gIdx].tasks.findIndex((taskToCheck) => {
         return taskToCheck.id === task.id;
     });
-   
+
     board.groups[gIdx].tasks.splice(idx, 1);
     return await storageService.put(KEY, board);
 }
 async function duplicateTask(task, groupId, currBoardId) {
     task.title = 'Copy of ' + task.title;
     const board = await getById(currBoardId);
-    const gIdx=getGroupbyId(board,groupId);
+    const gIdx = getGroupbyId(board, groupId);
     const idx = board.groups[gIdx].tasks.findIndex((gp) => gp.id === task.id);
 
     task.id = utilService.makeId();
@@ -185,7 +185,7 @@ async function duplicateTask(task, groupId, currBoardId) {
 }
 async function updateTask(task, groupId, currBoardId) {
     const board = await getById(currBoardId);
-    const gIdx=getGroupbyId(board,groupId);
+    const gIdx = getGroupbyId(board, groupId);
     const idx = board.groups[gIdx].tasks.findIndex((taskToCheck) => {
         return taskToCheck.id === task.id;
     });
@@ -194,14 +194,14 @@ async function updateTask(task, groupId, currBoardId) {
 }
 async function addTask(task, groupId, currBoardId) {
     const board = await getById(currBoardId);
-    const gIdx=getGroupbyId(board,groupId);
+    const gIdx = getGroupbyId(board, groupId);
     board.groups[gIdx].tasks.push(task);
 
     return await storageService.put(KEY, board);
 }
 async function updateTasks(saveTasks, currBoardId, groupId) {
     const board = await getById(currBoardId);
-    const gIdx=getGroupbyId(board,groupId);
+    const gIdx = getGroupbyId(board, groupId);
     board.groups[gIdx].tasks = saveTasks;
     return await storageService.put(KEY, board);
 }
@@ -449,6 +449,7 @@ const gBoards = [
         ],
         tags: ['front-end', 'back-end', 'UI', 'DB'],
         styles: {},
+        activities: [],
     },
     {
         _id: 'b102',
