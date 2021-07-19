@@ -22,15 +22,34 @@
                 v-model="taskToAdd.title"
             />
         </form>
+
+        <div class="summery">
+            <status-summery :groupId="groupId"></status-summery>
+            <date-summery :groupId="groupId"></date-summery>
+            <person-summery :groupId="groupId"></person-summery>
+            <tags-summery :groupId="groupId"></tags-summery>
+        </div>
     </section>
 </template>
 
 <script>
 import taskPreview from './task-preview.vue';
 import draggable from 'vuedraggable';
+import tagsSummery from './tags-summery-column.vue';
+import personSummery from './person-summery-column.vue';
+import statusSummery from './status-summery-column.vue';
+import dateSummery from './date-summery-column.vue';
+
 export default {
     props: { tasks: Array, color: Object, groupId: String },
-    components: { taskPreview, draggable },
+    components: {
+        taskPreview,
+        draggable,
+        tagsSummery,
+        personSummery,
+        statusSummery,
+        dateSummery,
+    },
 
     data() {
         return {
@@ -40,7 +59,7 @@ export default {
     },
     created() {
         // this.taskToAdd = JSON.parse(JSON.stringify(this.$store.getters.getEmptyTask));
-        this.taskToAdd = this.$store.getters.getEmptyTask
+        this.taskToAdd = this.$store.getters.getEmptyTask;
         this.tasksCopy = JSON.parse(JSON.stringify(this.tasks));
     },
     watch: {
@@ -65,7 +84,7 @@ export default {
                 groupId: this.groupId,
             });
             console.log('tasks', this.tasksCopy);
-            this.taskToAdd = this.$store.getters.getEmptyTask
+            this.taskToAdd = this.$store.getters.getEmptyTask;
         },
         async onEnd() {
             // this.tasks = this.tasksCopy;

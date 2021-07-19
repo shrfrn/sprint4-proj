@@ -12,9 +12,13 @@
     //     border-radius: 10px;
 
     // }
+    &:hover .dropdown {
+        display: block;
+    }
     .dropdown {
         position: absolute;
         left: -20px;
+        display: none;
         .el-button {
             @include flex(center, center, row);
             border: none;
@@ -25,6 +29,12 @@
             padding: 0;
             border-radius: 50%;
         }
+        &:focus-within {
+            display: block;
+        }
+    }
+    &:hover:not(.ghost) .dropdown {
+        display: block;
     }
 
     .date-picker .el-input__inner {
@@ -42,11 +52,13 @@
     }
     .task-title {
         @include flex(space-between, center, row);
+        min-width: 260px;
         padding-inline-end: 10px;
         height: 100%;
         flex: 2;
         border-inline-end: 1px white solid;
         cursor: grab;
+
         .title-task {
             @include flex(start, center, row);
             gap: 10px;
@@ -69,8 +81,9 @@
     }
     .dynamic-column {
         @include flex(center, center);
-        width: 150px;
+        width: 180px;
         height: 100%;
+        overflow: hidden;
         // flex: 1;
         cursor: pointer;
         border-inline-end: 1px white solid;

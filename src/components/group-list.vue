@@ -4,78 +4,89 @@
             <transition-group type="transition" name="flip-list">
                 <ul class="sortable" v-for="group in groupsCopy" :key="group.id">
                     <div class="group-details">
-                        <el-dropdown trigger="click">
-                            <el-button class="btn-more-groups" size="mini">
-                                <i
-                                    :style="{ color: group.style.color }"
-                                    class=" group-dropdown-menu fas fa-chevron-circle-down"
-                                ></i>
-                            </el-button>
-                            <el-dropdown-menu trigger="click" size="medium" slot="dropdown">
-                                <el-dropdown-item @click.native="collapseSingleGroup(group.id)">
-                                    <i class="fas fa-compress-alt"></i> Collapse this group
-                                </el-dropdown-item>
-                                <el-dropdown-item @click.native="collapseGroups">
-                                    <i class="fas fa-compress-alt"></i> Collapse All Groups
-                                </el-dropdown-item>
-                                <el-dropdown-item divided @click.native="openSingleGroup(group.id)">
-                                    <i class="fas fa-expand-alt"></i> Open this group
-                                </el-dropdown-item>
-
-                                <el-dropdown-item @click.native="openGroups">
-                                    <i class="fas fa-expand-alt"></i> Open All Groups
-                                </el-dropdown-item>
-                                <el-dropdown-item
-                                    divided
-                                    @click.native="setToEdit(group, group.id)"
-                                >
-                                    <i class="fas fa-pen"></i> Rename Group
-                                </el-dropdown-item>
-                                <el-dropdown-item @click.native="removeGroup(group)">
-                                    <i class="far fa-trash-alt"></i> Delete Group
-                                </el-dropdown-item>
-                                <el-dropdown-item @click.native="duplicateGroup(group)">
-                                    <i class="far fa-copy"></i> Duplicate Group
-                                </el-dropdown-item>
-                                <el-dropdown-item divided class="color-change">
-                                    <i class="fas fa-palette"></i> change color
-                                    <el-color-picker
-                                        @change="changeColor(group)"
-                                        v-model="group.style.color"
-                                        show-alpha
-                                        :predefine="predefineColors"
+                        <div class="preview-group">
+                            <el-dropdown trigger="click">
+                                <el-button class="btn-more-groups" size="mini">
+                                    <i
+                                        :style="{ color: group.style.color }"
+                                        class=" group-dropdown-menu fas fa-chevron-circle-down"
+                                    ></i>
+                                </el-button>
+                                <el-dropdown-menu trigger="click" size="medium" slot="dropdown">
+                                    <el-dropdown-item @click.native="collapseSingleGroup(group.id)">
+                                        <i class="fas fa-compress-alt"></i> Collapse this group
+                                    </el-dropdown-item>
+                                    <el-dropdown-item @click.native="collapseGroups">
+                                        <i class="fas fa-compress-alt"></i> Collapse All Groups
+                                    </el-dropdown-item>
+                                    <el-dropdown-item
+                                        divided
+                                        @click.native="openSingleGroup(group.id)"
                                     >
-                                    </el-color-picker>
-                                </el-dropdown-item>
-                            </el-dropdown-menu>
-                        </el-dropdown>
+                                        <i class="fas fa-expand-alt"></i> Open this group
+                                    </el-dropdown-item>
 
-                        <li
-                            class="group-title"
-                            :style="{ color: group.style.color }"
-                            @click="setToEdit(group, group.id)"
-                            v-show="!isEditingState || currEditedGroup != group.id"
-                        >
-                            {{ group.title }}
-                        </li>
-                        <input
-                            class="input"
-                            :ref="group.id"
-                            v-show="isEditingState && currEditedGroup == group.id"
-                            @blur="updateGroupName(group)"
-                            @keydown.enter="updateGroupName(group)"
-                            type="text"
-                            v-model="group.title"
-                        />
+                                    <el-dropdown-item @click.native="openGroups">
+                                        <i class="fas fa-expand-alt"></i> Open All Groups
+                                    </el-dropdown-item>
+                                    <el-dropdown-item
+                                        divided
+                                        @click.native="setToEdit(group, group.id)"
+                                    >
+                                        <i class="fas fa-pen"></i> Rename Group
+                                    </el-dropdown-item>
+                                    <el-dropdown-item @click.native="removeGroup(group)">
+                                        <i class="far fa-trash-alt"></i> Delete Group
+                                    </el-dropdown-item>
+                                    <el-dropdown-item @click.native="duplicateGroup(group)">
+                                        <i class="far fa-copy"></i> Duplicate Group
+                                    </el-dropdown-item>
+                                    <el-dropdown-item divided class="color-change">
+                                        <i class="fas fa-palette"></i> change color
+                                        <el-color-picker
+                                            @change="changeColor(group)"
+                                            v-model="group.style.color"
+                                            show-alpha
+                                            :predefine="predefineColors"
+                                        >
+                                        </el-color-picker>
+                                    </el-dropdown-item>
+                                </el-dropdown-menu>
+                            </el-dropdown>
+                            <li
+                                class="group-title"
+                                :style="{ color: group.style.color }"
+                                @click="setToEdit(group, group.id)"
+                                v-show="!isEditingState || currEditedGroup != group.id"
+                            >
+                                {{ group.title }}
+                            </li>
+                            <input
+                                class="input"
+                                :ref="group.id"
+                                v-show="isEditingState && currEditedGroup == group.id"
+                                @blur="updateGroupName(group)"
+                                @keydown.enter="updateGroupName(group)"
+                                type="text"
+                                v-model="group.title"
+                            />
+                        </div>
+
+                        <div class="titles">
+                            <div class="column-title" v-for="(column, idx) in columns" :key="idx">
+                                {{ column }}
+                            </div>
+                        </div>
                     </div>
-                    <template v-if="!isAllCollapse && !collapsedGroups.includes(group.id)">
-                        <task-list
-                            :tasks="group.tasks"
-                            :color="group.style"
-                            :groupId="group.id"
-                            @openTaskDetails="openTaskDetails"
-                        />
-                    </template>
+                    <!-- <template v-if="!isAllCollapse && !collapsedGroups.includes(group.id)"> -->
+                    <task-list
+                        v-show="!isAllCollapse && !collapsedGroups.includes(group.id)"
+                        :tasks="group.tasks"
+                        :color="group.style"
+                        :groupId="group.id"
+                        @openTaskDetails="openTaskDetails"
+                    />
+                    <!-- </template> -->
                 </ul>
             </transition-group>
         </draggable>
@@ -132,6 +143,11 @@ export default {
     components: {
         taskList,
         draggable,
+    },
+    computed: {
+        columns() {
+            return this.$store.getters.currBoard.columns;
+        },
     },
 
     methods: {

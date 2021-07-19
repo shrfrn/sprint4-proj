@@ -12,14 +12,9 @@
 <script>
 export default {
     name: 'home',
-    computed: {
-        initBoard() {
-            return this.$store.getters.boards[0]._id;
-        },
-    },
     methods: {
         start() {
-            this.$router.push(`/boards/${this.initBoard}`);
+            this.$router.push(`/boards/b101`);
         },
     },
 };

@@ -1,6 +1,6 @@
 <template>
     <section class="task-preview">
-        <el-dropdown class="dropdown " trigger="click">
+        <el-dropdown class="dropdown" trigger="click">
             <el-button size="mini">
                 <i class="fas fa-caret-square-down"></i>
             </el-button>
@@ -53,13 +53,13 @@
 </template>
 
 <script>
-import { columnHelpers } from '@/services/column.helpers.js'
-import { utilService } from '@/services/util.service.js'
+import { columnHelpers } from '@/services/column.helpers.js';
+import { utilService } from '@/services/util.service.js';
 
-import personColumn from '@/components/person-column'
-import statusColumn from '@/components/status-column'
-import dateColumn from '@/components/date-column'
-import tagsColumn from '@/components/tags-column'
+import personColumn from '@/components/person-column';
+import statusColumn from '@/components/status-column';
+import dateColumn from '@/components/date-column';
+import tagsColumn from '@/components/tags-column';
 
 export default {
     props: {
@@ -123,10 +123,9 @@ export default {
             });
         },
         async duplicateTask() {
-
-            const taskCopy = JSON.parse(JSON.stringify(this.task))
-            taskCopy.title = 'Copy of ' + this.task.title
-            taskCopy.id = utilService.makeId()
+            const taskCopy = JSON.parse(JSON.stringify(this.task));
+            taskCopy.title = 'Copy of ' + this.task.title;
+            taskCopy.id = utilService.makeId();
 
             await this.$store.dispatch({
                 type: 'duplicateTask',

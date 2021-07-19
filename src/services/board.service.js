@@ -15,11 +15,11 @@ export const boardService = {
     renameBoard,
     addToFavorites,
     duplicateBoard,
+    getEmptyGroup,
     // updateGroup,
     // updateGroups,
     // removeGroup,
     // duplicateGroup,
-    getEmptyGroup,
     // addNewGroup,
     // updateTask,
     // addTask,
@@ -356,7 +356,7 @@ const gBoards = [
                     },
                 ],
                 style: {
-                    color: '#232323',
+                    color: 'rgba(196, 27, 182, 1)',
                 },
             },
             {
@@ -451,7 +451,7 @@ const gBoards = [
                     },
                 ],
                 style: {
-                    color: '#232323',
+                    color: 'rgba(30, 144, 255, 1)',
                 },
             },
         ],
@@ -510,7 +510,7 @@ const gBoards = [
             fullname: 'Bobby Balobby',
             imgUrl: 'http://some-img.jpg',
         },
-        columns: ['delegates', 'status', 'date'],
+        columns: ['status', 'date', 'delegates', 'tags'],
         groups: [
             {
                 id: 'g102',
@@ -581,7 +581,7 @@ const gBoards = [
                     },
                 ],
                 style: {
-                    color: '#323232',
+                    color: 'rgba(0, 186, 189, 1)',
                 },
             },
             {
@@ -674,7 +674,7 @@ const gBoards = [
                     },
                 ],
                 style: {
-                    color: '#323232',
+                    color: 'rgba(196, 27, 182, 1)',
                 },
             },
         ],
