@@ -2,7 +2,7 @@
     <section class="task-preview">
         <el-dropdown class="dropdown" trigger="click">
             <el-button size="mini">
-                <i class="fas fa-caret-square-down"></i>
+                <i class="fas fa-caret-square-down icon"></i>
             </el-button>
             <el-dropdown-menu trigger="click" size="medium" slot="dropdown">
                 <el-dropdown-item @click.native="removeTask"
@@ -21,7 +21,12 @@
                 </el-dropdown-item>
             </el-dropdown-menu>
         </el-dropdown>
-        <div class="task-title" @mouseover="togglehover(true)" @mouseleave="togglehover(false)">
+        <div
+            class="task-title"
+            :class="isEdit"
+            @mouseover="togglehover(true)"
+            @mouseleave="togglehover(false)"
+        >
             <template v-if="isEditTitle">
                 <form @submit.prevent="updateTask">
                     <input
@@ -33,7 +38,7 @@
                     <!-- @change="toggleEdit(false)" -->
                 </form>
             </template>
-            <section class="title-task" v-else>
+            <section class="title-task handle-task" v-else>
                 <p>{{ task.title }}</p>
                 <button @click="toggleEdit(true)" v-if="isHover">Edit</button>
             </section>
@@ -90,6 +95,10 @@ export default {
     computed: {
         boardMembers() {
             return this.$store.getters.currBoard.members;
+        },
+        isEdit() {
+            if (this.isEditTitle) return '';
+            else return 'handle-task';
         },
         currBoard() {
             return this.$store.getters.currBoard;

@@ -5,6 +5,7 @@ export const boardStore = {
     state: {
         boards: [],
         currBoard: null,
+         
     },
     mutations: {
         setBoards(state, { boards }) {
@@ -171,5 +172,6 @@ export const boardStore = {
         getEmptyTask(state) {
             return boardService.getEmptyTask(state.currBoard);
         },
+      
     },
 };

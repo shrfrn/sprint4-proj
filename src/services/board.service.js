@@ -20,6 +20,7 @@ export const boardService = {
     // updateGroups,
     // removeGroup,
     // duplicateGroup,
+    getActivitiesByItem,
     // addNewGroup,
     // updateTask,
     // addTask,
@@ -238,6 +239,78 @@ function getEmptyFilter() {
         sortBy: 'name',
     };
 }
+function getActivitiesByItem(itemId) {
+    return gActivities.filter((activity) => {
+        return activity.itemId === itemId;
+    });
+}
+const gActivities = [
+    {
+        id: utilService.makeId(),
+        itemId: 't101',
+        itemName: 'Board list',
+        type: 'status',
+        createdAt: Date.now(),
+        createdBy: {
+            _id: 'u101',
+            fullname: 'Muki Suflaki',
+            imgUrl: 'http://some-img.jpg',
+        },
+        msg: 'status change from stuck to done',
+    },
+    {
+        id: utilService.makeId(),
+        itemId: 't101',
+        itemName: 'Board list',
+        type: 'delegates',
+        createdAt: Date.now(),
+        createdBy: {
+            _id: 'u101',
+            fullname: 'Muki Suflaki',
+            imgUrl: 'http://some-img.jpg',
+        },
+        msg: 'Sharon Macaron was added from the task',
+    },
+    {
+        id: utilService.makeId(),
+        itemId: 't101',
+        itemName: 'Board list',
+        type: 'delegates',
+        createdAt: Date.now(),
+        createdBy: {
+            _id: 'u101',
+            fullname: 'Muki Suflaki',
+            imgUrl: 'http://some-img.jpg',
+        },
+        msg: 'Sharon Macaron was deleted from the task',
+    },
+    {
+        id: utilService.makeId(),
+        itemId: 't101',
+        itemName: 'Board list',
+        type: 'rename',
+        createdAt: Date.now(),
+        createdBy: {
+            _id: 'u101',
+            fullname: 'Muki Suflaki',
+            imgUrl: 'http://some-img.jpg',
+        },
+        msg: 'the title renamed from task to board list',
+    },
+    {
+        id: utilService.makeId(),
+        itemId: 't101',
+        itemName: 'Board list',
+        type: 'timeline',
+        createdAt: Date.now(),
+        createdBy: {
+            _id: 'u101',
+            fullname: 'Rachel Bekarov',
+            imgUrl: 'http://some-img.jpg',
+        },
+        msg: 'change date from 11/07/2021 to 18/07/2021',
+    },
+];
 
 // Private functions
 
