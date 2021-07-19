@@ -2,7 +2,7 @@
     <section v-if="groups" class="group-list">
         <draggable v-model="groupsCopy" ghost-class="ghost" @start="onStart" @end="onEnd">
             <transition-group type="transition" name="flip-list">
-                <ul class="sortable" v-for="(group) in groupsCopy" :key="group.id">
+                <ul class="sortable" v-for="group in groupsCopy" :key="group.id">
                     <div class="group-details">
                         <el-dropdown trigger="click">
                             <el-button class="btn-more-groups" size="mini">
