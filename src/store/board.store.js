@@ -24,8 +24,10 @@ export const boardStore = {
             console.log('state.currBoard.groups', state.currBoard.groups);
         },
         setFilter(state, { filteredBoard }) {
-            console.log('in store: filterBoard =', filteredBoard);
             state.currBoard = filteredBoard;
+        },
+        setFilterList(state, { filteredBoards }) {
+            state.boards = filteredBoards;
         },
     },
     actions: {
@@ -45,22 +47,20 @@ export const boardStore = {
             context.commit({ type: 'loadBoard', board: newBoard });
         },
         async saveMiniBoard(context, { miniBoard }) {
-
             try {
-                let boardCopy
-    
-                if(miniBoard._id === context.getters.currBoard._id){
-                    boardCopy = JSON.parse(JSON.stringify(context.getters.currBoard))
+                let boardCopy;
+
+                if (miniBoard._id === context.getters.currBoard._id) {
+                    boardCopy = JSON.parse(JSON.stringify(context.getters.currBoard));
                 } else {
-                    boardCopy = await boardService.getById(miniBoard._id)
+                    boardCopy = await boardService.getById(miniBoard._id);
                 }
-                boardCopy.title = miniBoard.title
-                boardCopy.description = miniBoard.description
-                boardCopy.isFavorite = miniBoard.isFavorite
-    
+                boardCopy.title = miniBoard.title;
+                boardCopy.description = miniBoard.description;
+                boardCopy.isFavorite = miniBoard.isFavorite;
+
                 const newBoard = await boardService.save(boardCopy);
                 await context.dispatch({ type: 'loadBoards' });
-    
                 context.commit({ type: 'loadBoard', board: newBoard });
             } catch (err) {
                 console.log('couldnt save board', err);
@@ -82,16 +82,15 @@ export const boardStore = {
         // },
         async duplicateBoard(context, { boardId }) {
             try {
-                const boardCopy = await boardService.getById(boardId)
-                
-                delete boardCopy._id
-                boardCopy.title = 'Copy of ' + boardCopy.title
+                const boardCopy = await boardService.getById(boardId);
+
+                delete boardCopy._id;
+                boardCopy.title = 'Copy of ' + boardCopy.title;
 
                 const newBoard = await boardService.save(boardCopy);
-                const boards = await context.dispatch({ type: 'loadBoards' });
-                context.commit({ type: 'setBoards', boards });
+                await context.dispatch({ type: 'loadBoards' });
+                // context.commit({ type: 'setBoards', boards });
                 context.commit({ type: 'loadBoard', board: newBoard });
-
             } catch (err) {
                 console.log('couldnt duplicate board', err);
             }
@@ -103,6 +102,14 @@ export const boardStore = {
                     filterBy
                 );
                 context.commit({ type: 'setFilter', filteredBoard });
+            } catch (err) {
+                console.log('couldnt filtered', err);
+            }
+        },
+        async setFilterList(context, { filterBy }) {
+            try {
+                const filteredBoards = await boardService.query(filterBy);
+                context.commit({ type: 'setFilterList', filteredBoards });
             } catch (err) {
                 console.log('couldnt filtered', err);
             }

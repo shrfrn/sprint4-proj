@@ -76,23 +76,25 @@
 
             <!-- PERSON -->
             <el-dropdown trigger="click">
-                <el-button
-                    class="btn-filter"
-                    size="small"
-                    @click.native="isntAvaliable"
-                    type="primary"
-                >
+                <el-button class="btn-filter" size="medium" type="primary">
                     <i class="el-icon-s-custom"></i> Person
                 </el-button>
-                <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item v-for="member in board.members" :key="member._id">
+                <el-dropdown-menu slot="dropdown" v-if="board.members">
+                    <el-dropdown-item @click.native="setFilterPerson('')">
+                        All
+                    </el-dropdown-item>
+                    <el-dropdown-item
+                        @click.native="setFilterPerson(member.fullname)"
+                        v-for="member in board.members"
+                        :key="member._id"
+                    >
                         {{ member.fullname }}
                     </el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
 
             <!-- FILTER -->
-            <el-dropdown trigger="click">
+            <!-- <el-dropdown trigger="click">
                 <el-button
                     class="btn-filter"
                     size="small"
@@ -107,7 +109,7 @@
                     <el-dropdown-item value="priority">Priority</el-dropdown-item>
                     <el-dropdown-item value="person">Person</el-dropdown-item>
                 </el-dropdown-menu>
-            </el-dropdown>
+            </el-dropdown> -->
         </div>
         <!-- </div> -->
     </section>
@@ -133,16 +135,7 @@ export default {
     created() {
         this.members = this.board.members;
     },
-    // computed: {},
     methods: {
-        isntAvaliable() {
-            this.$message({
-                showClose: true,
-                duration: 2000,
-                message: 'Oops, this feature is not available yet.',
-                type: 'error',
-            });
-        },
         showBoardMembers() {
             this.isMembersShown = !this.isMembersShown;
         },
@@ -165,6 +158,11 @@ export default {
             this.$emit('addNewGroup');
         },
         setFilter() {
+            this.$emit('setFilter', this.filterBy);
+        },
+        setFilterPerson(person) {
+            console.log('person :>> ', person);
+            this.filterBy.txt = person;
             this.$emit('setFilter', this.filterBy);
         },
     },

@@ -1,21 +1,30 @@
 <template>
-    <section v-if="board" class="board-details">
-        <board-header
-            :board="board"
-            @addNewGroup="addNewGroup"
-            @updateTitles="updateTitles"
-            @setFilter="setFilter"
-        />
-        <group-list
-            :groups="board.groups"
-            @updateGroupName="updateGroupName"
-            @removeGroup="removeGroup"
-            @duplicateGroup="duplicateGroup"
-            @changeColor="changeColor"
-            @updateDrag="updateDrag"
-            @openTaskDetails="openTaskDetails"
-        />
-        <router-view />
+    <section class="board-details">
+        <template v-if="board">
+            <board-header
+                v-if="board"
+                :board="board"
+                @addNewGroup="addNewGroup"
+                @updateTitles="updateTitles"
+                @setFilter="setFilter"
+            />
+            <group-list
+                v-if="board"
+                :groups="board.groups"
+                @updateGroupName="updateGroupName"
+                @removeGroup="removeGroup"
+                @duplicateGroup="duplicateGroup"
+                @changeColor="changeColor"
+                @updateDrag="updateDrag"
+                @openTaskDetails="openTaskDetails"
+            />
+            <router-view />
+        </template>
+
+        <!-- <div class="loader" v-else> -->
+        <div class="loader" v-else>
+            <img src="@/assets/img/loader.gif" alt="" />
+        </div>
     </section>
 </template>
 
@@ -37,31 +46,6 @@ export default {
         board() {
             return JSON.parse(JSON.stringify(this.$store.getters.currBoard));
         },
-        // delegates: {
-        //     get: function() {
-        //         const delegates = this.$store.getters.currBoard.groups[0].tasks[0].columns[ 'delegates'];
-        //         return JSON.parse(JSON.stringify(delegates));
-        //     },
-        //     set: function(newVal) {
-        //         // this.$store.dispatch({type: updateTask, task, groupId})
-        //         console.log('new delegate list:', newVal);
-        //     },
-        // },
-        // members() {
-        //     const members = this.$store.getters.currBoard.members;
-        //     const names = members.map((member) => member.fullname);
-        //     console.log('members:', names);
-        //     return this.$store.getters.currBoard.members;
-        // },
-        // status: {
-        //     get: function() {
-        //         return this.$store.getters.currBoard.groups[0].tasks[0].columns['status'];
-        //     },
-        //     set: function(newVal) {
-        //         // this.$store.dispatch({type: updateTask, task, groupId})
-        //         console.log('new status:', newVal);
-        //     },
-        // },
         date() {
             return this.$store.getters.currBoard.groups[0].tasks[0].columns['date'];
         },
