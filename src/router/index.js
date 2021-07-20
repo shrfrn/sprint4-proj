@@ -20,8 +20,8 @@ const routes = [
         component: about,
     },
     {
-        path: '/boards',
-        name: 'boards',
+        path: '/board',
+        name: 'board',
         component: boardApp,
         children: [
             {

@@ -1,25 +1,27 @@
-// import {httpService} from '@/services/http.service.js'
-import { storageService } from '@/services/async-storage.service.js';
+import {httpService} from '@/services/http.service.js'
+// import { storageService } from '@/services/async-storage.service.js';
 import { columnHelpers } from '@/services/column.helpers.js';
 import { utilService } from './util.service.js';
 
-const KEY = 'somedayBoard';
+// const KEY = 'somedayBoard';
+const BASE_URL = 'board/'
+
 export const boardService = {
     query,
     getById,
     remove,
     save,
     getEmptyBoard,
+    getEmptyGroup,
     getEmptyTask,
     getEmptyFilter, // Everything under here should be in store.
-    renameBoard,
-    addToFavorites,
-    duplicateBoard,
+    // renameBoard,
+    // addToFavorites,
+    // duplicateBoard,
     // updateGroup,
     // updateGroups,
     // removeGroup,
     // duplicateGroup,
-    getEmptyGroup,
     // addNewGroup,
     // updateTask,
     // addTask,
@@ -29,22 +31,22 @@ export const boardService = {
 };
 
 // Board service
-async function query() {
-    // _createInitialData();
-    // if(!filterBy) filterBy = getEmptyFilter()
-    let boards = await storageService.query(KEY);
-    if (!boards || boards.length === 0) boards = _createInitialData();
+async function query(filterBy = {}) {
 
+    if(!filterBy) filterBy = getEmptyFilter()
+
+    // let boards = await httpService.get('boards', {filterBy})
+    let boards = await httpService.get(BASE_URL)
     boards = boards.map((board) => {
-        return { _id: board._id, title: board.title };
+        return { _id: board._id, title: board.title, isFavorite: board.isFavorite };
     });
     return boards;
-    // return await httpService.get('toy', {filterBy})
 }
 
 async function getById(id, filterBy = { txt: '' }) {
-    const board = await storageService.get(KEY, id);
-    const regex = new RegExp(filterBy.txt, 'i');
+
+    const board =  await httpService.get(BASE_URL + id)
+    const regex = new RegExp(filterBy.txt, 'i')
 
     var filteredGroups = [];
     board.groups.forEach((group) => {
@@ -67,78 +69,45 @@ async function getById(id, filterBy = { txt: '' }) {
     });
     board.groups = filteredGroups;
     return board;
-    // return await storageService.get(KEY, id);
-    // return await httpService.get('toy/' + id)
 }
 
 async function remove(id) {
-    console.log('id :>> ', id);
-    return await storageService.remove(KEY, id);
-    // return await httpService.delete('toy/' + id)
+    return await httpService.delete(BASE_URL + id)
 }
 
-async function renameBoard(newTitle, boardId) {
-    const board = await getById(boardId);
-    board.title = newTitle;
-    return await save(board);
-}
+// async function renameBoard(newTitle, boardId) {
+//     const board = await getById(boardId);
+//     board.title = newTitle;
+//     return await save(board);
+// }
 
-async function addToFavorites(boardId) {
-    const board = await getById(boardId);
-    board.isFavorite = !board.isFavorite;
-    return await save(board);
-}
+// async function addToFavorites(boardId) {
+//     const board = await getById(boardId);
+//     board.isFavorite = !board.isFavorite;
+//     return await save(board);
+// }
 
 async function save(board) {
-    if (board._id) {
-        return await storageService.put(KEY, board);
-        // return await httpService.put('toy/' + toy._id, toy)
+    const brd = JSON.parse(JSON.stringify(board))
+    // console.log('board is: \n', brd);
+    if (brd._id) {
+        const res = await httpService.put(BASE_URL + brd._id, brd)
+        console.log('res is:\n', res);
+        return res
     } else {
-        return await storageService.post(KEY, board);
-        // return await httpService.post('toy/', toy)
+        return await httpService.post(BASE_URL, brd)
     }
 }
 
-async function duplicateBoard(boardId) {
-    const duplicatedBoard = await getById(boardId);
-    duplicatedBoard.title = `Copy of ${duplicatedBoard.title}`;
-    await storageService.post(KEY, duplicatedBoard);
-    return await query();
-}
-
-// async function updateGroup(updatedGroup, currBoard) {
-//     const board = await getById(currBoard._id);
-//     const idx = board.groups.findIndex((group) => group.id === updatedGroup.id);
-//     board.groups.splice(idx, 1, updatedGroup);
-//     return await storageService.put(KEY, board);
-// }
-
-// async function updateGroups(updatedGroups, currBoard) {
-//     const board = await getById(currBoard._id);
-//     board.groups = updatedGroups;
-//     return await storageService.put(KEY, board);
-// }
-
-// async function removeGroup(group, currBoard) {
-//     const board = await getById(currBoard._id);
-//     const idx = board.groups.findIndex((gp) => gp.id === group.id);
-//     board.groups.splice(idx, 1);
-//     return await storageService.put(KEY, board);
-// }
-
-// async function duplicateGroup(duplicatedGroup, currBoard) {
-//     duplicatedGroup.title = 'Copy of ' + duplicatedGroup.title;
-//     const board = await getById(currBoard._id);
-//     const idx = board.groups.findIndex((gp) => gp.id === duplicatedGroup.id);
-//     duplicatedGroup.id = utilService.makeId();
-//     board.groups.splice(idx + 1, 0, duplicatedGroup);
-//     return await storageService.put(KEY, board);
+// async function duplicateBoard(boardId) {
+//     const duplicatedBoard = await getById(boardId);
+//     duplicatedBoard.title = `Copy of ${duplicatedBoard.title}`;
+//     await storageService.post(KEY, duplicatedBoard);
+//     return await query();
 // }
 
 function getEmptyBoard() {
     const newBoard = JSON.parse(JSON.stringify(gBoards[0]));
-    newBoard._id = null;
-    newBoard.isFavorite = false;
     console.log(newBoard);
     newBoard.groups.forEach((group) => {
         group.id = utilService.makeId();
@@ -151,61 +120,7 @@ function getEmptyBoard() {
     });
     return newBoard;
 }
-// async function addNewGroup(boardId) {
-//     const newGroup = _getNewGroup();
-//     const board = await getById(boardId);
-//     board.groups.splice(0, 0, newGroup);
-//     return await storageService.put(KEY, board);
-// }
-// function getGroupbyId(board, groupId) {
-//     console.log(board);
-//    return board.groups.findIndex(group => {
-//        return group.id === groupId
-//     })
-// }
-// async function removeTask(task, groupId, currBoardId) {
-//     const board = await getById(currBoardId);
-//     const gIdx=getGroupbyId(board,groupId);
 
-//     const idx = board.groups[gIdx].tasks.findIndex((taskToCheck) => {
-//         return taskToCheck.id === task.id;
-//     });
-
-//     board.groups[gIdx].tasks.splice(idx, 1);
-//     return await storageService.put(KEY, board);
-// }
-// async function duplicateTask(task, groupId, currBoardId) {
-//     task.title = 'Copy of ' + task.title;
-//     const board = await getById(currBoardId);
-//     const gIdx=getGroupbyId(board,groupId);
-//     const idx = board.groups[gIdx].tasks.findIndex((gp) => gp.id === task.id);
-
-//     task.id = utilService.makeId();
-//     board.groups[gIdx].tasks.splice(idx + 1, 0, task);
-//     return await storageService.put(KEY, board);
-// }
-// async function updateTask(task, groupId, currBoardId) {
-//     const board = await getById(currBoardId);
-//     const gIdx=getGroupbyId(board,groupId);
-//     const idx = board.groups[gIdx].tasks.findIndex((taskToCheck) => {
-//         return taskToCheck.id === task.id;
-//     });
-//     board.groups[gIdx].tasks[idx] = task;
-//     return await storageService.put(KEY, board);
-// }
-// async function addTask(task, groupId, currBoardId) {
-//     const board = await getById(currBoardId);
-//     const gIdx=getGroupbyId(board,groupId);
-//     board.groups[gIdx].tasks.push(task);
-
-//     return await storageService.put(KEY, board);
-// }
-// async function updateTasks(saveTasks, currBoardId, groupId) {
-//     const board = await getById(currBoardId);
-//     const gIdx=getGroupbyId(board,groupId);
-//     board.groups[gIdx].tasks = saveTasks;
-//     return await storageService.put(KEY, board);
-// }
 function getEmptyGroup() {
     const newGroup = {
         id: utilService.makeId(),
@@ -233,36 +148,9 @@ function getEmptyTask(currBoard) {
 function getEmptyFilter() {
     return {
         txt: '',
-        inStock: 'all',
-        toyType: 'all',
-        sortBy: 'name',
+        sortBy: 'title',
     };
 }
-
-// Private functions
-
-// function _getNewGroup() {
-//     return {
-//         id: utilService.makeId(),
-//         title: 'New Group',
-//         tasks: [
-//             {
-//                 id: utilService.makeId(),
-//                 title: 'You can add new task here',
-//                 createdAt: Date.now(),
-//                 columns: {
-//                     delegate: [],
-//                     status: { txt: '', color: '#c4c4c4' },
-//                     date: Date.now(),
-//                     tags: [],
-//                 },
-//             },
-//         ],
-//         style: {
-//             color: _getRandomColor(),
-//         },
-//     };
-// }
 
 function _getRandomColor() {
     var letters = '0123456789ABCDEF';
@@ -273,83 +161,55 @@ function _getRandomColor() {
     return color;
 }
 
-// Data initailization
-
 const gBoards = [
     {
-        _id: 'b101',
-        title: 'Frontend',
-        description: 'This is very awesome!',
+        title: 'New board',
+        description: 'What is this board about...?',
         isFavorite: false,
         createdAt: Date.now(),
         createdBy: {
-            _id: 'u101',
-            fullname: 'Muki Suflaki',
-            imgUrl: 'http://some-img.jpg',
+            _id : '60f562f7a22a0da5023ec2be',
+            fullname : 'Avior Hagibor',
+            imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
         },
         columns: ['status', 'date', 'delegates', 'tags'],
         groups: [
             {
                 id: 'g101',
-                title: 'Views',
+                title: 'Group I',
                 tasks: [
                     {
                         id: 't101',
-                        title: 'Board list',
+                        title: 'Item I',
                         createdAt: Date.now(),
                         columns: {
                             delegates: [
-                                {
-                                    _id: 'u103',
-                                    fullname: 'Sharon Macaron',
-                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-                                },
-                                {
-                                    _id: 'u104',
-                                    fullname: 'Eden Maran',
-                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-                                },
                             ],
-                            status: { txt: 'In progress', color: '#fdbc64' },
+                            status: { id: 's000', txt: '', color: '#c4c4c4' },
                             date: Date.now(),
                             tags: ['UI', 'DB'],
                         },
                     },
                     {
                         id: 't102',
-                        title: 'Board details',
+                        title: 'Item II',
                         createdAt: Date.now(),
                         columns: {
                             delegates: [
-                                {
-                                    _id: 'u103',
-                                    fullname: 'Sharon Macaron',
-                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-                                },
                             ],
-                            status: { txt: 'Done', color: '#33d391' },
+                            status: { id: 's000', txt: '', color: '#c4c4c4' },
                             date: Date.now(),
                             tags: ['front-end'],
                         },
                     },
                     {
                         id: 't103',
-                        title: 'Chat / Activities',
+                        title: 'Item III',
                         createdAt: Date.now(),
                         columns: {
                             delegates: [
-                                {
-                                    _id: 'u103',
-                                    fullname: 'Sharon Macaron',
-                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-                                },
-                                {
-                                    _id: 'u104',
-                                    fullname: 'Eden Maran',
-                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-                                },
                             ],
-                            status: { txt: 'Stuck', color: '#e8697d' },
+                            status: { id: 's000', txt: '', color: '#c4c4c4' },
                             date: Date.now(),
                             tags: [],
                         },
@@ -361,90 +221,52 @@ const gBoards = [
             },
             {
                 id: 'g201',
-                title: 'Components',
+                title: 'Group II',
                 tasks: [
                     {
                         id: 't201',
-                        title: 'Board preview',
+                        title: 'Item IV',
                         createdAt: Date.now(),
                         columns: {
                             delegates: [
-                                {
-                                    _id: 'u104',
-                                    fullname: 'Eden Maran',
-                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-                                },
                             ],
-                            status: { txt: 'Done', color: '#33d391' },
+                            status: { id: 's000', txt: '', color: '#c4c4c4' },
                             date: Date.now(),
                             tags: [],
                         },
                     },
                     {
                         id: 't202',
-                        title: 'group list',
+                        title: 'Item V',
                         createdAt: Date.now(),
                         columns: {
                             delegates: [
-                                {
-                                    _id: 'u105',
-                                    fullname: 'Muki Bartiki',
-                                    imgUrl:
-                                        'https://www.iconninja.com/files/980/282/508/female-blond-avatar-person-girl-user-woman-icon.png',
-                                },
-                                {
-                                    _id: 'u106',
-                                    fullname: 'Shimi halimi',
-                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-                                },
                             ],
-                            status: { txt: 'Done', color: '#33d391' },
+                            status: { id: 's000', txt: '', color: '#c4c4c4' },
                             date: Date.now(),
                             tags: ['UI'],
                         },
                     },
                     {
                         id: 't203',
-                        title: 'group preview',
+                        title: 'Item VI',
                         createdAt: Date.now(),
                         columns: {
                             delegates: [
-                                {
-                                    _id: 'u105',
-                                    fullname: 'Muki Bartiki',
-                                    imgUrl:
-                                        'https://www.iconninja.com/files/980/282/508/female-blond-avatar-person-girl-user-woman-icon.png',
-                                },
-                                {
-                                    _id: 'u106',
-                                    fullname: 'Shimi halimi',
-                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-                                },
                             ],
-                            status: { txt: 'In progress', color: '#fdbc64' },
+                            status: { id: 's000', txt: '', color: '#c4c4c4' },
                             date: Date.now(),
                             tags: [],
                         },
                     },
                     {
                         id: 't204',
-                        title: 'task preview',
+                        title: 'Item VII',
                         createdAt: Date.now(),
                         columns: {
                             delegates: [
-                                {
-                                    _id: 'u105',
-                                    fullname: 'Muki Bartiki',
-                                    imgUrl:
-                                        'https://www.iconninja.com/files/980/282/508/female-blond-avatar-person-girl-user-woman-icon.png',
-                                },
-                                {
-                                    _id: 'u106',
-                                    fullname: 'Shimi halimi',
-                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-                                },
                             ],
-                            status: { txt: 'Stuck', color: '#e8697d' },
+                            status: { id: 's000', txt: '', color: '#c4c4c4' },
                             date: Date.now(),
                             tags: [],
                         },
@@ -457,35 +279,8 @@ const gBoards = [
         ],
         members: [
             {
-                _id: 'u101',
+                _id : '60f562f7a22a0da5023ec2be',
                 fullname: 'Avior Hagibor',
-                imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-            },
-            {
-                _id: 'u102',
-                fullname: 'Rachel Bekarov',
-                imgUrl:
-                    'https://www.iconninja.com/files/980/282/508/female-blond-avatar-person-girl-user-woman-icon.png',
-            },
-            {
-                _id: 'u103',
-                fullname: 'Sharon Macaron',
-                imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-            },
-            {
-                _id: 'u104',
-                fullname: 'Eden Maran',
-                imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-            },
-            {
-                _id: 'u105',
-                fullname: 'Muki Bartiki',
-                imgUrl:
-                    'https://www.iconninja.com/files/980/282/508/female-blond-avatar-person-girl-user-woman-icon.png',
-            },
-            {
-                _id: 'u106',
-                fullname: 'Shimi halimi',
                 imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
             },
         ],
@@ -499,231 +294,9 @@ const gBoards = [
         styles: {},
         activities: [],
     },
-    {
-        _id: 'b102',
-        title: 'Backend',
-        description: 'This is very awesome!',
-        isFavorite: false,
-        createdAt: Date.now(),
-        createdBy: {
-            _id: 'u102',
-            fullname: 'Bobby Balobby',
-            imgUrl: 'http://some-img.jpg',
-        },
-        columns: ['delegates', 'status', 'date'],
-        groups: [
-            {
-                id: 'g102',
-                title: 'Services',
-                tasks: [
-                    {
-                        id: 't1011',
-                        title: 'Board service',
-                        createdAt: Date.now(),
-                        columns: {
-                            delegates: [
-                                {
-                                    _id: 'u103',
-                                    fullname: 'Sharon Macaron',
-                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-                                },
-                                {
-                                    _id: 'u104',
-                                    fullname: 'Eden Maran',
-                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-                                },
-                            ],
-                            status: { txt: 'In progress', color: '#fdbc64' },
-                            date: Date.now(),
-                        },
-                    },
-                    {
-                        id: 't1021',
-                        title: 'Socket details',
-                        createdAt: Date.now(),
-                        columns: {
-                            delegates: [
-                                {
-                                    _id: 'u103',
-                                    fullname: 'Sharon Macaron',
-                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-                                },
-                                {
-                                    _id: 'u104',
-                                    fullname: 'Eden Maran',
-                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-                                },
-                            ],
-                            status: { txt: 'In progress', color: '#fdbc64' },
-                            date: Date.now(),
-                        },
-                    },
-                    {
-                        id: 't1031',
-                        title: 'User Service',
-                        createdAt: Date.now(),
-                        columns: {
-                            delegates: [
-                                {
-                                    _id: 'u103',
-                                    fullname: 'Sharon Macaron',
-                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-                                },
-                                {
-                                    _id: 'u104',
-                                    fullname: 'Eden Maran',
-                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-                                },
-                            ],
-                            status: { txt: 'In progress', color: '#fdbc64' },
-                            date: Date.now(),
-                        },
-                    },
-                ],
-                style: {
-                    color: '#323232',
-                },
-            },
-            {
-                id: 'g202',
-                title: 'DB',
-                tasks: [
-                    {
-                        id: 't2011',
-                        title: 'Create Mongo DB',
-                        createdAt: Date.now(),
-                        columns: {
-                            delegates: [
-                                {
-                                    _id: 'u103',
-                                    fullname: 'Sharon Macaron',
-                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-                                },
-                                {
-                                    _id: 'u104',
-                                    fullname: 'Eden Maran',
-                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-                                },
-                            ],
-                            status: { txt: 'In progress', color: '#fdbc64' },
-                            date: Date.now(),
-                        },
-                    },
-                    {
-                        id: 't2021',
-                        title: 'write aggrigations',
-                        createdAt: Date.now(),
-                        columns: {
-                            delegates: [
-                                {
-                                    _id: 'u103',
-                                    fullname: 'Sharon Macaron',
-                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-                                },
-                                {
-                                    _id: 'u104',
-                                    fullname: 'Eden Maran',
-                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-                                },
-                            ],
-                            status: { txt: 'In progress', color: '#fdbc64' },
-                            date: Date.now(),
-                        },
-                    },
-                    {
-                        id: 't2031',
-                        title: 'filter and sort',
-                        createdAt: Date.now(),
-                        columns: {
-                            delegates: [
-                                {
-                                    _id: 'u103',
-                                    fullname: 'Sharon Macaron',
-                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-                                },
-                                {
-                                    _id: 'u104',
-                                    fullname: 'Eden Maran',
-                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-                                },
-                            ],
-                            status: { txt: 'In progress', color: '#fdbc64' },
-                            date: Date.now(),
-                        },
-                    },
-                    {
-                        id: 't2041',
-                        title: 'Port to Atlas',
-                        createdAt: Date.now(),
-                        columns: {
-                            delegates: [
-                                {
-                                    _id: 'u103',
-                                    fullname: 'Sharon Macaron',
-                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-                                },
-                                {
-                                    _id: 'u104',
-                                    fullname: 'Eden Maran',
-                                    imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-                                },
-                            ],
-                            status: { txt: 'In progress', color: '#fdbc64' },
-                            date: Date.now(),
-                        },
-                    },
-                ],
-                style: {
-                    color: '#323232',
-                },
-            },
-        ],
-        members: [
-            {
-                _id: 'u101',
-                fullname: 'Avior Hagibor',
-                imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-            },
-            {
-                _id: 'u102',
-                fullname: 'Rachel Bekarov',
-                imgUrl:
-                    'https://www.iconninja.com/files/980/282/508/female-blond-avatar-person-girl-user-woman-icon.png',
-            },
-            {
-                _id: 'u103',
-                fullname: 'Sharon Macaron',
-                imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-            },
-            {
-                _id: 'u104',
-                fullname: 'Eden Maran',
-                imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-            },
-            {
-                _id: 'u105',
-                fullname: 'Muki Bartiki',
-                imgUrl:
-                    'https://www.iconninja.com/files/980/282/508/female-blond-avatar-person-girl-user-woman-icon.png',
-            },
-            {
-                _id: 'u106',
-                fullname: 'Shimi halimi',
-                imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-            },
-        ],
-        statuses: [
-            { id: 's001', txt: 'Done', color: '#33d391' },
-            { id: 's002', txt: 'In progress', color: '#fdbc64' },
-            { id: 's003', txt: 'Stuck', color: '#e8697d' },
-            { id: 's000', txt: '', color: '#c4c4c4' }, // unspecified - default
-        ],
-        tags: [],
-        styles: {},
-    },
 ];
 
-function _createInitialData() {
-    localStorage.setItem(KEY, JSON.stringify(gBoards));
-    return gBoards;
-}
+// function _createInitialData() {
+//     localStorage.setItem(KEY, JSON.stringify(gBoards));
+//     return gBoards;
+// }

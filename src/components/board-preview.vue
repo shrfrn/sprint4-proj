@@ -37,7 +37,7 @@
                     >Duplicate Board</el-dropdown-item
                 >
                 <el-dropdown-item
-                    @click.native="addToFavorites(miniBoard._id)"
+                    @click.native="addToFavorites(miniBoard)"
                     icon="el-icon-star-off"
                     >Add to favorites</el-dropdown-item
                 >
@@ -73,7 +73,7 @@ export default {
     methods: {
         setBoard(boardId) {
             if (this.$store.getters.currBoard?._id === boardId) return;
-            this.$router.push(`/boards/${boardId}`);
+            this.$router.push(`/board/${boardId}`);
         },
         setToEdit(boardId) {
             setTimeout(() => {
@@ -103,8 +103,8 @@ export default {
         deleteBoard(boardId) {
             this.$emit('deleteBoard', boardId);
         },
-        addToFavorites(boardId) {
-            this.$emit('addToFavorites', boardId);
+        addToFavorites(miniBoard) {
+            this.$emit('addToFavorites', miniBoard);
         },
         openInNewTab(boardId) {
             window.open(`http://localhost:8080/boards/${boardId}`, '_blank').focus();

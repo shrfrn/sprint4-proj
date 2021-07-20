@@ -44,24 +44,57 @@ export const boardStore = {
 
             context.commit({ type: 'loadBoard', board: newBoard });
         },
-        async updateBoardName(context, { newTitle, boardId }) {
-            const updateBoard = await boardService.renameBoard(newTitle, boardId);
-            context.commit({ type: 'updateBoard', updateBoard });
+        async saveMiniBoard(context, { miniBoard }) {
+
+            try {
+                let boardCopy
+    
+                if(miniBoard._id === context.getters.currBoard._id){
+                    boardCopy = JSON.parse(JSON.stringify(context.getters.currBoard))
+                } else {
+                    boardCopy = await boardService.getById(miniBoard._id)
+                }
+                boardCopy.title = miniBoard.title
+                boardCopy.description = miniBoard.description
+                boardCopy.isFavorite = miniBoard.isFavorite
+    
+                const newBoard = await boardService.save(boardCopy);
+                await context.dispatch({ type: 'loadBoards' });
+    
+                context.commit({ type: 'loadBoard', board: newBoard });
+            } catch (err) {
+                console.log('couldnt save board', err);
+            }
         },
+        // async updateBoardName(context, { newTitle, boardId }) {
+        //     const updateBoard = await boardService.renameBoard(newTitle, boardId);
+        //     context.commit({ type: 'updateBoard', updateBoard });
+        // },
         async removeBoard(context, { boardId }) {
             console.log('boardId :>> ', boardId);
             await boardService.remove(boardId);
             context.commit({ type: 'removeBoard', boardId });
             // .then(() => context.commit({type: 'removeBoard', boardId}))
         },
-        async addToFavorites(context, { boardId }) {
-            const updateBoard = await boardService.addToFavorites(boardId);
-            context.commit({ type: 'updateBoard', updateBoard });
-        },
+        // async addToFavorites(context, { boardId }) {
+        //     const updateBoard = await boardService.addToFavorites(boardId);
+        //     context.commit({ type: 'updateBoard', updateBoard });
+        // },
         async duplicateBoard(context, { boardId }) {
-            const boards = await boardService.duplicateBoard(boardId);
-            context.commit({ type: 'setBoards', boards });
-            // context.loadBoards();
+            try {
+                const boardCopy = await boardService.getById(boardId)
+                
+                delete boardCopy._id
+                boardCopy.title = 'Copy of ' + boardCopy.title
+
+                const newBoard = await boardService.save(boardCopy);
+                const boards = await context.dispatch({ type: 'loadBoards' });
+                context.commit({ type: 'setBoards', boards });
+                context.commit({ type: 'loadBoard', board: newBoard });
+
+            } catch (err) {
+                console.log('couldnt duplicate board', err);
+            }
         },
         async setFilter(context, { filterBy }) {
             try {
@@ -74,92 +107,6 @@ export const boardStore = {
                 console.log('couldnt filtered', err);
             }
         },
-        // async updateTask(context, { task, groupId }) {
-        //     const updateBoard = await boardService.updateTask(
-        //         task,
-        //         groupId,
-        //         context.state.currBoard._id
-        //     );
-        //     context.commit({ type: 'updateBoard', updateBoard });
-        // },
-        // async addTask(context, { task, groupId }) {
-        //     const updateBoard = await boardService.addTask(
-        //         task,
-        //         groupId,
-        //         context.state.currBoard._id
-        //     );
-
-        //     context.commit({ type: 'updateBoard', updateBoard });
-        // },
-        // async duplicateTask(context, { task, groupId }) {
-        //     const updateBoard = await boardService.duplicateTask(
-        //         task,
-        //         groupId,
-        //         context.state.currBoard._id
-        //     );
-        //     context.commit({ type: 'updateBoard', updateBoard });
-        // },
-        // async removeTask(context, { task, groupId }) {
-        //     const updateBoard = await boardService.removeTask(
-        //         task,
-        //         groupId,
-        //         context.state.currBoard._id
-        //     );
-
-        //     context.commit({ type: 'updateBoard', updateBoard });
-        // },
-        // async saveTasks(context, { saveTasks, groupId }) {
-        //     const updateBoard = await boardService.updateTasks(
-        //         saveTasks,
-        //         context.state.currBoard._id,
-        //         groupId
-        //     );
-        //     context.commit({ type: 'updateBoard', updateBoard });
-        // },
-        // async updateGroupName(context, { updatedGroup }) {
-        //     const updateBoard = await boardService.updateGroup(
-        //         updatedGroup,
-        //         context.state.currBoard
-        //     );
-        //     context.commit({ type: 'updateBoard', updateBoard });
-        // },
-        // async removeGroup(context, { group }) {
-        //     const updateBoard = await boardService.removeGroup(group, context.state.currBoard);
-        //     context.commit({ type: 'updateBoard', updateBoard });
-        // },
-        // async duplicateGroup(context, { group }) {
-        //     const groupCopy = JSON.parse(JSON.stringify(group))
-        //     console.log('group copy ok');
-        //     let boardCopy = JSON.parse(JSON.stringify(context.getters.currBoard))
-        //     console.log('board copy ok');
-        //     boardCopy.groups.push(groupCopy)
-        //     await boardService.save(boardCopy)
-        //     context.commit({ type: 'loadBoard', boardCopy });
-        // },
-        // async duplicateGroup(context, { duplicatedGroup }) {
-        //     const updateBoard = await boardService.duplicateGroup(
-        //         duplicatedGroup,
-        //         context.state.currBoard
-        //     );
-        //     context.commit({ type: 'updateBoard', updateBoard });
-        // },
-        // async updateGroup(context, { group }) {
-        //     const updateBoard = await boardService.updateGroup(group, context.state.currBoard);
-        //     context.commit({ type: 'updateBoard', updateBoard });
-        // },
-        // async addNewGroup(context) {
-        //     const updateBoard = await boardService.addNewGroup(context.state.currBoard._id);
-        //     console.log('updateBoard :>> ', updateBoard);
-        //     context.commit({ type: 'updateBoard', updateBoard });
-        // },
-
-        // async saveGroups(context, { updatedGroups }) {
-        //     const updateBoard = await boardService.updateGroups(
-        //         updatedGroups,
-        //         context.state.currBoard
-        //     );
-        //     context.commit({ type: 'updateBoard', updateBoard });
-        // },
     },
     getters: {
         boards(state) {

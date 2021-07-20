@@ -67,9 +67,12 @@ export default {
                 });
         },
         updateBoardName(newTitle, boardId) {
-            console.log('newTitle :>> ', newTitle);
-            console.log('boardId :>> ', boardId);
-            this.$store.dispatch({ type: 'updateBoardName', newTitle, boardId });
+
+            const miniBoards = this.$store.getters.boards
+            const miniBoard = miniBoards.find(board => board._id === boardId)
+            miniBoard.title = newTitle
+
+            this.$store.dispatch({ type: 'saveMiniBoard', miniBoard })
         },
 
         deleteBoard(boardId) {
@@ -77,8 +80,9 @@ export default {
             this.$store.dispatch({ type: 'removeBoard', boardId });
         },
 
-        addToFavorites(boardId) {
-            this.$store.dispatch({ type: 'addToFavorites', boardId });
+        addToFavorites(miniBoard) {
+            miniBoard.isFavorite = !miniBoard.isFavorite
+            this.$store.dispatch({ type: 'saveMiniBoard', miniBoard });
         },
 
         duplicateBoard(boardId) {
