@@ -2,6 +2,7 @@
     @include flex(flex-start, start, column);
     padding: 16px 14px;
     width: 255px;
+    height: 95vh;
     background-color: #ffffff;
     border-right: 1px solid #e6e9ef;
     font-family: Lato;
@@ -51,3 +52,29 @@
 }
 
 // #e6e9ef
+
+.board-list.close {
+    width: 40px;
+    height: 95vh;
+    background-color: #ffffff;
+    border-right: 1px solid #e6e9ef;
+}
+
+.arrow {
+    position: relative;
+    top: 30px;
+    left: 125px;
+    transition: 0.2s;
+    cursor: pointer;
+    font-size: 18px;
+
+    &:hover {
+        color: #454b75;
+    }
+}
+
+.arrow.close {
+    position: relative;
+    top: 30px;
+    left: 20px;
+}

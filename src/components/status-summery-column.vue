@@ -2,26 +2,56 @@
     <section class="status-summery" v-if="statuses">
         <div class="battery">
             <div
+                v-if="percentOfTotal(statuses['Stuck'])"
                 class="stuck"
                 :style="{
                     width: percentOfTotal(statuses['Stuck']) + '%',
                     backgroundColor: 'rgb(232, 105, 125)',
                 }"
-            ></div>
+            >
+                <span v-if="percentOfTotal(statuses['Stuck'])">
+                    {{ percentOfTotal(statuses['Stuck']).toFixed(0) + '%' }}
+                </span>
+            </div>
+
             <div
+                v-if="percentOfTotal(statuses['Done'])"
                 class="done"
                 :style="{
                     width: percentOfTotal(statuses['Done']) + '%',
                     backgroundColor: 'rgb(51, 211, 145)',
                 }"
-            ></div>
+            >
+                <span v-if="percentOfTotal(statuses['Done'])">
+                    {{ percentOfTotal(statuses['Done']).toFixed(0) + '%' }}
+                </span>
+            </div>
+
             <div
+                v-if="percentOfTotal(statuses['In progress'])"
                 class="in-progress"
                 :style="{
                     width: percentOfTotal(statuses['In progress']) + '%',
                     backgroundColor: 'rgb(253, 188, 100)',
                 }"
-            ></div>
+            >
+                <span v-if="percentOfTotal(statuses['In progress'])">
+                    {{ percentOfTotal(statuses['In progress']).toFixed(0) + '%' }}
+                </span>
+            </div>
+
+            <div
+                v-if="percentOfTotal(statuses[''])"
+                class="empty"
+                :style="{
+                    width: percentOfTotal(statuses['']) + '%',
+                    backgroundColor: 'rgb(196, 196, 196)',
+                }"
+            >
+                <span v-if="percentOfTotal(statuses[''])">
+                    {{ percentOfTotal(statuses['']).toFixed(0) + '%' }}
+                </span>
+            </div>
         </div>
     </section>
 </template>
@@ -33,29 +63,16 @@ export default {
             type: String,
             required: true,
         },
+        group: Object,
     },
-    date() {
+    data() {
         return {
-            taskCount: null,
-            statuses: null,
+            taskCount: 0,
+            statuses: {},
         };
     },
     created() {
-        this.statuses = {};
-        this.taskCount = 0;
-        this.currGroup.tasks.forEach((task) => {
-            const currStatus = task.columns.status.txt;
-            if (this.statuses[currStatus]) {
-                this.statuses[currStatus] += 1;
-            } else {
-                this.statuses[currStatus] = 1;
-            }
-            // if (!this.statuses[currStatus]) this.statuses[currStatus] = 1;
-            // else this.statuses[currStatus] += 1;
-            // console.log('this.statuses :>> ', this.statuses);
-            this.taskCount++;
-            console.log('this.taskCount :>> ', this.taskCount);
-        });
+        this.loadBattery();
     },
     computed: {
         currGroup() {
@@ -64,11 +81,28 @@ export default {
         },
     },
     methods: {
+        loadBattery() {
+            this.group.tasks.forEach((task) => {
+                const currStatus = task.columns.status.txt;
+                if (this.statuses[currStatus]) {
+                    this.statuses[currStatus] += 1;
+                } else {
+                    this.statuses[currStatus] = 1;
+                }
+
+                this.taskCount++;
+            });
+        },
         percentOfTotal(status) {
-            console.log('status :>> ', status);
-            const res = (status / this.taskCount) * 100;
-            console.log('res :>> ', res);
             return (status / this.taskCount) * 100;
+        },
+    },
+
+    watch: {
+        group() {
+            this.statuses = {};
+            this.taskCount = 0;
+            this.loadBattery();
         },
     },
 };

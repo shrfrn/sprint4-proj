@@ -21,26 +21,37 @@ export default {
             type: String,
             required: true,
         },
+        group: Object,
     },
-    date() {
+    data() {
         return {
             delegates: [],
         };
     },
     created() {
-        const allDelegates = [];
-        this.currGroup.tasks.forEach((task) => {
-            task.columns['delegates'].forEach((delegate) => allDelegates.push(delegate));
-        });
-
-        this.delegates = allDelegates.filter(
-            (dl, idx, self) => idx === self.findIndex((d) => d._id === dl._id)
-        );
+        this.loadPersons();
     },
     computed: {
         currGroup() {
             const boardGroups = this.$store.getters.currBoard.groups;
             return boardGroups.find((group) => group.id === this.groupId);
+        },
+    },
+    methods: {
+        loadPersons() {
+            const allDelegates = [];
+            this.group.tasks.forEach((task) => {
+                task.columns['delegates'].forEach((delegate) => allDelegates.push(delegate));
+            });
+
+            this.delegates = allDelegates.filter(
+                (dl, idx, self) => idx === self.findIndex((d) => d._id === dl._id)
+            );
+        },
+    },
+    watch: {
+        group() {
+            this.loadPersons();
         },
     },
     components: {

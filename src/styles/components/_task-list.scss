@@ -1,8 +1,9 @@
 .task-list {
     width: 100%;
+    margin-bottom: 40px;
 
     .flip-list-move {
-        transition: transform 0.5s;
+        transition: 0.5s;
     }
 
     .ghost {
@@ -23,12 +24,18 @@
         width: 100%;
         margin-left: -7px;
         opacity: 0.6;
+        transition: 0.2s;
+
+        &:focus-within {
+            opacity: 1;
+        }
+
         // margin-left: 2px;
     }
 
     input {
         &.add-input {
-            margin-left: 32px;
+            margin-left: 22px;
         }
         position: relative;
         left: 0;
@@ -63,6 +70,7 @@
         justify-content: flex-end;
         align-items: center;
         background-color: #f5f6f8;
+
         width: 720px;
         margin-left: auto;
 
@@ -72,15 +80,16 @@
             align-items: center;
             width: 180px;
             height: 100%;
+            font-family: Lato;
+            font-size: 14px;
         }
 
         .tag-summery {
             div {
                 color: rgb(random(255), random(255), random(255));
             }
-            font-size: 12px;
+
             gap: 2px 5px;
-            font-weight: 600;
         }
 
         .date-summery {
@@ -94,17 +103,24 @@
         }
         .status-summery {
             height: 30px;
+
             .battery {
                 display: flex;
                 align-items: center;
-                background-color: #ccc;
                 width: 100%;
                 height: 100%;
 
                 .done,
                 .stuck,
-                .in-progress {
-                    height: 100%;
+                .in-progress,
+                .empty {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 90%;
+                    text-align: center;
+                    font-size: 12px;
+                    font-weight: 600;
                 }
             }
         }

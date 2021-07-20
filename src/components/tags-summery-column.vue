@@ -11,26 +11,36 @@ export default {
             type: String,
             required: true,
         },
+        group: Object,
     },
-    date() {
+    data() {
         return {
             tags: [],
         };
     },
     created() {
-        const allTags = [];
-        this.currGroup.tasks.forEach((task) => {
-            task.columns['tags'].forEach((tag) => allTags.push(tag));
-        });
-        this.tags = [...new Set(allTags)];
+        this.loadTags();
     },
     computed: {
         currGroup() {
             const boardGroups = this.$store.getters.currBoard.groups;
-            console.log('enter');
-            const group = boardGroups.find((group) => group.id === this.groupId);
-            console.log('group :>> ', group);
+            // const group = boardGroups.find((group) => group.id === this.groupId);
+            // console.log('group :>> ', group);
             return boardGroups.find((group) => group.id === this.groupId);
+        },
+    },
+    methods: {
+        loadTags() {
+            const allTags = [];
+            this.group.tasks.forEach((task) => {
+                task.columns['tags'].forEach((tag) => allTags.push(tag));
+            });
+            this.tags = [...new Set(allTags)];
+        },
+    },
+    watch: {
+        group() {
+            this.loadTags();
         },
     },
 };

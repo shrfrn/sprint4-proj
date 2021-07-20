@@ -26,23 +26,17 @@ export default {
             type: String,
             required: true,
         },
+        group: Object,
     },
-    date() {
+    data() {
         return {
-            minDate: null,
-            maxDate: null,
+            minDate: Infinity,
+            maxDate: -Infinity,
             isDaysShown: false,
         };
     },
     created() {
-        this.isDaysShown = false;
-        this.minDate = Infinity;
-        this.maxDate = -Infinity;
-        console.log('currGroup :>> ', this.currGroup);
-        this.currGroup.tasks.forEach((task) => {
-            if (task.columns['date'] < this.minDate) this.minDate = task.columns['date'];
-            if (task.columns['date'] > this.maxDate) this.maxDate = task.columns['date'];
-        });
+        this.loadDates();
     },
     computed: {
         currGroup() {
@@ -51,6 +45,12 @@ export default {
         },
     },
     methods: {
+        loadDates() {
+            this.group.tasks.forEach((task) => {
+                if (task.columns['date'] < this.minDate) this.minDate = task.columns['date'];
+                if (task.columns['date'] > this.maxDate) this.maxDate = task.columns['date'];
+            });
+        },
         getMonthForamt(time) {
             const months = [
                 'January',
@@ -72,13 +72,10 @@ export default {
             const diff = new Date(date2).getTime() - new Date(date1).getTime();
             return Math.trunc(diff / (1000 * 3600 * 24)) + ' Days';
         },
-        showDays() {
-            console.log('hi');
-            this.isDaysShown = true;
-        },
-        hideDays() {
-            console.log('bye');
-            this.isDaysShown = false;
+    },
+    watch: {
+        group() {
+            this.loadDates();
         },
     },
 };

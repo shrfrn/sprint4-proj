@@ -5,7 +5,6 @@ export const boardStore = {
     state: {
         boards: [],
         currBoard: null,
-         
     },
     mutations: {
         setBoards(state, { boards }) {
@@ -75,92 +74,6 @@ export const boardStore = {
                 console.log('couldnt filtered', err);
             }
         },
-        // async updateTask(context, { task, groupId }) {
-        //     const updateBoard = await boardService.updateTask(
-        //         task,
-        //         groupId,
-        //         context.state.currBoard._id
-        //     );
-        //     context.commit({ type: 'updateBoard', updateBoard });
-        // },
-        // async addTask(context, { task, groupId }) {
-        //     const updateBoard = await boardService.addTask(
-        //         task,
-        //         groupId,
-        //         context.state.currBoard._id
-        //     );
-
-        //     context.commit({ type: 'updateBoard', updateBoard });
-        // },
-        // async duplicateTask(context, { task, groupId }) {
-        //     const updateBoard = await boardService.duplicateTask(
-        //         task,
-        //         groupId,
-        //         context.state.currBoard._id
-        //     );
-        //     context.commit({ type: 'updateBoard', updateBoard });
-        // },
-        // async removeTask(context, { task, groupId }) {
-        //     const updateBoard = await boardService.removeTask(
-        //         task,
-        //         groupId,
-        //         context.state.currBoard._id
-        //     );
-
-        //     context.commit({ type: 'updateBoard', updateBoard });
-        // },
-        // async saveTasks(context, { saveTasks, groupId }) {
-        //     const updateBoard = await boardService.updateTasks(
-        //         saveTasks,
-        //         context.state.currBoard._id,
-        //         groupId
-        //     );
-        //     context.commit({ type: 'updateBoard', updateBoard });
-        // },
-        // async updateGroupName(context, { updatedGroup }) {
-        //     const updateBoard = await boardService.updateGroup(
-        //         updatedGroup,
-        //         context.state.currBoard
-        //     );
-        //     context.commit({ type: 'updateBoard', updateBoard });
-        // },
-        // async removeGroup(context, { group }) {
-        //     const updateBoard = await boardService.removeGroup(group, context.state.currBoard);
-        //     context.commit({ type: 'updateBoard', updateBoard });
-        // },
-        // async duplicateGroup(context, { group }) {
-        //     const groupCopy = JSON.parse(JSON.stringify(group))
-        //     console.log('group copy ok');
-        //     let boardCopy = JSON.parse(JSON.stringify(context.getters.currBoard))
-        //     console.log('board copy ok');
-        //     boardCopy.groups.push(groupCopy)
-        //     await boardService.save(boardCopy)
-        //     context.commit({ type: 'loadBoard', boardCopy });
-        // },
-        // async duplicateGroup(context, { duplicatedGroup }) {
-        //     const updateBoard = await boardService.duplicateGroup(
-        //         duplicatedGroup,
-        //         context.state.currBoard
-        //     );
-        //     context.commit({ type: 'updateBoard', updateBoard });
-        // },
-        // async updateGroup(context, { group }) {
-        //     const updateBoard = await boardService.updateGroup(group, context.state.currBoard);
-        //     context.commit({ type: 'updateBoard', updateBoard });
-        // },
-        // async addNewGroup(context) {
-        //     const updateBoard = await boardService.addNewGroup(context.state.currBoard._id);
-        //     console.log('updateBoard :>> ', updateBoard);
-        //     context.commit({ type: 'updateBoard', updateBoard });
-        // },
-
-        // async saveGroups(context, { updatedGroups }) {
-        //     const updateBoard = await boardService.updateGroups(
-        //         updatedGroups,
-        //         context.state.currBoard
-        //     );
-        //     context.commit({ type: 'updateBoard', updateBoard });
-        // },
     },
     getters: {
         boards(state) {
@@ -172,6 +85,5 @@ export const boardStore = {
         getEmptyTask(state) {
             return boardService.getEmptyTask(state.currBoard);
         },
-      
     },
 };

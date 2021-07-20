@@ -1,32 +1,49 @@
 <template>
-    <section class="board-list">
-        <p class="title">Boards</p>
-        <section class="board-list-actions">
-            <article class="action" @click="addBoard">
-                <i class="fas fa-plus fa-sm"></i>
-                <span>Add board</span>
-            </article>
-            <article class="action" @click="filter">
-                <i class="fas fa-filter fa-sm"></i>
-                <span>Filter</span>
-            </article>
-            <article class="action" @click="search">
-                <i class="fas fa-search fa-sm"></i>
-                <span>Search</span>
-            </article>
-        </section>
+    <section>
+        <i
+            v-show="isNavOpen"
+            class="arrow fas fa-arrow-circle-left"
+            :class="{ close: !isNavOpen }"
+            @click="closeNav"
+        ></i>
+        <i
+            v-show="!isNavOpen"
+            class="arrow fas fa-arrow-circle-right"
+            :class="{ close: !isNavOpen }"
+            @click="closeNav"
+        ></i>
+        <transition name="fade">
+            <section class="board-list" :class="{ close: !isNavOpen }">
+                <p v-show="isNavOpen" class="title">Boards</p>
 
-        <section class="board-list-items">
-            <board-preview
-                v-for="board in boards"
-                :key="board._id"
-                :miniBoard="board"
-                @deleteBoard="deleteBoard"
-                @addToFavorites="addToFavorites"
-                @duplicateBoard="duplicateBoard"
-                @updateBoardName="updateBoardName"
-            />
-        </section>
+                <section v-show="isNavOpen" class="board-list-actions">
+                    <article class="action" @click="addBoard">
+                        <i class="fas fa-plus fa-sm"></i>
+                        <span>Add board</span>
+                    </article>
+                    <article class="action" @click="filter">
+                        <i class="fas fa-filter fa-sm"></i>
+                        <span>Filter</span>
+                    </article>
+                    <article class="action" @click="search">
+                        <i class="fas fa-search fa-sm"></i>
+                        <span>Search</span>
+                    </article>
+                </section>
+
+                <section v-show="isNavOpen" class="board-list-items">
+                    <board-preview
+                        v-for="board in boards"
+                        :key="board._id"
+                        :miniBoard="board"
+                        @deleteBoard="deleteBoard"
+                        @addToFavorites="addToFavorites"
+                        @duplicateBoard="duplicateBoard"
+                        @updateBoardName="updateBoardName"
+                    />
+                </section>
+            </section>
+        </transition>
     </section>
 </template>
 
@@ -41,7 +58,15 @@ export default {
             required: true,
         },
     },
+    data() {
+        return {
+            isNavOpen: true,
+        };
+    },
     methods: {
+        closeNav() {
+            this.isNavOpen = !this.isNavOpen;
+        },
         addBoard() {
             this.$prompt('Please Enter Board Name', 'Add Board', {
                 confirmButtonText: 'OK',
@@ -67,13 +92,15 @@ export default {
                 });
         },
         updateBoardName(newTitle, boardId) {
-            console.log('newTitle :>> ', newTitle);
-            console.log('boardId :>> ', boardId);
-            this.$store.dispatch({ type: 'updateBoardName', newTitle, boardId });
+            const boards = this.$store.getters.boards;
+            const board = boards.find((board) => board._id === boardId);
+            console.log('board :>> ', board);
+            board.title = newTitle;
+
+            this.$store.dispatch({ type: 'saveBoard', board });
         },
 
         deleteBoard(boardId) {
-            console.log('boardId :>> ', boardId);
             this.$store.dispatch({ type: 'removeBoard', boardId });
         },
 
@@ -112,4 +139,13 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.fade-enter-active,
+.fade-leave-active,
+.board-list {
+    transition: all 0.2s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+}
+</style>

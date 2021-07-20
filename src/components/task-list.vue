@@ -30,10 +30,13 @@
         </form>
 
         <div class="summery">
-            <status-summery :groupId="groupId"></status-summery>
-            <date-summery :groupId="groupId"></date-summery>
-            <person-summery :groupId="groupId"></person-summery>
-            <tags-summery :groupId="groupId"></tags-summery>
+            <component
+                :is="column"
+                v-for="(column, idx) in summeryComponents"
+                :key="idx"
+                :group="group"
+                :groupId="groupId"
+            />
         </div>
     </section>
 </template>
@@ -47,7 +50,7 @@ import statusSummery from './status-summery-column.vue';
 import dateSummery from './date-summery-column.vue';
 
 export default {
-    props: { tasks: Array, color: Object, groupId: String },
+    props: { tasks: Array, color: Object, groupId: String, group: Object },
     components: {
         taskPreview,
         draggable,
@@ -61,6 +64,7 @@ export default {
         return {
             tasksCopy: null,
             taskToAdd: null,
+            summeryComponents: [statusSummery, dateSummery, personSummery, tagsSummery],
         };
     },
     created() {
@@ -70,8 +74,6 @@ export default {
     },
     watch: {
         tasks(newVal) {
-            // console.log('in tasks watcher newVal:', newVal);
-            // console.log('in tasks watcher this.tasksCopy:', this.tasksCopy);
             this.tasksCopy = JSON.parse(JSON.stringify(newVal));
         },
     },
@@ -81,20 +83,15 @@ export default {
         },
         async addTask() {
             if (this.taskToAdd.title === '') return;
-
-            // var ToAdd = JSON.parse(JSON.stringify(this.taskToAdd));
             this.taskToAdd.createdAt = Date.now();
             await this.$store.dispatch({
                 type: 'addTask',
                 task: this.taskToAdd,
                 groupId: this.groupId,
             });
-            console.log('tasks', this.tasksCopy);
             this.taskToAdd = this.$store.getters.getEmptyTask;
         },
         async onEnd() {
-            // this.tasks = this.tasksCopy;
-
             await this.$store.dispatch({
                 type: 'saveTasks',
             });
