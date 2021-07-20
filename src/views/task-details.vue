@@ -6,7 +6,9 @@
   </section> -->
   <el-drawer :visible.sync="drawer" :title="currTask.title">
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="Updates" name="Updates"><chat-box/></el-tab-pane>
+      <el-tab-pane label="Updates" name="Updates">
+        <chat-box v-if="updates" :updates="updates"/>
+        </el-tab-pane>
       <el-tab-pane label="Activity log" name="Activity log">
         <activity-list v-if="activities" :activities="activities"/>
       </el-tab-pane>
@@ -26,6 +28,7 @@ export default {
       drawer: true,
       activeName: "Activity log",
       activities: [],
+      updates:[]
     };
   },
   watch: {
@@ -48,7 +51,8 @@ export default {
       });
     });
     this.activities = boardService.getActivitiesByItem(taskId);
-    console.log( this.activities);
+     this.updates = boardService.getUpdatesByItem(taskId);
+    console.log( this.updates);
   },
   methods: {
     closeDetails() {
