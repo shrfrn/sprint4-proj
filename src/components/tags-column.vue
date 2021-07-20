@@ -1,19 +1,18 @@
 <template>
-    <el-select class="tags-column"
+    <el-select
+        class="tags-column"
         v-model="newTagList"
         multiple
         filterable
         allow-create
+        collapse-tags
         size="mini"
         @change="onTagListChange"
         @remove-tag="onRemoveTag"
         @visible-change="onPickerStateChange"
-        placeholder="Choose tags...">
-        <el-option
-            v-for="item in boardTags"
-            :key="item"
-            :value="item">
-        </el-option>
+        placeholder="Choose tags..."
+    >
+        <el-option v-for="item in boardTags" :key="item" :value="item"> </el-option>
     </el-select>
 </template>
 
@@ -29,35 +28,35 @@ export default {
             required: true,
         },
     },
-    data(){
+    data() {
         return {
             newTagList: [],
             isDirty: false,
-        }
+        };
     },
     computed: {
-        boardTags() { 
-            return this.board.tags
-        }
+        boardTags() {
+            return this.board.tags;
+        },
     },
     methods: {
-        onTagListChange(){
-            this.isDirty = true
+        onTagListChange() {
+            this.isDirty = true;
         },
-        onRemoveTag(){
-            this.$emit('input', this.newTagList)
+        onRemoveTag() {
+            this.$emit('input', this.newTagList);
         },
-        onPickerStateChange(isPickerOpen){
-            if(isPickerOpen || !this.isDirty) return
+        onPickerStateChange(isPickerOpen) {
+            if (isPickerOpen || !this.isDirty) return;
 
-            this.newTagList.forEach(tag => {
-                if(!this.boardTags.includes(tag)) this.boardTags.unshift(tag)
-            })
-            this.$emit('input', this.newTagList)
+            this.newTagList.forEach((tag) => {
+                if (!this.boardTags.includes(tag)) this.boardTags.unshift(tag);
+            });
+            this.$emit('input', this.newTagList);
         },
     },
-    created(){
-        if(this.value) this.newTagList = this.value
-    }
-}
+    created() {
+        if (this.value) this.newTagList = this.value;
+    },
+};
 </script>

@@ -11,13 +11,13 @@
             </router-link> -->
 
             <el-tooltip class="item" effect="dark" content="Boards" placement="right">
-                <router-link to="/boards/b101" title="boards">
+                <router-link to="/board" title="boards">
                     <i class="fas fa-th-large fa-lg"></i>
                 </router-link>
             </el-tooltip>
 
             <el-tooltip class="item" effect="dark" content="Notifications" placement="right">
-                <router-link to="/boards/789" title="notification">
+                <router-link to="/board" title="notification">
                     <i class="far fa-bell fa-lg"></i>
                 </router-link>
             </el-tooltip>
@@ -26,13 +26,13 @@
 
         <section class="user-action">
             <el-tooltip class="item" effect="dark" content="Calender" placement="right">
-                <router-link to="/boards/102" title="my week">
+                <router-link to="/board" title="my week">
                     <i class="far fa-calendar-check fa-lg"></i>
                 </router-link>
             </el-tooltip>
 
             <el-tooltip class="item" effect="dark" content="My Profile" placement="right">
-                <router-link to="/boards/111" title="my profile">
+                <router-link to="/board" title="my profile">
                     <i class="fas fa-user-circle fa-lg"></i>
                 </router-link>
             </el-tooltip>

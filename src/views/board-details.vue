@@ -1,27 +1,36 @@
 <template>
-    <section v-if="board" class="board-details">
-        <board-header
-            :board="board"
-            @addNewGroup="addNewGroup"
-            @updateTitles="updateTitles"
-            @setFilter="setFilter"
-        />
-        <group-list
-            :groups="board.groups"
-            @updateGroupName="updateGroupName"
-            @removeGroup="removeGroup"
-            @duplicateGroup="duplicateGroup"
-            @changeColor="changeColor"
-            @updateDrag="updateDrag"
-            @openTaskDetails="openTaskDetails"
-        />
-        <router-view />
+    <section class="board-details">
+        <template v-if="board">
+            <board-header
+                v-if="board"
+                :board="board"
+                @addNewGroup="addNewGroup"
+                @updateTitles="updateTitles"
+                @setFilter="setFilter"
+            />
+            <group-list
+                v-if="board"
+                :groups="board.groups"
+                @updateGroupName="updateGroupName"
+                @removeGroup="removeGroup"
+                @duplicateGroup="duplicateGroup"
+                @changeColor="changeColor"
+                @updateDrag="updateDrag"
+                @openTaskDetails="openTaskDetails"
+            />
+            <router-view />
+        </template>
+
+        <!-- <div class="loader" v-else> -->
+        <div class="loader" v-else>
+            <img src="@/assets/img/loader.gif" alt="" />
+        </div>
     </section>
 </template>
 
 <script>
 // import { boardService } from '../services/board.service';
-
+import {socketService} from '@/services/socket.service.js'
 import boardHeader from '../components/board-header.vue';
 import groupList from '../components/group-list.vue';
 // import boardViews from '../components/board-views.vue';
@@ -37,45 +46,32 @@ export default {
         board() {
             return JSON.parse(JSON.stringify(this.$store.getters.currBoard));
         },
-        // delegates: {
-        //     get: function() {
-        //         const delegates = this.$store.getters.currBoard.groups[0].tasks[0].columns[ 'delegates'];
-        //         return JSON.parse(JSON.stringify(delegates));
-        //     },
-        //     set: function(newVal) {
-        //         // this.$store.dispatch({type: updateTask, task, groupId})
-        //         console.log('new delegate list:', newVal);
-        //     },
-        // },
-        // members() {
-        //     const members = this.$store.getters.currBoard.members;
-        //     const names = members.map((member) => member.fullname);
-        //     console.log('members:', names);
-        //     return this.$store.getters.currBoard.members;
-        // },
-        // status: {
-        //     get: function() {
-        //         return this.$store.getters.currBoard.groups[0].tasks[0].columns['status'];
-        //     },
-        //     set: function(newVal) {
-        //         // this.$store.dispatch({type: updateTask, task, groupId})
-        //         console.log('new status:', newVal);
-        //     },
-        // },
         date() {
             return this.$store.getters.currBoard.groups[0].tasks[0].columns['date'];
         },
     },
-    created() {
+    async created() {
         console.log('CREATING');
-        this.loadBoard();
+        await this.loadBoard();
+        await socketService.setup()
+        // console.log('in created. board \n', this.board);
+        socketService.emit('in-board', this.board._id)
+        socketService.on('board-updated', this.updateBoard )
+            
+    },
+    destroyed(){
+        socketService.emit('left-board', this.board._id)
     },
 
     methods: {
+        updateBoard(board){
+            console.log('update recieved on socket\n', board);
+            this.$store.commit({ type: 'loadBoard', board})
+        },
         async loadBoard() {
             try {
                 const { boardId } = this.$route.params;
-                await this.$store.dispatch({ type: 'loadBoard', boardId });
+                return await this.$store.dispatch({ type: 'loadBoard', boardId });
                 // this.board = this.$store.getters.currBoard;
             } catch (error) {
                 console.log('Couldnt load board');

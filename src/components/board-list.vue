@@ -17,21 +17,45 @@
                 <p v-show="isNavOpen" class="title">Boards</p>
 
                 <section v-show="isNavOpen" class="board-list-actions">
-                    <article class="action" @click="addBoard">
+                    <article class="action act-add" @click="addBoard">
                         <i class="fas fa-plus fa-sm"></i>
                         <span>Add board</span>
                     </article>
-                    <article class="action" @click="filter">
+                    <!-- <article class="action" @click="filter">
                         <i class="fas fa-filter fa-sm"></i>
                         <span>Filter</span>
-                    </article>
-                    <article class="action" @click="search">
-                        <i class="fas fa-search fa-sm"></i>
-                        <span>Search</span>
+                    </article> -->
+                    <article class="action">
+                        <el-input
+                            size="medium"
+                            class="act-search"
+                            placeholder="Search"
+                            v-model="filterBy.txt"
+                            @input="setFilter"
+                        >
+                            <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                        </el-input>
                     </article>
                 </section>
 
                 <section v-show="isNavOpen" class="board-list-items">
+                    <p v-show="isNavOpen" class="title"><i class="far fa-star"></i> Favorites</p>
+                    <p class="indication" v-if="!favBoards.length">No favorites yet</p>
+
+                    <div v-for="(board, idx) in boards" :key="idx">
+                        <board-preview
+                            v-show="board.isFavorite"
+                            :miniBoard="board"
+                            @deleteBoard="deleteBoard"
+                            @addToFavorites="addToFavorites"
+                            @duplicateBoard="duplicateBoard"
+                            @updateBoardName="updateBoardName"
+                        />
+                    </div>
+
+                    <p v-show="isNavOpen" class="title">
+                        <i class="fas fa-border-all"></i> All Boards
+                    </p>
                     <board-preview
                         v-for="board in boards"
                         :key="board._id"
@@ -61,11 +85,16 @@ export default {
     data() {
         return {
             isNavOpen: true,
+            filterBy: { txt: '' },
+            favBoards: [],
         };
     },
     methods: {
         closeNav() {
             this.isNavOpen = !this.isNavOpen;
+        },
+        setFilter() {
+            this.$store.dispatch({ type: 'setFilterList', filterBy: this.filterBy });
         },
         addBoard() {
             this.$prompt('Please Enter Board Name', 'Add Board', {
@@ -92,43 +121,33 @@ export default {
                 });
         },
         updateBoardName(newTitle, boardId) {
-
-            const miniBoards = this.$store.getters.boards
-            const miniBoard = miniBoards.find(board => board._id === boardId)
-            miniBoard.title = newTitle
-
-            this.$store.dispatch({ type: 'saveMiniBoard', miniBoard })
+            const miniBoards = this.$store.getters.boards;
+            const boardToChange = miniBoards.find((board) => board._id === boardId);
+            const miniBoard = JSON.parse(JSON.stringify(boardToChange));
+            miniBoard.title = newTitle;
+            this.$store.dispatch({ type: 'saveMiniBoard', miniBoard });
         },
 
         deleteBoard(boardId) {
             this.$store.dispatch({ type: 'removeBoard', boardId });
         },
 
-        addToFavorites(miniBoard) {
-            miniBoard.isFavorite = !miniBoard.isFavorite
+        addToFavorites(boardId) {
+            const miniBoards = this.$store.getters.boards;
+            const boardToChange = miniBoards.find((board) => board._id === boardId);
+            const miniBoard = JSON.parse(JSON.stringify(boardToChange));
+            miniBoard.isFavorite = !miniBoard.isFavorite;
+            if (miniBoard.isFavorite) {
+                this.favBoards.unshift(miniBoard);
+            } else {
+                const idx = this.favBoards.findIndex((board) => board._id === miniBoard._id);
+                this.favBoards.splice(idx, 1);
+            }
             this.$store.dispatch({ type: 'saveMiniBoard', miniBoard });
         },
 
         duplicateBoard(boardId) {
             this.$store.dispatch({ type: 'duplicateBoard', boardId });
-        },
-
-        filter() {
-            this.$message({
-                showClose: true,
-                duration: 2000,
-                message: 'Oops, this feature is not available yet.',
-                type: 'error',
-            });
-            // this.$message.error('Oops, this feature is not available yet.');
-        },
-        search() {
-            this.$message({
-                showClose: true,
-                duration: 2000,
-                message: 'Oops, this feature is not available yet.',
-                type: 'error',
-            });
         },
     },
     async created() {
@@ -136,6 +155,11 @@ export default {
     },
     components: {
         boardPreview,
+    },
+    watch: {
+        // boards() {
+        //     this.$store.dispatch({ type: 'loadBoards' });
+        // },
     },
 };
 </script>

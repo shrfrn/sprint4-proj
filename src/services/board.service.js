@@ -1,10 +1,10 @@
-import {httpService} from '@/services/http.service.js'
+import { httpService } from '@/services/http.service.js';
 // import { storageService } from '@/services/async-storage.service.js';
 import { columnHelpers } from '@/services/column.helpers.js';
 import { utilService } from './util.service.js';
 
 // const KEY = 'somedayBoard';
-const BASE_URL = 'board/'
+const BASE_URL = 'board/';
 
 export const boardService = {
     query,
@@ -14,44 +14,29 @@ export const boardService = {
     getEmptyBoard,
     getEmptyGroup,
     getEmptyTask,
-    getEmptyFilter,
-    getEmptyUpdate,
-    getEmptyActivity, // Everything under here should be in store.
-    // renameBoard,
-    // addToFavorites,
-    // duplicateBoard,
-    // updateGroup,
-    // updateGroups,
-    // removeGroup,
-    // duplicateGroup,
+    getEmptyFilter, // Everything under here should be in store.
     getActivitiesByItem,
     getUpdatesByItem,
-
-    // addNewGroup,
-    // updateTask,
-    // addTask,
-    // removeTask,
-    // duplicateTask,
-    // updateTasks,
+    getEmptyUpdate,
+    getEmptyActivity
 };
 
 // Board service
 async function query(filterBy = {}) {
-
-    if(!filterBy) filterBy = getEmptyFilter()
-
+    if (!filterBy) filterBy = getEmptyFilter();
+    const regex = new RegExp(filterBy.txt, 'i');
     // let boards = await httpService.get('boards', {filterBy})
-    let boards = await httpService.get(BASE_URL)
-    boards = boards.map((board) => {
-        return { _id: board._id, title: board.title, isFavorite: board.isFavorite };
-    });
-    return boards;
+    let boards = await httpService.get(BASE_URL);
+    const filteredBoards = boards.filter((board) => regex.test(board.title));
+    // boards.boards = boards.map((board) => {
+    //     return { _id: board._id, title: board.title, isFavorite: board.isFavorite };
+    // });
+    return filteredBoards;
 }
 
 async function getById(id, filterBy = { txt: '' }) {
-
-    const board =  await httpService.get(BASE_URL + id)
-    const regex = new RegExp(filterBy.txt, 'i')
+    const board = await httpService.get(BASE_URL + id);
+    const regex = new RegExp(filterBy.txt, 'i');
 
     var filteredGroups = [];
     board.groups.forEach((group) => {
@@ -73,43 +58,21 @@ async function getById(id, filterBy = { txt: '' }) {
         }
     });
     board.groups = filteredGroups;
+
     return board;
 }
 
 async function remove(id) {
-    return await httpService.delete(BASE_URL + id)
+    return await httpService.delete(BASE_URL + id);
 }
-
-// async function renameBoard(newTitle, boardId) {
-//     const board = await getById(boardId);
-//     board.title = newTitle;
-//     return await save(board);
-// }
-
-// async function addToFavorites(boardId) {
-//     const board = await getById(boardId);
-//     board.isFavorite = !board.isFavorite;
-//     return await save(board);
-// }
 
 async function save(board) {
-    const brd = JSON.parse(JSON.stringify(board))
-    // console.log('board is: \n', brd);
-    if (brd._id) {
-        const res = await httpService.put(BASE_URL + brd._id, brd)
-        console.log('res is:\n', res);
-        return res
+    if (board._id) {
+        return await httpService.put(BASE_URL + board._id, board);
     } else {
-        return await httpService.post(BASE_URL, brd)
+        return await httpService.post(BASE_URL, board);
     }
 }
-
-// async function duplicateBoard(boardId) {
-//     const duplicatedBoard = await getById(boardId);
-//     duplicatedBoard.title = `Copy of ${duplicatedBoard.title}`;
-//     await storageService.post(KEY, duplicatedBoard);
-//     return await query();
-// }
 
 function getEmptyBoard() {
     const newBoard = JSON.parse(JSON.stringify(gBoards[0]));
@@ -276,7 +239,7 @@ const gUpdates = [
             fullname: 'Rachel Bekarov',
             imgUrl: 'http://some-img.jpg',
         },
-        likedBy: []
+        likedBy: [],
     },
     {
         id: utilService.makeId(),
@@ -289,7 +252,7 @@ const gUpdates = [
             fullname: 'Rachel Bekarov',
             imgUrl: 'http://some-img.jpg',
         },
-        likedBy: []
+        likedBy: [],
     },
     {
         id: utilService.makeId(),
@@ -302,43 +265,21 @@ const gUpdates = [
             fullname: 'Rachel Bekarov',
             imgUrl: 'http://some-img.jpg',
         },
-        likedBy: [{
-            _id: 'u103',
-            fullname: 'Sharon Macaron',
-            imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-        },
-        {
-            _id: 'u104',
-            fullname: 'Eden Maran',
-            imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
-        }]
+        likedBy: [
+            {
+                _id: 'u103',
+                fullname: 'Sharon Macaron',
+                imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+            },
+            {
+                _id: 'u104',
+                fullname: 'Eden Maran',
+                imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+            },
+        ],
     },
-
-]
+];
 // Private functions
-
-// function _getNewGroup() {
-//     return {
-//         id: utilService.makeId(),
-//         title: 'New Group',
-//         tasks: [
-//             {
-//                 id: utilService.makeId(),
-//                 title: 'You can add new task here',
-//                 createdAt: Date.now(),
-//                 columns: {
-//                     delegate: [],
-//                     status: { txt: '', color: '#c4c4c4' },
-//                     date: Date.now(),
-//                     tags: [],
-//                 },
-//             },
-//         ],
-//         style: {
-//             color: _getRandomColor(),
-//         },
-//     };
-// }
 
 function _getRandomColor() {
     var letters = '0123456789ABCDEF';
@@ -356,8 +297,8 @@ const gBoards = [
         isFavorite: false,
         createdAt: Date.now(),
         createdBy: {
-            _id : '60f562f7a22a0da5023ec2be',
-            fullname : 'Avior Hagibor',
+            _id: '60f562f7a22a0da5023ec2be',
+            fullname: 'Avior Hagibor',
             imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
         },
         columns: ['status', 'date', 'delegates', 'tags'],
@@ -371,8 +312,7 @@ const gBoards = [
                         title: 'Item I',
                         createdAt: Date.now(),
                         columns: {
-                            delegates: [
-                            ],
+                            delegates: [],
                             status: { id: 's000', txt: '', color: '#c4c4c4' },
                             date: Date.now(),
                             tags: ['UI', 'DB'],
@@ -383,8 +323,7 @@ const gBoards = [
                         title: 'Item II',
                         createdAt: Date.now(),
                         columns: {
-                            delegates: [
-                            ],
+                            delegates: [],
                             status: { id: 's000', txt: '', color: '#c4c4c4' },
                             date: Date.now(),
                             tags: ['front-end'],
@@ -395,8 +334,7 @@ const gBoards = [
                         title: 'Item III',
                         createdAt: Date.now(),
                         columns: {
-                            delegates: [
-                            ],
+                            delegates: [],
                             status: { id: 's000', txt: '', color: '#c4c4c4' },
                             date: Date.now(),
                             tags: [],
@@ -416,8 +354,7 @@ const gBoards = [
                         title: 'Item IV',
                         createdAt: Date.now(),
                         columns: {
-                            delegates: [
-                            ],
+                            delegates: [],
                             status: { id: 's000', txt: '', color: '#c4c4c4' },
                             date: Date.now(),
                             tags: [],
@@ -428,8 +365,7 @@ const gBoards = [
                         title: 'Item V',
                         createdAt: Date.now(),
                         columns: {
-                            delegates: [
-                            ],
+                            delegates: [],
                             status: { id: 's000', txt: '', color: '#c4c4c4' },
                             date: Date.now(),
                             tags: ['UI'],
@@ -440,8 +376,7 @@ const gBoards = [
                         title: 'Item VI',
                         createdAt: Date.now(),
                         columns: {
-                            delegates: [
-                            ],
+                            delegates: [],
                             status: { id: 's000', txt: '', color: '#c4c4c4' },
                             date: Date.now(),
                             tags: [],
@@ -452,8 +387,7 @@ const gBoards = [
                         title: 'Item VII',
                         createdAt: Date.now(),
                         columns: {
-                            delegates: [
-                            ],
+                            delegates: [],
                             status: { id: 's000', txt: '', color: '#c4c4c4' },
                             date: Date.now(),
                             tags: [],
@@ -467,7 +401,7 @@ const gBoards = [
         ],
         members: [
             {
-                _id : '60f562f7a22a0da5023ec2be',
+                _id: '60f562f7a22a0da5023ec2be',
                 fullname: 'Avior Hagibor',
                 imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
             },
@@ -483,8 +417,3 @@ const gBoards = [
         activities: [],
     },
 ];
-
-// function _createInitialData() {
-//     localStorage.setItem(KEY, JSON.stringify(gBoards));
-//     return gBoards;
-// }

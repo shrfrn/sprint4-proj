@@ -10,7 +10,7 @@
                 :ref="miniBoard._id"
                 v-show="isEditingState && currEditedBoard == miniBoard._id"
                 @blur="updateBoardName(miniBoard._id)"
-                @keydown.enter="updateBoardName()"
+                @keydown.enter="updateBoardName(miniBoard._id)"
                 type="text"
                 v-model="newTitle"
             />
@@ -37,10 +37,20 @@
                     >Duplicate Board</el-dropdown-item
                 >
                 <el-dropdown-item
-                    @click.native="addToFavorites(miniBoard)"
-                    icon="el-icon-star-off"
-                    >Add to favorites</el-dropdown-item
+                    v-if="!miniBoard.isFavorite"
+                    @click.native="addToFavorites(miniBoard._id)"
+                    icon="el-icon-star-on"
                 >
+                    Add to favorites
+                </el-dropdown-item>
+
+                <el-dropdown-item
+                    v-if="miniBoard.isFavorite"
+                    @click.native="addToFavorites(miniBoard._id)"
+                    icon="el-icon-star-off"
+                >
+                    Remove from favorites
+                </el-dropdown-item>
 
                 <el-dropdown-item
                     @click.native="deleteBoard(miniBoard._id)"
@@ -83,34 +93,27 @@ export default {
             this.isEditingState = true;
         },
         updateBoardName(boardId) {
+            console.log('boardId :>> ', boardId);
             this.$emit('updateBoardName', this.newTitle, boardId);
             this.isEditingState = false;
             this.currEditedBoard = null;
         },
-        openContextMenu() {
-            this.active = !this.active;
-        },
-        showContextMenu() {
-            this.isContextMenuShown = true;
-            console.log('ok');
-        },
-        hideContextMenu() {
-            this.isContextMenuShown = false;
-        },
-        showMenu() {
-            console.log('showing menu');
-        },
         deleteBoard(boardId) {
             this.$emit('deleteBoard', boardId);
         },
-        addToFavorites(miniBoard) {
-            this.$emit('addToFavorites', miniBoard);
+        addToFavorites(boardId) {
+            this.$emit('addToFavorites', boardId);
         },
         openInNewTab(boardId) {
-            window.open(`http://localhost:8080/boards/${boardId}`, '_blank').focus();
+            window.open(`http://localhost:8080/board/${boardId}`, '_blank').focus();
         },
         duplicateBoard(boardId) {
             this.$emit('duplicateBoard', boardId);
+        },
+    },
+    watch: {
+        miniBoard() {
+            this.newTitle = this.miniBoard.title;
         },
     },
 };

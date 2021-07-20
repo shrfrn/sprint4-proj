@@ -93,4 +93,17 @@
     &:hover {
         background-color: rgb(230, 230, 230);
     }
+
+    .status-column:after {
+        position: absolute;
+        content: '';
+        right: 0;
+        top: 0;
+    }
+
+    .status-column:hover:after {
+        transition-duration: 0.5s;
+        border-bottom: 10px solid rgb(145, 145, 145);
+        border-right: 10px solid white;
+    }
 }
