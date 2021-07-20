@@ -17,7 +17,7 @@
             </el-tooltip>
 
             <el-tooltip class="item" effect="dark" content="Notifications" placement="right">
-                <router-link to="/board" title="notification">
+                <router-link to="/board/456" title="notification">
                     <i class="far fa-bell fa-lg"></i>
                 </router-link>
             </el-tooltip>
@@ -26,13 +26,13 @@
 
         <section class="user-action">
             <el-tooltip class="item" effect="dark" content="Calender" placement="right">
-                <router-link to="/board" title="my week">
+                <router-link to="/calendar" title="my week">
                     <i class="far fa-calendar-check fa-lg"></i>
                 </router-link>
             </el-tooltip>
 
             <el-tooltip class="item" effect="dark" content="My Profile" placement="right">
-                <router-link to="/board" title="my profile">
+                <router-link to="/board/123" title="my profile">
                     <i class="fas fa-user-circle fa-lg"></i>
                 </router-link>
             </el-tooltip>

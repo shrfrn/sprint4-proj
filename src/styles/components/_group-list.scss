@@ -85,6 +85,19 @@
             .group-dropdown-menu {
                 margin-right: 0;
             }
+
+            .el-dropdown-menu {
+                .color-change {
+                    position: absolute;
+                    right: 0;
+                    top: 0px;
+                    opacity: 1;
+                }
+
+                .el-color-picker__trigger {
+                    width: 181px;
+                }
+            }
         }
 
         .input {

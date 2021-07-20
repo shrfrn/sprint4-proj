@@ -1,57 +1,69 @@
 <template>
     <section class="status-summery" v-if="statuses">
         <div class="battery">
-            <div
-                v-if="percentOfTotal(statuses['Stuck'])"
-                class="stuck"
-                :style="{
-                    width: percentOfTotal(statuses['Stuck']) + '%',
-                    backgroundColor: 'rgb(232, 105, 125)',
-                }"
+            <el-tooltip
+                class="item"
+                effect="light"
+                :content="'Stuck: ' + percentOfTotal(statuses['Stuck']).toFixed(0) + '%'"
+                placement="top"
             >
-                <span v-if="percentOfTotal(statuses['Stuck'])">
-                    {{ percentOfTotal(statuses['Stuck']).toFixed(0) + '%' }}
-                </span>
-            </div>
+                <div
+                    v-if="percentOfTotal(statuses['Stuck'])"
+                    class="stuck"
+                    :style="{
+                        width: percentOfTotal(statuses['Stuck']) + '%',
+                        backgroundColor: 'rgb(232, 105, 125)',
+                    }"
+                ></div>
+            </el-tooltip>
 
-            <div
-                v-if="percentOfTotal(statuses['Done'])"
-                class="done"
-                :style="{
-                    width: percentOfTotal(statuses['Done']) + '%',
-                    backgroundColor: 'rgb(51, 211, 145)',
-                }"
+            <el-tooltip
+                class="item"
+                effect="light"
+                :content="'Done: ' + percentOfTotal(statuses['Done']).toFixed(0) + '%'"
+                placement="top"
             >
-                <span v-if="percentOfTotal(statuses['Done'])">
-                    {{ percentOfTotal(statuses['Done']).toFixed(0) + '%' }}
-                </span>
-            </div>
-
-            <div
-                v-if="percentOfTotal(statuses['In progress'])"
-                class="in-progress"
-                :style="{
-                    width: percentOfTotal(statuses['In progress']) + '%',
-                    backgroundColor: 'rgb(253, 188, 100)',
-                }"
+                <div
+                    v-if="percentOfTotal(statuses['Done'])"
+                    class="done"
+                    :style="{
+                        width: percentOfTotal(statuses['Done']) + '%',
+                        backgroundColor: 'rgb(51, 211, 145)',
+                    }"
+                ></div>
+            </el-tooltip>
+            <el-tooltip
+                class="item"
+                effect="light"
+                :content="
+                    'In progress: ' + percentOfTotal(statuses['In progress']).toFixed(0) + '%'
+                "
+                placement="top"
             >
-                <span v-if="percentOfTotal(statuses['In progress'])">
-                    {{ percentOfTotal(statuses['In progress']).toFixed(0) + '%' }}
-                </span>
-            </div>
-
-            <div
-                v-if="percentOfTotal(statuses[''])"
-                class="empty"
-                :style="{
-                    width: percentOfTotal(statuses['']) + '%',
-                    backgroundColor: 'rgb(196, 196, 196)',
-                }"
+                <div
+                    v-if="percentOfTotal(statuses['In progress'])"
+                    class="in-progress"
+                    :style="{
+                        width: percentOfTotal(statuses['In progress']) + '%',
+                        backgroundColor: 'rgb(253, 188, 100)',
+                    }"
+                ></div>
+            </el-tooltip>
+            <el-tooltip
+                class="item"
+                effect="light"
+                :content="'Empty: ' + percentOfTotal(statuses['']).toFixed(0) + '%'"
+                placement="top"
             >
-                <span v-if="percentOfTotal(statuses[''])">
-                    {{ percentOfTotal(statuses['']).toFixed(0) + '%' }}
-                </span>
-            </div>
+                <div
+                    v-if="percentOfTotal(statuses[''])"
+                    class="empty"
+                    :style="{
+                        width: percentOfTotal(statuses['']) + '%',
+                        backgroundColor: 'rgb(196, 196, 196)',
+                    }"
+                ></div>
+            </el-tooltip>
         </div>
     </section>
 </template>

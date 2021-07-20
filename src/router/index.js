@@ -6,6 +6,7 @@ import boardApp from '../views/board-app.vue';
 import boardDetails from '../views/board-details.vue';
 import taskDetails from '../views/task-details.vue';
 import loginSignup from '../views/login-signup.vue';
+import calendar from '../views/calendar.vue';
 
 Vue.use(VueRouter);
 
@@ -25,6 +26,11 @@ const routes = [
         path: '/login',
         name: 'login',
         component: loginSignup,
+    },
+    {
+        path: '/calendar',
+        name: 'calendar',
+        component: calendar,
     },
     {
         path: '/board',

@@ -79,6 +79,7 @@
             display: flex;
             align-items: center;
             gap: 5px;
+            width: 100%;
             font-size: 15px;
             margin: 0;
 
@@ -95,6 +96,10 @@
             margin-top: 5px;
             text-align: center;
         }
+
+        // div {
+        //     width: 100%;
+        // }
     }
 }
 
@@ -109,12 +114,16 @@
     position: relative;
     top: 30px;
     left: 125px;
-    transition: 0.2s;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 22px;
+    border-radius: 50%;
+    background-color: #fff;
+    transition: 0.2s;
 
     &:hover {
-        color: #454b75;
+        background-color: #505050;
+        border-radius: 50%;
+        color: #ffffff;
     }
 }
 

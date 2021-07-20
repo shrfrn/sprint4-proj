@@ -12,7 +12,6 @@
 
     .texts {
         @include flex(start, center, row);
-
         gap: 8px;
 
         input {
@@ -21,7 +20,6 @@
             font-size: rem(15px);
             outline: none;
             padding: 2px 0;
-
             width: 70%;
         }
     }
