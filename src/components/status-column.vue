@@ -1,14 +1,21 @@
 <template>
     <section class="status-column" v-if="hasStatus">
-        <div class="status-text" @click="toggleStatusPicker" :style="statusColor">{{newStatus.txt}}</div>
+        <div class="status-text" @click="toggleStatusPicker" :style="statusColor">
+            {{ newStatus.txt }}
+        </div>
         <transition name="status-picker">
-            <status-picker @input="onSelectStatus" v-if="this.isPickerOpen" v-model="newStatus" class="status-picker" />
+            <status-picker
+                @input="onSelectStatus"
+                v-if="this.isPickerOpen"
+                v-model="newStatus"
+                class="status-picker"
+            />
         </transition>
     </section>
 </template>
 
 <script>
-import statusPicker from '@/components/status-picker'
+import statusPicker from '@/components/status-picker';
 export default {
     props: {
         value: {
@@ -22,41 +29,43 @@ export default {
     },
     data() {
         return {
-            newStatus: { txt: '', color: '#c4c4c4'},
+            newStatus: { txt: '', color: '#c4c4c4' },
             isPickerOpen: false,
-        }
+        };
     },
     computed: {
-        hasStatus() { return !!this.value},
-        statusColor(){ 
-            return {'background-color': this.newStatus.color}
+        hasStatus() {
+            return !!this.value;
+        },
+        statusColor() {
+            return { 'background-color': this.newStatus.color };
         },
     },
     methods: {
-        onStatusChange(){
-            this.$emit('input', this.newStatus)
+        onStatusChange() {
+            this.$emit('input', this.newStatus);
         },
-        toggleStatusPicker(){
-            this.isPickerOpen = !this.isPickerOpen
+        toggleStatusPicker() {
+            this.isPickerOpen = !this.isPickerOpen;
         },
-        onSelectStatus(){
-            this.toggleStatusPicker()
-            this.$emit('input', this.newStatus)
+        onSelectStatus() {
+            this.toggleStatusPicker();
+            this.$emit('input', this.newStatus);
         },
     },
-    created(){
-        if(this.value) this.newStatus = JSON.parse(JSON.stringify(this.value)) 
-        else this.newStatus = { id: 's000', txt: '', color: '#c4c4c4' } // unspecified - default
+    created() {
+        if (this.value) this.newStatus = JSON.parse(JSON.stringify(this.value));
+        else this.newStatus = { id: 's000', txt: '', color: '#c4c4c4' }; // unspecified - default
     },
 
     watch: {
         value(newVal) {
-            this.newStatus = JSON.parse(JSON.stringify(newVal))
+            this.newStatus = JSON.parse(JSON.stringify(newVal));
         },
     },
 
     components: {
         statusPicker,
-    }
-}
+    },
+};
 </script>

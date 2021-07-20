@@ -22,6 +22,8 @@ export const boardService = {
     // updateGroups,
     // removeGroup,
     // duplicateGroup,
+    getActivitiesByItem,
+    getUpdatesByItem
     // addNewGroup,
     // updateTask,
     // addTask,
@@ -151,6 +153,160 @@ function getEmptyFilter() {
         sortBy: 'title',
     };
 }
+function getActivitiesByItem(itemId) {
+    return gActivities.filter((activity) => {
+        return activity.itemId === itemId;
+    });
+}
+const gActivities = [
+    {
+        id: utilService.makeId(),
+        itemId: 't101',
+        itemName: 'Board list',
+        type: 'status',
+        createdAt: Date.now(),
+        createdBy: {
+            _id: 'u101',
+            fullname: 'Muki Suflaki',
+            imgUrl: 'http://some-img.jpg',
+        },
+        msg: 'status change from stuck to done',
+    },
+    {
+        id: utilService.makeId(),
+        itemId: 't101',
+        itemName: 'Board list',
+        type: 'delegates',
+        createdAt: Date.now(),
+        createdBy: {
+            _id: 'u101',
+            fullname: 'Muki Suflaki',
+            imgUrl: 'http://some-img.jpg',
+        },
+        msg: 'Sharon Macaron was added from the task',
+    },
+    {
+        id: utilService.makeId(),
+        itemId: 't101',
+        itemName: 'Board list',
+        type: 'delegates',
+        createdAt: Date.now(),
+        createdBy: {
+            _id: 'u101',
+            fullname: 'Muki Suflaki',
+            imgUrl: 'http://some-img.jpg',
+        },
+        msg: 'Sharon Macaron was deleted from the task',
+    },
+    {
+        id: utilService.makeId(),
+        itemId: 't101',
+        itemName: 'Board list',
+        type: 'rename',
+        createdAt: Date.now(),
+        createdBy: {
+            _id: 'u101',
+            fullname: 'Muki Suflaki',
+            imgUrl: 'http://some-img.jpg',
+        },
+        msg: 'the title renamed from task to board list',
+    },
+    {
+        id: utilService.makeId(),
+        itemId: 't101',
+        itemName: 'Board list',
+        type: 'timeline',
+        createdAt: Date.now(),
+        createdBy: {
+            _id: 'u101',
+            fullname: 'Rachel Bekarov',
+            imgUrl: 'http://some-img.jpg',
+        },
+        msg: 'change date from 11/07/2021 to 18/07/2021',
+    },
+];
+
+function getUpdatesByItem(itemId) {
+    return gUpdates.filter((update) => {
+        return update.itemId === itemId;
+    });
+}
+
+const gUpdates = [
+    {
+        id: utilService.makeId(),
+        itemId: 't101',
+        itemName: 'Board list',
+        createdAt: Date.now(),
+        txt: 'bla bla bla',
+        createdBy: {
+            _id: 'u101',
+            fullname: 'Rachel Bekarov',
+            imgUrl: 'http://some-img.jpg',
+        },
+        likedBy: []
+    },
+    {
+        id: utilService.makeId(),
+        itemId: 't101',
+        itemName: 'Board list',
+        createdAt: Date.now(),
+        txt: 'hi everyOne',
+        createdBy: {
+            _id: 'u101',
+            fullname: 'Rachel Bekarov',
+            imgUrl: 'http://some-img.jpg',
+        },
+        likedBy: []
+    },
+    {
+        id: utilService.makeId(),
+        itemId: 't101',
+        itemName: 'Board list',
+        createdAt: Date.now(),
+        txt: 'like it',
+        createdBy: {
+            _id: 'u101',
+            fullname: 'Rachel Bekarov',
+            imgUrl: 'http://some-img.jpg',
+        },
+        likedBy: [{
+            _id: 'u103',
+            fullname: 'Sharon Macaron',
+            imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+        },
+        {
+            _id: 'u104',
+            fullname: 'Eden Maran',
+            imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+        }]
+    },
+
+]
+// Private functions
+
+// function _getNewGroup() {
+//     return {
+//         id: utilService.makeId(),
+//         title: 'New Group',
+//         tasks: [
+//             {
+//                 id: utilService.makeId(),
+//                 title: 'You can add new task here',
+//                 createdAt: Date.now(),
+//                 columns: {
+//                     delegate: [],
+//                     status: { txt: '', color: '#c4c4c4' },
+//                     date: Date.now(),
+//                     tags: [],
+//                 },
+//             },
+//         ],
+//         style: {
+//             color: _getRandomColor(),
+//         },
+//     };
+// }
 
 function _getRandomColor() {
     var letters = '0123456789ABCDEF';
@@ -216,7 +372,7 @@ const gBoards = [
                     },
                 ],
                 style: {
-                    color: '#232323',
+                    color: 'rgba(196, 27, 182, 1)',
                 },
             },
             {
@@ -273,7 +429,7 @@ const gBoards = [
                     },
                 ],
                 style: {
-                    color: '#232323',
+                    color: 'rgba(30, 144, 255, 1)',
                 },
             },
         ],

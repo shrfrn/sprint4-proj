@@ -1,15 +1,24 @@
 <template>
-    <!-- <div style="margin: 20px;"></div>  -->
-    <section>
-
-        <!-- Tabs: select login or signup -->
-        <el-tabs v-model="activeTab" @tab-click="selectTab">
-            <el-tab-pane label="login" name="login">login</el-tab-pane>
-            <el-tab-pane label="signup" name="signup">signup</el-tab-pane>
-        </el-tabs>
-
-        <!-- Signup form -->
-        <el-form v-if="isSignup" :label-position="left" label-width="100px" :model="userCreds">
+    
+    <section class="login-signup">
+ <el-tabs v-model="activeTab"  >
+      <el-tab-pane label="login" name="login">   
+           
+                <el-form  label-width="100px" :model="userCreds">
+            <el-form-item label="username">
+                <el-input v-model="userCreds.username"></el-input>
+            </el-form-item>
+            <el-form-item label="password">
+                <el-input v-model="userCreds.password"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="onLogin">Login</el-button>
+                
+            </el-form-item>
+        </el-form>
+        </el-tab-pane>
+      <el-tab-pane label="signup" name="signup">
+        <el-form   label-width="100px" :model="userCreds">
             <el-form-item label="Full name">
                 <el-input v-model="userCreds.fullname"></el-input>
             </el-form-item>
@@ -21,29 +30,25 @@
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="onSignup">Signup</el-button>
-                <el-button>Cancel</el-button>
+                 
             </el-form-item>
         </el-form>
+      </el-tab-pane>
+    </el-tabs>
+        <!-- Tabs: select login or signup -->
+      
+
+        <!-- Signup form -->
+       
 
         <!-- Login form -->
-        <el-form v-else :label-position="left" label-width="100px" :model="userCreds">
-            <el-form-item label="username">
-                <el-input v-model="userCreds.username"></el-input>
-            </el-form-item>
-            <el-form-item label="password">
-                <el-input v-model="userCreds.password"></el-input>
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="onLogin">Login</el-button>
-                <el-button>Cancel</el-button>
-            </el-form-item>
-        </el-form>
+       
 
     </section>
 </template>
 <script>
 
-import userService from '@/src/services/user-service.js'
+import {userService} from '../services/user.servic'
 
 export default {
 
@@ -67,10 +72,23 @@ export default {
         onSignup(){
             console.log('signup')
             userService.signup(this.userCreds)
+             this.$emit('login-signup',true)
+             this.userCreds={
+                fullname: '',
+                username: '',
+                password: '',
+            }
         },
         onLogin(){
             console.log('login')
-            userService.login(this.userCreds)
+           userService.login(this.userCreds).then(res=>console.log(res)).catch(err=>console.error(err));
+           this.$emit('login-signup',true)
+            this.userCreds={
+                fullname: '',
+                username: '',
+                password: '',
+            }
+
         },
     },
 }

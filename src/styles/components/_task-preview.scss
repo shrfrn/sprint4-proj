@@ -1,30 +1,41 @@
 .task-preview {
     background-color: whitesmoke;
     margin: 2px;
-    margin-left: 22px;
+    margin-left: 32px;
     height: 34px;
     padding-inline-start: 5px;
     transition: 1s;
     @include flex(start, center, row);
     position: relative;
 
-    // .dropdown {
-    //     border-radius: 10px;
+    &:hover .dropdown {
+        display: block;
+    }
 
-    // }
     .dropdown {
         position: absolute;
-        left: -20px;
+        left: -35px;
+        display: none;
         .el-button {
+            width: 30px;
+            height: 34px;
             @include flex(center, center, row);
             border: none;
             border-radius: 50%;
             margin: 0;
-            background-color: #ccc;
+            color: rgb(194, 194, 194);
+            padding: 2px;
+            background-color: transparent;
             margin-right: 15px;
             padding: 0;
             border-radius: 50%;
         }
+        &:focus-within {
+            display: block;
+        }
+    }
+    &:hover:not(.ghost) .dropdown {
+        display: block;
     }
 
     .date-picker .el-input__inner {
@@ -42,11 +53,14 @@
     }
     .task-title {
         @include flex(space-between, center, row);
+        min-width: 260px;
         padding-inline-end: 10px;
         height: 100%;
+        min-width: 275px;
         flex: 2;
         border-inline-end: 1px white solid;
         cursor: grab;
+
         .title-task {
             @include flex(start, center, row);
             gap: 10px;
@@ -69,9 +83,10 @@
     }
     .dynamic-column {
         @include flex(center, center);
-        width: 150px;
+        width: 180px;
         height: 100%;
         // flex: 1;
+        min-width: 75px;
         cursor: pointer;
         border-inline-end: 1px white solid;
     }

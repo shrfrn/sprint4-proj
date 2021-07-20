@@ -1,3 +1,4 @@
+import { Promise } from 'core-js'
 import { storageService } from './async-storage.service'
 // import { httpService } from './http.service'
 
@@ -43,6 +44,8 @@ async function update(user) {
 async function login(userCred) {
     const users = await storageService.query(KEY)
     const user = users.find(user => user.username === userCred.username)
+   
+    if(!user) return Promise.reject('user not found try again');
     return _saveLocalUser(user)
     // const user = await httpService.post('auth/login', userCred)
     // if (user) return _saveLocalUser(user)
