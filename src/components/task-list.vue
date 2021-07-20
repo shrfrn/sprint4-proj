@@ -4,7 +4,8 @@
             v-model="tasksCopy"
             ghost-class="ghost"
             group="tasks"
-            @end="onEnd"
+            @change="changeTasks"
+           
             handle=".handle-task"
         >
             <transition-group type="transition" name="flip-list">
@@ -91,9 +92,11 @@ export default {
             });
             this.taskToAdd = this.$store.getters.getEmptyTask;
         },
-        async onEnd() {
+        async changeTasks() {
             await this.$store.dispatch({
                 type: 'saveTasks',
+                tasks:this.tasksCopy,
+                groupId:this.groupId
             });
         },
     },

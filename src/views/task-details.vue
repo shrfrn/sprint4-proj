@@ -19,14 +19,14 @@
 <script>
 import activityList from "../components/activity-list.vue";
 import ChatBox from '../components/chat-box.vue';
-import {boardService} from "../services/board.service.js"
+
 export default {
   components: { activityList, ChatBox },
   data() {
     return {
       currTask: null,
       drawer: true,
-      activeName: "Activity log",
+      activeName: "Updates",
       activities: [],
       updates:[]
     };
@@ -50,13 +50,14 @@ export default {
         if (task.id === taskId) this.currTask = task;
       });
     });
-    this.activities = boardService.getActivitiesByItem(taskId);
-     this.updates = boardService.getUpdatesByItem(taskId);
+    this.activities = this.$store.getters.getActivitiesByItem(taskId);
+    console.log(this.activities);
+     this.updates =  this.$store.getters.getUpdatesByItem(taskId);
     console.log( this.updates);
   },
   methods: {
     closeDetails() {
-      this.$router.push(`/boards/${this.$route.params.boardId}`);
+      this.$router.push(`/board/${this.$route.params.boardId}`);
     },
     handleClick(tab, event) {
       console.log(tab, event);

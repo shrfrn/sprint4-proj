@@ -75,7 +75,7 @@ export const taskStore = {
                 console.log('Error in taskStore => addTask failed\n', err);
             }
         },
-        async saveTasks(context,  ) {
+        async saveTasks(context, {tasks,groupId} ) {
 
             // This action is used in drag n' drop to update the order of tasks in the board.
             // Make a copy of the current board and with the updated tasklist.
@@ -87,13 +87,22 @@ export const taskStore = {
             // Write updated board to store
 
             try {
-              
+             
+               context.commit({ type: 'changeTasks', tasks,groupId  })
                 const boardCopy = await boardService.save(context.getters.currBoard)
                 context.commit({ type: 'loadBoard', board: boardCopy })
             } catch (err) {
                 console.log('Error in taskStore => addTask failed\n', err);
             }
         },
+    },
+    mutations:{
+        changeTasks(state,{tasks,groupId}){
+            const groupIdx= state.currBoard.groups.findIndex(group=>{
+                return group.id=== groupId
+            })
+            state.currBoard.groups[groupIdx].tasks = tasks;
+        }
     },
     getters: {
         // getEmptyTask(state) {

@@ -136,7 +136,7 @@ export default {
         },
         openTaskDetails(taskId) {
             const board = this.$store.getters.currBoard;
-            this.$router.push(`/boards/${board._id}/task/${taskId}`);
+            this.$router.push(`/board/${board._id}/task/${taskId}`);
         },
         setFilter(filterBy) {
             console.log('filterBy :>> ', filterBy);

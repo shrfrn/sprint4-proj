@@ -8,42 +8,46 @@
       cols="50"
       placeholder="write an update"
       v-show="isEditingState"
-      v-model="textarea"
+      v-model="txt"
     />
-    <el-button type="primary">Primary</el-button>
+    <el-button type="primary" @click="saveAction">Primary</el-button>
 
     <msg-list :updates="updates" />
   </section>
 </template>
 
 <script>
-import msgList from './msg-list.vue';
+import msgList from "./msg-list.vue";
 export default {
   components: { msgList },
-    props:{
-        updates:Array
-    },
+  props: {
+    updates: Array,
+  },
   data() {
     return {
       isEditingState: false,
-      textarea: "",
-      msg:{
-          id:'1235j',
-          createdAt:Date.now(),
-          txt:'',
-          createdBy: {
-            _id: 'u101',
-            fullname: 'Rachel Bekarov',
-            imgUrl: 'http://some-img.jpg',
-        },
-        isLiked:0
-      }
+      txt: "",
+   
     };
+  },
+  created() {
+ 
+   
   },
   methods: {
     setToEdit() {
       this.isEditingState = !this.isEditingState;
     },
+   async saveAction() {
+
+      await this.$store.dispatch({
+        type: "saveUpdate",
+        itemId: this.$route.params.id,
+        txt: this.txt,
+      });
+      this.setToEdit();
+    },
+
   },
 };
 </script>

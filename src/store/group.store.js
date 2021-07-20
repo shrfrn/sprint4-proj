@@ -1,5 +1,6 @@
 import { utilService } from '@/services/util.service.js';
 import { boardService } from '@/services/board.service.js';
+// import { ElDropdownItem } from 'element-ui/types/dropdown-item';
 
 export const groupStore = {
     strict: true,
@@ -126,6 +127,7 @@ export const groupStore = {
             // );
             // context.commit({ type: 'updateBoard', updateBoard });
         },
+       
     },
     getters: {
         // boards(state) {

@@ -16,6 +16,7 @@ export default {
   props: {
     activities: Array,
   },
+
 };
 </script>
 

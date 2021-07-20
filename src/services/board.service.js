@@ -14,7 +14,9 @@ export const boardService = {
     getEmptyBoard,
     getEmptyGroup,
     getEmptyTask,
-    getEmptyFilter, // Everything under here should be in store.
+    getEmptyFilter,
+    getEmptyUpdate,
+    getEmptyActivity, // Everything under here should be in store.
     // renameBoard,
     // addToFavorites,
     // duplicateBoard,
@@ -23,7 +25,8 @@ export const boardService = {
     // removeGroup,
     // duplicateGroup,
     getActivitiesByItem,
-    getUpdatesByItem
+    getUpdatesByItem,
+
     // addNewGroup,
     // updateTask,
     // addTask,
@@ -152,6 +155,35 @@ function getEmptyFilter() {
         txt: '',
         sortBy: 'title',
     };
+}
+function getEmptyUpdate(){
+    return {
+        id: utilService.makeId(),
+        itemId: '',
+        createdAt: null,
+        txt: '',
+        createdBy: {
+            _id: '',
+            fullname: '',
+            imgUrl: '',
+        },
+        likedBy: []
+    }
+}
+function getEmptyActivity(){
+  return  {
+        id: utilService.makeId(),
+        itemId: '',
+        itemName: '',
+        type: '',
+        createdAt: null,
+        createdBy: {
+            _id: '',
+            fullname: '',
+            imgUrl: '',
+        },
+        msg: '',
+    }
 }
 function getActivitiesByItem(itemId) {
     return gActivities.filter((activity) => {

@@ -4,6 +4,7 @@
   -->
 
     <el-card shadow="hover" class="activity-card">
+       
          <avatar
             class="person-preview-avatar"
             :username="activity.createdBy.fullname"
@@ -11,6 +12,7 @@
             :size="30"
             :src="activity.createdBy.imgUrl"
         />
+    
       <span>{{ activity.msg }}</span>
     </el-card>
   </section>
