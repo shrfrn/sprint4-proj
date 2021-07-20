@@ -78,6 +78,7 @@ export default {
                 username: '',
                 password: '',
             }
+            this.$store.commit({ type: 'setLoggedinUser' })
         },
         onLogin(){
             console.log('login')
@@ -88,6 +89,7 @@ export default {
                 username: '',
                 password: '',
             }
+            this.$store.commit({ type: 'setLoggedinUser' })
 
         },
     },

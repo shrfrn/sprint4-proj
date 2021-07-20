@@ -7,6 +7,7 @@ export const boardStore = {
     state: {
         boards: [],
         currBoard: null,
+        loggedinUser:null
     },
     mutations: {
         setBoards(state, { boards }) {
@@ -14,6 +15,10 @@ export const boardStore = {
         },
         loadBoard(state, { board }) {
             state.currBoard = board;
+        },
+        setLoggedinUser(state){
+         state.loggedinUser=userService.getLoggedinUser();
+         console.log( 'state.loggedinUser', state.loggedinUser);
         },
         removeBoard(state, { boardId }) {
             const idx = state.boards.findIndex((board) => board._id === boardId);
@@ -34,18 +39,18 @@ export const boardStore = {
             activity.itemId = itemId;
             activity.itemName = itemName;
             activity.createdAt = Date.now();
-            activity.createdBy = userService.getLoggedinUser()|| { id: 'u101', fullname: 'Guest user', imgUrl: '' };
+            activity.createdBy = state.loggedinUser|| { _id: 'u101', fullname: 'Guest user', imgUrl: '' };
             activity.type = typeActivity;
             activity.msg = msg;
             state.currBoard.activities.unshift(activity);
             console.log(' state.currBoard.activities', state.currBoard.activities);
         },
         setUpdate(state, { itemId, txt }) {
-           
+            console.log('stste',state);
             const update = boardService.getEmptyUpdate();
             update.createdAt = Date.now();
             update.itemId = itemId;
-            update.createdBy =userService.getLoggedinUser()|| { id: 'u101', fullname: 'Guest user', imgUrl: '' };
+            update.createdBy =state.loggedinUser|| { _id: 'u101', fullname: 'Guest user', imgUrl: '' };
             update.txt = txt;
             if(state.currBoard.updates) state.currBoard.updates.unshift(update);
             else state.currBoard['updates']=[update]
@@ -54,6 +59,21 @@ export const boardStore = {
         setFilterList(state, { filteredBoards }) {
             state.boards = filteredBoards;
         },
+        toggleLike(state,{id}){
+            console.log('id',id);
+              const updateIdx= state.currBoard.updates.findIndex(update=>{
+                   return update.id===id
+               });
+               console.log('updateIdx',updateIdx);
+               const userToToggle=state.loggedinUser||{ _id: 'u101', fullname: 'Guest user', imgUrl: '' }
+               console.log('userToToggle',userToToggle);
+               console.log('state.currBoard.updates',state.currBoard.updates[updateIdx]);
+               const userIdx=state.currBoard.updates[updateIdx].likedBy.findIndex(user=>{
+                            return user._id===userToToggle._id
+               })
+               if(userIdx===-1) state.currBoard.updates[updateIdx].likedBy.push(userToToggle)
+               else state.currBoard.updates[updateIdx].likedBy.splice(userIdx,1);
+        }
     },
     actions: {
         async loadBoards(context) {
@@ -130,7 +150,6 @@ export const boardStore = {
             context.commit({ type: 'loadBoard', board: boardCopy })
             console.log('succccccccccc');
         },
-
         async setFilterList(context, { filterBy }) {
             try {
                 const filteredBoards = await boardService.query(filterBy);
@@ -139,8 +158,16 @@ export const boardStore = {
                 console.log('couldnt filtered', err);
             }
         },
+        async toggleUpdateLike(context,{id}){
+            context.commit({ type: 'toggleLike', id});
+            context.dispatch({type: 'saveBoard', board: context.getters.currBoard})
+        }
+
     },
     getters: {
+        getLoggedinUser(state){
+            return state.loggedinUser;
+        },
         boards(state) {
             return state.boards;
         },

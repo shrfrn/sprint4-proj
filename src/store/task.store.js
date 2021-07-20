@@ -5,7 +5,6 @@ export const taskStore = {
     actions: {
         async updateTask(context, { task, groupId }) {
             // Make a copy of the current board with the updated task in place of the older one.
-
             let boardCopy = JSON.parse(JSON.stringify(context.getters.currBoard));
             const groupIdx = boardCopy.groups.findIndex((group) => group.id === groupId);
             const taskIdx = boardCopy.groups[groupIdx].tasks.findIndex((tsk) => tsk.id === task.id);
@@ -72,28 +71,29 @@ export const taskStore = {
             // This action is used in drag n' drop to update the order of tasks in the board.
             // Make a copy of the current board and with the updated tasklist.
 
-            let boardCopy = JSON.parse(JSON.stringify(context.getters.currBoard));
-            const groupIdx = boardCopy.groups.findIndex((group) => group.id === groupId);
-            boardCopy.groups[groupIdx].tasks = tasks;
-
+            let boardCopy = context.getters.currBoard;
+            // const groupIdx = boardCopy.groups.findIndex((group) => group.id === groupId);
+            // boardCopy.groups[groupIdx].tasks = tasks;
             // Write updated board to store
 
-            try {
-             
-               context.commit({ type: 'changeTasks', tasks,groupId  })
-
-                context.dispatch({ type: 'saveBoard', board: boardCopy });
+            try {         
+                console.log('save', context);
+                 context.commit({ type: 'changeTasks', tasks,groupId,board:boardCopy  })
+                context.dispatch({ type: 'saveBoard', board: context.getters.currBoard });
             } catch (err) {
                 console.log('Error in taskStore => addTask failed\n', err);
             }
         },
     },
     mutations:{
-        changeTasks(state,{tasks,groupId}){
-            const groupIdx= state.currBoard.groups.findIndex(group=>{
+        changeTasks(state,{tasks,groupId,board}){
+            console.log('save',state);
+       
+            const groupIdx= board.groups.findIndex(group=>{
                 return group.id=== groupId
             })
-            state.currBoard.groups[groupIdx].tasks = tasks;
+            
+            board.groups[groupIdx].tasks = tasks;
         }
     },
     getters: {

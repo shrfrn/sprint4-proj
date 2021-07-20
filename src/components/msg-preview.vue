@@ -12,8 +12,8 @@
     <div class="msg-body">
       <div class="msg-txt">{{ update.txt }}</div>
     </div>
-    <div v-if="like.length" class="liked-by">
-        <el-tooltip  v-for="user in like" :key="user._id" class="item" effect="light" :content="user.fullname" placement="top">
+    <div v-if="update.likedBy.length" class="liked-by">
+        <el-tooltip  v-for="user in update.likedBy" :key="user._id" class="item" effect="light" :content="user.fullname" placement="top">
       <avatar
        
         
@@ -34,23 +34,23 @@
 
 <script>
 import Avatar from "vue-avatar";
-import { userService } from "../services/user.servic";
+
 export default {
   props: {
     update: Object,
   },
   data() {
     return {
-      like: this.update.likedBy,
     };
   },
   components: { Avatar },
   methods: {
-    addLike() {
-      const user = userService.getLoggedinUser();
-      
-      this.like.push(user);
-      console.log(this.like);
+  async  addLike() {
+     await this.$store.dispatch({
+        type: "toggleUpdateLike",
+        id: this.update.id,
+       
+      });
     },
   },
 };

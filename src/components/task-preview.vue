@@ -26,6 +26,7 @@
       :class="isEdit"
       @mouseover="togglehover(true)"
       @mouseleave="togglehover(false)"
+      @click="openTaskDetails"
     >
       <template v-if="isEditTitle">
         <form @submit.prevent="updateTask">
@@ -40,10 +41,10 @@
       </template>
       <section class="title-task handle-task" v-else>
         <p>{{ task.title }}</p>
-        <button @click="toggleEdit(true)" v-if="isHover">Edit</button>
+        <button @click.stop="toggleEdit(true)" v-if="isHover">Edit</button>
       </section>
       <!-- <i class="far fa-comments open-chat" @click="openTaskDetails"></i> -->
-      <i class="far fa-comment open-chat" @click="openTaskDetails"></i>
+      <i class="far fa-comment open-chat"></i>
     </div>
     <component
       v-for="column in currBoard.columns"
@@ -51,6 +52,7 @@
       :is="componentType(column)"
       class="dynamic-column"
       @input="updateTask"
+      @add-activity="addActivity"
       :board="currBoard"
       v-model="currTask.columns[column]"
     />
@@ -77,12 +79,10 @@ export default {
       currTask: this.task,
       isHover: false,
       isEditTitle: false,
-     
     };
   },
   created() {
     this.currTask = JSON.parse(JSON.stringify(this.task));
-    
   },
   mounted() {
     if (this.$refs.editTitle) this.$refs.editTitle.focus();
@@ -115,14 +115,42 @@ export default {
       this.isHover = isTrue;
     },
     openTaskDetails() {
+      if (this.isEditTitle === true) return;
       this.$emit("openTaskDetails", this.task.id);
     },
-    async updateTask() {
-       
-      const msg ='edit task name from ' + this.task.title + ' to ' + this.currTask.title;
-     if(this.isEditTitle===true) this.$store.commit({ type:'setActivity',itemId:this.currTask.id, itemName:this.currTask.title, typeActivity:'Edit task name', msg });
+    addActivity(change){
+            var msg;
+      if (this.isEditTitle === true) {
+        msg =
+          "edit task name from " +
+          this.task.title +
+          " to " +
+          this.currTask.title;
+        this.$store.commit({
+          type: "setActivity",
+          itemId: this.currTask.id,
+          itemName: this.currTask.title,
+          typeActivity: "Edit task name",
+          msg,
+        });
+      } else if(change){
+          
+      
+        this.$store.commit({
+          type: "setActivity",
+          itemId: this.currTask.id,
+          itemName: this.currTask.title,
+          typeActivity: change.type,
+          msg:change.msg,
+        });
 
-    await this.$store.dispatch({
+      }
+      
+    },
+    async updateTask() {
+
+     if (this.isEditTitle === true)  this.addActivity()
+      await this.$store.dispatch({
         type: "updateTask",
         task: this.currTask,
         groupId: this.groupId,

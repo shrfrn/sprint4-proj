@@ -1,46 +1,56 @@
 <template>
-    <!-- <section v-if="hasDate"> -->
-        <el-date-picker class="date-column"
-            v-model="newDate"
-            @change="onDateChange"
-            type="date"
-            size="mini"
-            placeholder="Pick a Date"
-            format="dd/MM/yyyy"
-            value-format="timestamp">
-        </el-date-picker>
-    <!-- </section> -->
+  <!-- <section v-if="hasDate"> -->
+  <el-date-picker
+    class="date-column"
+    v-model="newDate"
+    @change="onDateChange"
+    type="date"
+    size="mini"
+    placeholder="Pick a Date"
+    format="dd/MM/yyyy"
+    value-format="timestamp"
+  >
+  </el-date-picker>
+  <!-- </section> -->
 </template>
 
 <script>
 export default {
-    props: {
-        value: {
-            // type: Number,
-            // required: true,
-        },
-        board: {
-            type: Object,
-            required: true,
-        },
+  props: {
+    value: {
+      // type: Number,
+      // required: true,
     },
-    data() {
-        return {
-            newDate: 0,
-        };
+    board: {
+      type: Object,
+      required: true,
     },
-    computed: {
-        hasDate() {
-            return !!this.value;
-        },
+  },
+  data() {
+    return {
+      newDate: 0,
+    };
+  },
+  computed: {
+    hasDate() {
+      return !!this.value;
     },
-    methods: {
-        onDateChange() {
-            this.$emit('input', this.newDate);
-        },
+  },
+  methods: {
+    onDateChange() {
+    
+      const date = new Date(this.newDate);
+      console.log(date.getDay());
+      this.$emit("add-activity", {
+        type: "change date",
+        msg: "change date to " + date.getDay()+'/'+(date.getMonth()+1)+'/'+date.getFullYear(),
+      });
+
+      this.$emit("input", this.newDate);
     },
-    created() {
-        if (this.value) this.newDate = this.value;
-    },
+  },
+  created() {
+    if (this.value) this.newDate = this.value;
+  },
 };
 </script>
