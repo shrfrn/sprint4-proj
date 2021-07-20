@@ -92,9 +92,7 @@ export default {
             this.taskToAdd = this.$store.getters.getEmptyTask;
         },
         async onEnd() {
-            await this.$store.dispatch({
-                type: 'saveTasks',
-            });
+            await this.$store.dispatch({ type: 'saveTasks' });
         },
     },
 };

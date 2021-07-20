@@ -1,4 +1,4 @@
-import { boardService } from '@/services/board.service.js';
+// import { boardService } from '@/services/board.service.js';
 
 export const taskStore = {
     strict: true,
@@ -15,8 +15,7 @@ export const taskStore = {
             // Write updated board to store
 
             try {
-                boardCopy = await boardService.save(boardCopy)
-                context.commit({ type: 'loadBoard', board: boardCopy })
+                context.dispatch({type: 'saveBoard', board: boardCopy})
             } catch (err) {
                 console.log('Error in taskStore => updateTask failed\n', err);
             }
@@ -32,8 +31,7 @@ export const taskStore = {
             // Write updated board to store
 
             try {
-                boardCopy = await boardService.save(boardCopy)
-                context.commit({ type: 'loadBoard', board: boardCopy })
+                context.dispatch({type: 'saveBoard', board: boardCopy})
             } catch (err) {
                 console.log('Error in taskStore => addTask failed\n', err);
             }
@@ -51,8 +49,7 @@ export const taskStore = {
             // Write updated board to store
 
             try {
-                boardCopy = await boardService.save(boardCopy)
-                context.commit({ type: 'loadBoard', board: boardCopy })
+                context.dispatch({type: 'saveBoard', board: boardCopy})
             } catch (err) {
                 console.log('Error in taskStore => addTask failed\n', err);
             }
@@ -69,27 +66,24 @@ export const taskStore = {
             // Write updated board to store
 
             try {
-                boardCopy = await boardService.save(boardCopy)
-                context.commit({ type: 'loadBoard', board: boardCopy })
+                context.dispatch({type: 'saveBoard', board: boardCopy})
             } catch (err) {
                 console.log('Error in taskStore => addTask failed\n', err);
             }
         },
-        async saveTasks(context,  ) {
+        async saveTasks(context, { saveTasks, groupId } ) {
 
             // This action is used in drag n' drop to update the order of tasks in the board.
             // Make a copy of the current board and with the updated tasklist.
 
-            // let boardCopy = JSON.parse(JSON.stringify(context.getters.currBoard))
-            // const groupIdx = boardCopy.groups.findIndex(group => group.id === groupId)
-            // boardCopy.groups[groupIdx].tasks = saveTasks
+            let boardCopy = JSON.parse(JSON.stringify(context.getters.currBoard))
+            const groupIdx = boardCopy.groups.findIndex(group => group.id === groupId)
+            boardCopy.groups[groupIdx].tasks = saveTasks
 
             // Write updated board to store
 
             try {
-              
-                const boardCopy = await boardService.save(context.getters.currBoard)
-                context.commit({ type: 'loadBoard', board: boardCopy })
+                context.dispatch({type: 'saveBoard', board: boardCopy})
             } catch (err) {
                 console.log('Error in taskStore => addTask failed\n', err);
             }

@@ -116,6 +116,7 @@ export default {
             this.$emit('openTaskDetails', this.task.id);
         },
         async updateTask() {
+
             await this.$store.dispatch({
                 type: 'updateTask',
                 task: this.currTask,

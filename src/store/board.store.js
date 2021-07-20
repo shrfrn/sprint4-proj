@@ -1,4 +1,5 @@
 import { boardService } from '@/services/board.service.js';
+import {socketService} from '@/services/socket.service.js'
 
 export const boardStore = {
     strict: true,
@@ -30,19 +31,20 @@ export const boardStore = {
     },
     actions: {
         async loadBoards(context) {
-            const boards = await boardService.query();
+            const boards = await boardService.query()
             context.commit({ type: 'setBoards', boards });
-            // .then(boards => context.commit({type: 'setBoards', boards}))
         },
         async loadBoard(context, { boardId }) {
-            const board = await boardService.getById(boardId);
+            const board = await boardService.getById(boardId)
             context.commit({ type: 'loadBoard', board });
         },
         async saveBoard(context, { board }) {
-            const newBoard = await boardService.save(board);
-            await context.dispatch({ type: 'loadBoards' });
+            const newBoard = await boardService.save(board)
+            await context.dispatch({ type: 'loadBoards' })
 
-            context.commit({ type: 'loadBoard', board: newBoard });
+            context.commit({ type: 'loadBoard', board: newBoard })
+            console.log('about to emit board change');
+            socketService.emit('board-updated', board)
         },
         async saveMiniBoard(context, { miniBoard }) {
 
@@ -66,20 +68,11 @@ export const boardStore = {
                 console.log('couldnt save board', err);
             }
         },
-        // async updateBoardName(context, { newTitle, boardId }) {
-        //     const updateBoard = await boardService.renameBoard(newTitle, boardId);
-        //     context.commit({ type: 'updateBoard', updateBoard });
-        // },
         async removeBoard(context, { boardId }) {
             console.log('boardId :>> ', boardId);
             await boardService.remove(boardId);
             context.commit({ type: 'removeBoard', boardId });
-            // .then(() => context.commit({type: 'removeBoard', boardId}))
         },
-        // async addToFavorites(context, { boardId }) {
-        //     const updateBoard = await boardService.addToFavorites(boardId);
-        //     context.commit({ type: 'updateBoard', updateBoard });
-        // },
         async duplicateBoard(context, { boardId }) {
             try {
                 const boardCopy = await boardService.getById(boardId)
