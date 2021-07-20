@@ -21,6 +21,7 @@ export const boardService = {
     // removeGroup,
     // duplicateGroup,
     getActivitiesByItem,
+    getUpdatesByItem
     // addNewGroup,
     // updateTask,
     // addTask,
@@ -312,6 +313,63 @@ const gActivities = [
     },
 ];
 
+function getUpdatesByItem(itemId) {
+    return gUpdates.filter((update) => {
+        return update.itemId === itemId;
+    });
+}
+
+const gUpdates = [
+    {
+        id: utilService.makeId(),
+        itemId: 't101',
+        itemName: 'Board list',
+        createdAt: Date.now(),
+        txt: 'bla bla bla',
+        createdBy: {
+            _id: 'u101',
+            fullname: 'Rachel Bekarov',
+            imgUrl: 'http://some-img.jpg',
+        },
+        likedBy: []
+    },
+    {
+        id: utilService.makeId(),
+        itemId: 't101',
+        itemName: 'Board list',
+        createdAt: Date.now(),
+        txt: 'hi everyOne',
+        createdBy: {
+            _id: 'u101',
+            fullname: 'Rachel Bekarov',
+            imgUrl: 'http://some-img.jpg',
+        },
+        likedBy: []
+    },
+    {
+        id: utilService.makeId(),
+        itemId: 't101',
+        itemName: 'Board list',
+        createdAt: Date.now(),
+        txt: 'like it',
+        createdBy: {
+            _id: 'u101',
+            fullname: 'Rachel Bekarov',
+            imgUrl: 'http://some-img.jpg',
+        },
+        likedBy: [{
+            _id: 'u103',
+            fullname: 'Sharon Macaron',
+            imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+        },
+        {
+            _id: 'u104',
+            fullname: 'Eden Maran',
+            imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+        }]
+    },
+
+]
 // Private functions
 
 // function _getNewGroup() {
