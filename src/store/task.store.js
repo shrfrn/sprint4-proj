@@ -74,14 +74,13 @@ export const taskStore = {
 
             let boardCopy = JSON.parse(JSON.stringify(context.getters.currBoard));
             const groupIdx = boardCopy.groups.findIndex((group) => group.id === groupId);
+            console.log('grp idx:', groupIdx);
             boardCopy.groups[groupIdx].tasks = tasks;
 
             // Write updated board to store
 
             try {
-             
-               context.commit({ type: 'changeTasks', tasks,groupId  })
-
+                // context.commit({ type: 'changeTasks', tasks, groupId  })
                 context.dispatch({ type: 'saveBoard', board: boardCopy });
             } catch (err) {
                 console.log('Error in taskStore => addTask failed\n', err);
@@ -89,17 +88,11 @@ export const taskStore = {
         },
     },
     mutations:{
-        changeTasks(state,{tasks,groupId}){
-            const groupIdx= state.currBoard.groups.findIndex(group=>{
-                return group.id=== groupId
+        changeTasks(state, { tasks, groupId }){
+            const groupIdx = state.currBoard.groups.findIndex(group => {
+                return group.id === groupId
             })
-            state.currBoard.groups[groupIdx].tasks = tasks;
+            state.currBoard.groups[groupIdx].tasks = tasks
         }
-    },
-    getters: {
-        // getEmptyTask(state) {
-        //     console.log('in getter\n', state.currBoard, state);
-        //     return boardService.getEmptyTask(state.currBoard);
-        // },
     },
 };
