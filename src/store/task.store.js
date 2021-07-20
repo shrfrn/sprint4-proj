@@ -66,8 +66,7 @@ export const taskStore = {
                 console.log('Error in taskStore => addTask failed\n', err);
             }
         },
-        async saveTasks(context, {tasks,groupId} ) {
-
+        async saveTasks(context, { tasks, groupId }) {
             // This action is used in drag n' drop to update the order of tasks in the board.
             // Make a copy of the current board and with the updated tasklist.
 

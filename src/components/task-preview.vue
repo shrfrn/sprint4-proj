@@ -1,12 +1,31 @@
 <template>
-  <section class="task-preview">
-    <el-dropdown class="dropdown" trigger="click">
-      <el-button size="mini">
-        <i class="fas fa-caret-square-down icon"></i>
-      </el-button>
-      <el-dropdown-menu trigger="click" size="medium" slot="dropdown">
-        <el-dropdown-item @click.native="removeTask"
-          ><i class="far fa-trash-alt"></i>Remove task</el-dropdown-item
+    <section class="task-preview">
+        <el-dropdown class="dropdown" trigger="click">
+            <el-button size="mini">
+                <i class="fas fa-caret-square-down icon"></i>
+            </el-button>
+            <el-dropdown-menu trigger="click" size="medium" slot="dropdown">
+                <el-dropdown-item @click.native="removeTask"
+                    ><i class="far fa-trash-alt"></i>Remove task</el-dropdown-item
+                >
+                <el-dropdown-item @click.native="toggleEdit(true)"
+                    ><i class="fas fa-pen"></i>Rename title</el-dropdown-item
+                >
+                <el-dropdown-item @click.native="duplicateTask"
+                    ><i class="far fa-copy"></i>Duplicate task</el-dropdown-item
+                >
+                <el-dropdown-item @click.native="openTaskDetails">
+                    <i class="far fa-comments open-chat" @click="openTaskDetails">
+                        Open chat
+                    </i>
+                </el-dropdown-item>
+            </el-dropdown-menu>
+        </el-dropdown>
+        <!-- <div
+            class="task-title"
+            :class="isEdit"
+            @mouseover="togglehover(true)"
+            @mouseleave="togglehover(false)"
         >
         <el-dropdown-item @click.native="toggleEdit(true)"
           ><i class="fas fa-pen"></i>Rename title</el-dropdown-item
@@ -20,7 +39,7 @@
           </i>
         </el-dropdown-item>
       </el-dropdown-menu>
-    </el-dropdown>
+    </el-dropdown> -->
     <div
       class="task-title"
       :class="isEdit"
@@ -29,15 +48,16 @@
       @click="openTaskDetails"
     >
       <template v-if="isEditTitle">
-        <form @submit.prevent="updateTask">
+      
           <input
             ref="editTitle"
             type="text"
             v-model="currTask.title"
-            @blur="toggleEdit(false)"
+            @blur="updateTask"
+            @keydown.enter="updateTask"
           />
           <!-- @change="toggleEdit(false)" -->
-        </form>
+        
       </template>
       <section class="title-task handle-task" v-else>
         <p>{{ task.title }}</p>
@@ -60,65 +80,67 @@
 </template>
 
 <script>
-import { columnHelpers } from "@/services/column.helpers.js";
-import { utilService } from "@/services/util.service.js";
+import { columnHelpers } from '@/services/column.helpers.js';
+import { utilService } from '@/services/util.service.js';
 
-import personColumn from "@/components/person-column";
-import statusColumn from "@/components/status-column";
-import dateColumn from "@/components/date-column";
-import tagsColumn from "@/components/tags-column";
+import personColumn from '@/components/person-column';
+import statusColumn from '@/components/status-column';
+import dateColumn from '@/components/date-column';
+import tagsColumn from '@/components/tags-column';
 
 export default {
-  props: {
-    task: Object,
-    groupId: String,
-  },
-  data() {
-    return {
-      title: this.task.title,
-      currTask: this.task,
-      isHover: false,
-      isEditTitle: false,
-    };
-  },
-  created() {
-    this.currTask = JSON.parse(JSON.stringify(this.task));
-  },
-  mounted() {
-    if (this.$refs.editTitle) this.$refs.editTitle.focus();
-  },
+    props: {
+        task: Object,
+        groupId: String,
+    },
+    data() {
+        return {
+            title: this.task.title,
+            currTask: this.task,
+            isHover: false,
+            isEditTitle: false,
+        };
+    },
+    created() {
+        this.currTask = JSON.parse(JSON.stringify(this.task));
+    },
+    mounted() {
+        if (this.$refs.editTitle) this.$refs.editTitle.focus();
+    },
 
-  watch: {
-    task(newVal) {
-      this.currTask = JSON.parse(JSON.stringify(newVal));
+    watch: {
+        task(newVal) {
+            this.currTask = JSON.parse(JSON.stringify(newVal));
+        },
     },
-  },
 
-  computed: {
-    boardMembers() {
-      return this.$store.getters.currBoard.members;
+    computed: {
+        boardMembers() {
+            return this.$store.getters.currBoard.members;
+        },
+        isEdit() {
+            if (this.isEditTitle) return '';
+            else return 'handle-task';
+        },
+        currBoard() {
+            return this.$store.getters.currBoard;
+        },
     },
-    isEdit() {
-      if (this.isEditTitle) return "";
-      else return "handle-task";
-    },
-    currBoard() {
-      return this.$store.getters.currBoard;
-    },
-  },
-  methods: {
-    toggleEdit(isTrue) {
-      this.isEditTitle = isTrue;
-      if (this.$refs.editTitle) this.$refs.editTitle.focus();
-    },
-    togglehover(isTrue) {
-      this.isHover = isTrue;
-    },
-    openTaskDetails() {
-      if (this.isEditTitle === true) return;
-      this.$emit("openTaskDetails", this.task.id);
-    },
-    addActivity(change){
+    methods: {
+        toggleEdit(isTrue) {
+            this.isEditTitle = isTrue;
+            setTimeout(() => {
+                if (this.$refs.editTitle) this.$refs.editTitle.focus();
+            }, 0);
+            // if (this.$refs.editTitle) this.$refs.editTitle.focus();
+        },
+        togglehover(isTrue) {
+            this.isHover = isTrue;
+        },
+        openTaskDetails() {
+            this.$emit('openTaskDetails', this.task.id);
+        },
+       addActivity(change){
             var msg;
       if (this.isEditTitle === true) {
         msg =
@@ -157,35 +179,35 @@ export default {
       });
       this.toggleEdit(false);
     },
-    async removeTask() {
-      console.log("removing");
-      await this.$store.dispatch({
-        type: "removeTask",
-        task: this.task,
-        groupId: this.groupId,
-      });
-    },
-    async duplicateTask() {
-      const taskCopy = JSON.parse(JSON.stringify(this.task));
-      taskCopy.title = "Copy of " + this.task.title;
-      taskCopy.id = utilService.makeId();
+        async removeTask() {
+            console.log('removing');
+            await this.$store.dispatch({
+                type: 'removeTask',
+                task: this.task,
+                groupId: this.groupId,
+            });
+        },
+        async duplicateTask() {
+            const taskCopy = JSON.parse(JSON.stringify(this.task));
+            taskCopy.title = 'Copy of ' + this.task.title;
+            taskCopy.id = utilService.makeId();
 
-      await this.$store.dispatch({
-        type: "duplicateTask",
-        task: this.task,
-        taskCopy,
-        groupId: this.groupId,
-      });
+            await this.$store.dispatch({
+                type: 'duplicateTask',
+                task: this.task,
+                taskCopy,
+                groupId: this.groupId,
+            });
+        },
+        componentType(column) {
+            return columnHelpers.componentType(column);
+        },
     },
-    componentType(column) {
-      return columnHelpers.componentType(column);
+    components: {
+        personColumn,
+        statusColumn,
+        dateColumn,
+        tagsColumn,
     },
-  },
-  components: {
-    personColumn,
-    statusColumn,
-    dateColumn,
-    tagsColumn,
-  },
 };
 </script>

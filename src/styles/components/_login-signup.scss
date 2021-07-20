@@ -1,14 +1,16 @@
 .login-signup {
-    // height: 600px;
-    // width: 50vw;
-    // position: fixed;
-    // top: 50%;
-    // left: 50%;
-    // transform: translate(-50%,-50%);
-    .el-form-item__content{
+    .el-tabs__item {
+        font-weight: 600;
+        font-family: Lato;
+        font-size: 15px;
+        background: -webkit-linear-gradient(#2ea8e0, #ad59e6);
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .el-form-item__content {
         margin: 0;
     }
-    .el-button{
-margin: 0;
+    .el-button {
+        margin: 0;
     }
 }

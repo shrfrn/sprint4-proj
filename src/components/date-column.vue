@@ -52,5 +52,10 @@ export default {
   created() {
     if (this.value) this.newDate = this.value;
   },
+    watch: {
+        value(newVal) {
+            this.newDate = newVal
+        },
+    },
 };
 </script>

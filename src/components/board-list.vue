@@ -1,14 +1,21 @@
 <template>
     <section>
         <i
+            class="arrow far fa-arrow-alt-circle-left"
+            :class="{ close: !isNavOpen }"
+            @click="closeNav"
+            v-show="isNavOpen"
+        ></i>
+        <!-- <i class="far fa-arrow-alt-circle-left"></i> -->
+        <!-- <i
             v-show="isNavOpen"
             class="arrow fas fa-arrow-circle-left"
             :class="{ close: !isNavOpen }"
             @click="closeNav"
-        ></i>
+        ></i> -->
         <i
             v-show="!isNavOpen"
-            class="arrow fas fa-arrow-circle-right"
+            class="arrow far fa-arrow-alt-circle-right"
             :class="{ close: !isNavOpen }"
             @click="closeNav"
         ></i>
@@ -40,22 +47,27 @@
 
                 <section v-show="isNavOpen" class="board-list-items">
                     <p v-show="isNavOpen" class="title"><i class="far fa-star"></i> Favorites</p>
-                    <p class="indication" v-if="!favBoards.length">No favorites yet</p>
+                    <!-- <p class="indication" v-show="!favBoards.length">No favorites yet</p> -->
 
-                    <div v-for="(board, idx) in boards" :key="idx">
-                        <board-preview
-                            v-show="board.isFavorite"
-                            :miniBoard="board"
-                            @deleteBoard="deleteBoard"
-                            @addToFavorites="addToFavorites"
-                            @duplicateBoard="duplicateBoard"
-                            @updateBoardName="updateBoardName"
-                        />
-                    </div>
+                    <!-- FAVORITES -->
+                    <board-preview
+                        v-for="(board, idx) in boards"
+                        :key="idx"
+                        v-show="board.isFavorite"
+                        :miniBoard="board"
+                        @deleteBoard="deleteBoard"
+                        @addToFavorites="addToFavorites"
+                        @duplicateBoard="duplicateBoard"
+                        @updateBoardName="updateBoardName"
+                    />
+
+                    <el-divider></el-divider>
 
                     <p v-show="isNavOpen" class="title">
                         <i class="fas fa-border-all"></i> All Boards
                     </p>
+
+                    <!-- ALL BOARDS -->
                     <board-preview
                         v-for="board in boards"
                         :key="board._id"
@@ -102,7 +114,7 @@ export default {
                 cancelButtonText: 'Cancel',
                 inputPattern: /\w*[a-zA-Z]\w*/,
                 inputErrorMessage: 'Invalid Name',
-            })
+            }) 
                 .then(({ value }) => {
                     const newBoard = boardService.getEmptyBoard();
                     const boardTitle = value;
@@ -156,11 +168,11 @@ export default {
     components: {
         boardPreview,
     },
-    watch: {
-        // boards() {
-        //     this.$store.dispatch({ type: 'loadBoards' });
-        // },
-    },
+    // watch: {
+    //     boards(newVal) {
+
+    //     },
+    // },
 };
 </script>
 

@@ -57,7 +57,7 @@ export default {
         // console.log('in created. board \n', this.board);
         socketService.emit('in-board', this.board._id)
         socketService.on('board-updated', this.updateBoard )
-            
+        
     },
     destroyed(){
         socketService.emit('left-board', this.board._id)
@@ -67,6 +67,10 @@ export default {
         updateBoard(board){
             console.log('update recieved on socket\n', board);
             this.$store.commit({ type: 'loadBoard', board})
+            
+            // Currently updating board list on every change in current board.
+            // TODO: optimize - load board list only on changes which are visible in the list:
+            // board name, favorites.
         },
         async loadBoard() {
             try {
@@ -158,5 +162,3 @@ export default {
     },
 };
 </script>
-
-<style></style>

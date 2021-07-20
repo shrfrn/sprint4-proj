@@ -61,5 +61,10 @@ export default {
     created() {
         if (this.value) this.newTagList = this.value;
     },
+    watch: {
+        value(newVal) {
+            this.newTagList = newVal
+        },
+    },
 };
 </script>
