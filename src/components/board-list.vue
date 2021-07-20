@@ -114,7 +114,7 @@ export default {
                 cancelButtonText: 'Cancel',
                 inputPattern: /\w*[a-zA-Z]\w*/,
                 inputErrorMessage: 'Invalid Name',
-            })
+            }) 
                 .then(({ value }) => {
                     const newBoard = boardService.getEmptyBoard();
                     const boardTitle = value;
@@ -168,11 +168,11 @@ export default {
     components: {
         boardPreview,
     },
-    watch: {
-        // boards() {
-        //     this.$store.dispatch({ type: 'loadBoards' });
-        // },
-    },
+    // watch: {
+    //     boards(newVal) {
+
+    //     },
+    // },
 };
 </script>
 
