@@ -30,7 +30,7 @@
 
 <script>
 // import { boardService } from '../services/board.service';
-
+import {socketService} from '@/services/socket.service.js'
 import boardHeader from '../components/board-header.vue';
 import groupList from '../components/group-list.vue';
 // import boardViews from '../components/board-views.vue';
@@ -50,16 +50,28 @@ export default {
             return this.$store.getters.currBoard.groups[0].tasks[0].columns['date'];
         },
     },
-    created() {
+    async created() {
         console.log('CREATING');
-        this.loadBoard();
+        await this.loadBoard();
+        await socketService.setup()
+        // console.log('in created. board \n', this.board);
+        socketService.emit('in-board', this.board._id)
+        socketService.on('board-updated', this.updateBoard )
+            
+    },
+    destroyed(){
+        socketService.emit('left-board', this.board._id)
     },
 
     methods: {
+        updateBoard(board){
+            console.log('update recieved on socket\n', board);
+            this.$store.commit({ type: 'loadBoard', board})
+        },
         async loadBoard() {
             try {
                 const { boardId } = this.$route.params;
-                await this.$store.dispatch({ type: 'loadBoard', boardId });
+                return await this.$store.dispatch({ type: 'loadBoard', boardId });
                 // this.board = this.$store.getters.currBoard;
             } catch (error) {
                 console.log('Couldnt load board');

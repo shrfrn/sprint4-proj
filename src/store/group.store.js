@@ -14,16 +14,10 @@ export const groupStore = {
             // Write updated board to store
 
             try {
-                boardCopy = await boardService.save(boardCopy);
-                context.commit({ type: 'loadBoard', board: boardCopy });
+                context.dispatch({type: 'saveBoard', board: boardCopy})
             } catch (err) {
                 console.log('Error in taskStore => updateTask failed\n', err);
             }
-            // const updateBoard = await boardService.updateGroup(
-            //     updatedGroup,
-            //     context.state.currBoard
-            // );
-            // context.commit({ type: 'updateBoard', updateBoard });
         },
         async removeGroup(context, { group }) {
             // Make a copy of the current board and remove the group from it.
@@ -35,13 +29,10 @@ export const groupStore = {
             // Write updated board to store
 
             try {
-                boardCopy = await boardService.save(boardCopy);
-                context.commit({ type: 'loadBoard', board: boardCopy });
+                context.dispatch({type: 'saveBoard', board: boardCopy})
             } catch (err) {
                 console.log('Error in taskStore => addTask failed\n', err);
             }
-            // const updateBoard = await boardService.removeGroup(group, context.state.currBoard);
-            // context.commit({ type: 'updateBoard', updateBoard });
         },
         async duplicateGroup(context, { duplicatedGroup }) {
             // Make a copy of the current board and add the duplicated group to it,
@@ -56,16 +47,10 @@ export const groupStore = {
             // Write updated board to store
 
             try {
-                boardCopy = await boardService.save(boardCopy);
-                context.commit({ type: 'loadBoard', board: boardCopy });
+                context.dispatch({type: 'saveBoard', board: boardCopy})
             } catch (err) {
                 console.log('Error in taskStore => addTask failed\n', err);
             }
-            // const updateBoard = await boardService.duplicateGroup(
-            //     duplicatedGroup,
-            //     context.state.currBoard
-            // );
-            // context.commit({ type: 'updateBoard', updateBoard });
         },
         async updateGroup(context, { group }) {
             // Make a copy of the current board with the updated group in place of the older one.
@@ -77,13 +62,10 @@ export const groupStore = {
             // Write updated board to store
 
             try {
-                boardCopy = await boardService.save(boardCopy);
-                context.commit({ type: 'loadBoard', board: boardCopy });
+                context.dispatch({type: 'saveBoard', board: boardCopy})
             } catch (err) {
                 console.log('Error in taskStore => updateTask failed\n', err);
             }
-            // const updateBoard = await boardService.updateGroup(group, context.state.currBoard);
-            // context.commit({ type: 'updateBoard', updateBoard });
         },
         async addNewGroup(context) {
             // Make a copy of the current board and add a new empty group to it.
@@ -95,14 +77,10 @@ export const groupStore = {
             // Write updated board to store
 
             try {
-                boardCopy = await boardService.save(boardCopy);
-                context.commit({ type: 'loadBoard', board: boardCopy });
+                context.dispatch({type: 'saveBoard', board: boardCopy})
             } catch (err) {
                 console.log('Error in taskStore => addTask failed\n', err);
             }
-            // const updateBoard = await boardService.addNewGroup(context.state.currBoard._id);
-            // console.log('updateBoard :>> ', updateBoard);
-            // context.commit({ type: 'updateBoard', updateBoard });
         },
 
         async saveGroups(context, { updatedGroups }) {
@@ -115,27 +93,10 @@ export const groupStore = {
             // Write updated board to store
 
             try {
-                boardCopy = await boardService.save(boardCopy);
-                context.commit({ type: 'loadBoard', board: boardCopy });
+                context.dispatch({type: 'saveBoard', board: boardCopy})
             } catch (err) {
                 console.log('Error in taskStore => addTask failed\n', err);
             }
-            // const updateBoard = await boardService.updateGroups(
-            //     updatedGroups,
-            //     context.state.currBoard
-            // );
-            // context.commit({ type: 'updateBoard', updateBoard });
         },
-    },
-    getters: {
-        // boards(state) {
-        //     return state.boards;
-        // },
-        // currBoard(state) {
-        //     return state.currBoard;
-        // },
-        // getEmptyTask(state) {
-        //     return boardService.getEmptyTask(state.currBoard);
-        // },
     },
 };

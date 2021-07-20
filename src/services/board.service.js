@@ -15,21 +15,8 @@ export const boardService = {
     getEmptyGroup,
     getEmptyTask,
     getEmptyFilter, // Everything under here should be in store.
-    // renameBoard,
-    // addToFavorites,
-    // duplicateBoard,
-    // updateGroup,
-    // updateGroups,
-    // removeGroup,
-    // duplicateGroup,
     getActivitiesByItem,
     getUpdatesByItem,
-    // addNewGroup,
-    // updateTask,
-    // addTask,
-    // removeTask,
-    // duplicateTask,
-    // updateTasks,
 };
 
 // Board service
@@ -77,35 +64,13 @@ async function remove(id) {
     return await httpService.delete(BASE_URL + id);
 }
 
-// async function renameBoard(newTitle, boardId) {
-//     const board = await getById(boardId);
-//     board.title = newTitle;
-//     return await save(board);
-// }
-
-// async function addToFavorites(boardId) {
-//     const board = await getById(boardId);
-//     board.isFavorite = !board.isFavorite;
-//     return await save(board);
-// }
-
 async function save(board) {
-    const brd = JSON.parse(JSON.stringify(board));
-    // console.log('board is: \n', brd);
-    if (brd._id) {
-        const res = await httpService.put(BASE_URL + brd._id, brd);
-        return res;
+    if (board._id) {
+        return await httpService.put(BASE_URL + board._id, board);
     } else {
-        return await httpService.post(BASE_URL, brd);
+        return await httpService.post(BASE_URL, board);
     }
 }
-
-// async function duplicateBoard(boardId) {
-//     const duplicatedBoard = await getById(boardId);
-//     duplicatedBoard.title = `Copy of ${duplicatedBoard.title}`;
-//     await storageService.post(KEY, duplicatedBoard);
-//     return await query();
-// }
 
 function getEmptyBoard() {
     const newBoard = JSON.parse(JSON.stringify(gBoards[0]));
@@ -285,29 +250,6 @@ const gUpdates = [
 ];
 // Private functions
 
-// function _getNewGroup() {
-//     return {
-//         id: utilService.makeId(),
-//         title: 'New Group',
-//         tasks: [
-//             {
-//                 id: utilService.makeId(),
-//                 title: 'You can add new task here',
-//                 createdAt: Date.now(),
-//                 columns: {
-//                     delegate: [],
-//                     status: { txt: '', color: '#c4c4c4' },
-//                     date: Date.now(),
-//                     tags: [],
-//                 },
-//             },
-//         ],
-//         style: {
-//             color: _getRandomColor(),
-//         },
-//     };
-// }
-
 function _getRandomColor() {
     var letters = '0123456789ABCDEF';
     var color = '#';
@@ -444,8 +386,3 @@ const gBoards = [
         activities: [],
     },
 ];
-
-// function _createInitialData() {
-//     localStorage.setItem(KEY, JSON.stringify(gBoards));
-//     return gBoards;
-// }
