@@ -45,7 +45,7 @@ async function login(userCred) {
     const users = await storageService.query(KEY)
     const user = users.find(user => user.username === userCred.username)
    
-    if(!user) return Promise.reject('user not found try again');
+    if(!user) return Promise.reject('user not found');
     return _saveLocalUser(user)
     // const user = await httpService.post('auth/login', userCred)
     // if (user) return _saveLocalUser(user)

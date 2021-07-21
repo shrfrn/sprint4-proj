@@ -1,56 +1,75 @@
 <template>
-  <section class="chat-box">
-    <p @click="setToEdit()" v-show="!isEditingState">write an update</p>
-    <textarea
-      ref="description"
-      type="textarea"
-      rows="4"
-      cols="50"
-      placeholder="write an update"
-      v-show="isEditingState"
-      v-model="txt"
-    />
-    <el-button type="primary" @click="saveAction">Primary</el-button>
+    <section class="chat-box">
+        <!-- <tiptap v-model="txt" /> -->
+        <div class="chat-header">
+            <div class="inputs">
+                <input
+                    ref="description"
+                    @click="toggleEdit"
+                    v-if="!isEditingState"
+                    placeholder="Write an update..."
+                />
 
-    <msg-list :updates="updates" />
-  </section>
+                <el-input
+                    ref="description"
+                    v-if="isEditingState"
+                    type="textarea"
+                    :rows="3"
+                    placeholder="Write an update..."
+                    v-model="txt"
+                >
+                </el-input>
+            </div>
+
+            <div class="btn">
+                <el-button type="primary" size="mini" @click.native="saveAction">Update</el-button>
+            </div>
+        </div>
+
+        <msg-list :updates="updates" />
+    </section>
 </template>
 
 <script>
-import msgList from "./msg-list.vue";
+import msgList from './msg-list.vue';
+// import tiptap from './tiptap.vue';
 export default {
-  components: { msgList },
-  props: {
-    updates: Array,
-  },
-  data() {
-    return {
-      isEditingState: false,
-      txt: "",
-   
-    };
-  },
-  created() {
- 
-   
-  },
-  methods: {
-    setToEdit() {
-      this.isEditingState = !this.isEditingState;
+    components: {
+        msgList,
+        // tiptap
     },
-   async saveAction() {
-
-      await this.$store.dispatch({
-        type: "saveUpdate",
-        itemId: this.$route.params.id,
-        txt: this.txt,
-      });
-      this.setToEdit();
+    props: {
+        updates: Array,
     },
-
-  },
+    data() {
+        return {
+            isEditingState: false,
+            txt: '',
+        };
+    },
+    created() {},
+    methods: {
+        toggleEdit() {
+            this.isEditingState = !this.isEditingState;
+            if (this.$refs.description) {
+                setTimeout(() => {
+                    this.$refs.description.focus();
+                }, 10);
+            }
+        },
+        async saveAction() {
+            console.log('hi');
+            console.log('this.txt :>> ', this.txt);
+            await this.$store.dispatch({
+                type: 'saveUpdate',
+                itemId: this.$route.params.id,
+                txt: this.txt,
+            });
+            this.isEditingState = false;
+            this.txt = '';
+        },
+    },
 };
 </script>
 
-<style>
-</style>
+<style></style>

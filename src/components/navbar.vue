@@ -11,7 +11,7 @@
             </router-link> -->
 
             <el-tooltip class="item" effect="dark" content="Boards" placement="right">
-                <router-link to="/board" title="boards">
+                <router-link to="/board/60f7b1e3c66d343ab4f0c567" title="boards">
                     <i class="fas fa-th-large fa-lg"></i>
                 </router-link>
             </el-tooltip>
