@@ -3,12 +3,22 @@
         <section @keydown.esc="end" class="person-picker">
             <section class="delegate-list">
                 <transition-group name="person-list">
-                    <person-preview @item-selected="onRemoveDelegate" :person="delegate" v-for="delegate in newDelegates" :key="delegate._id" />
+                    <person-preview
+                        @item-selected="onRemoveDelegate"
+                        :person="delegate"
+                        v-for="delegate in newDelegates"
+                        :key="delegate._id"
+                    />
                 </transition-group>
             </section>
             <section class="member-list">
                 <transition-group name="person-list">
-                    <person-preview @item-selected="onAddDelegate" :person="member" v-for="member in newMembers" :key="member._id" />
+                    <person-preview
+                        @item-selected="onAddDelegate"
+                        :person="member"
+                        v-for="member in newMembers"
+                        :key="member._id"
+                    />
                 </transition-group>
             </section>
         </section>
@@ -16,7 +26,7 @@
 </template>
 
 <script>
-import personPreview from '@/components/person-preview'
+import personPreview from '@/components/person-preview';
 export default {
     props: {
         delegates: {
@@ -28,48 +38,51 @@ export default {
             required: true,
         },
     },
-    data(){
+    data() {
         return {
             newDelegates: [],
             newMembers: [],
+            dele: [],
             isDirty: false,
-        }
+        };
     },
-    created(){
-        if(this.delegates && this.delegates.length) this.newDelegates = JSON.parse(JSON.stringify(this.delegates))
+    created() {
+        console.log('this.members :>> ', this.members);
+        if (this.delegates && this.delegates.length)
+            this.newDelegates = JSON.parse(JSON.stringify(this.delegates));
         console.log('newDelegates', this.newDelegates);
-        this.newMembers = this.members.filter(member => {
-            return !this.newDelegates.some(delegate => delegate._id === member._id)
-        })
+        this.newMembers = this.members.filter((member) => {
+            return !this.newDelegates.some((delegate) => delegate._id === member._id);
+        });
         console.log('newMembers', this.newMembers);
     },
     methods: {
-        onRemoveDelegate(delegateId){
-            const idx = this.newDelegates.findIndex(delegate => delegate._id === delegateId)
-            const person = this.newDelegates.splice(idx, 1)[0]
-            this.newMembers.unshift(person)
-            
-            this.isDirty = true
-            this.$emit('change', this.newDelegates)
-        },
-        onAddDelegate(memberId){
-            const idx = this.newMembers.findIndex(member => member._id === memberId)
-            const person = this.newMembers.splice(idx, 1)[0]
-            this.newDelegates.unshift(person)
+        onRemoveDelegate(delegateId) {
+            const idx = this.newDelegates.findIndex((delegate) => delegate._id === delegateId);
+            const person = this.newDelegates.splice(idx, 1)[0];
+            this.newMembers.unshift(person);
 
-            this.isDirty = true
-            this.$emit('change', this.newDelegates)
+            this.isDirty = true;
+            this.$emit('change', this.newDelegates);
         },
-        end(){
+        onAddDelegate(memberId) {
+            const idx = this.newMembers.findIndex((member) => member._id === memberId);
+            const person = this.newMembers.splice(idx, 1)[0];
+            this.newDelegates.unshift(person);
+
+            this.isDirty = true;
+            this.$emit('change', this.newDelegates);
+        },
+        end() {
             console.log('end');
-            this.$emit('person-picker-close')
+            this.$emit('person-picker-close');
         },
     },
-    beforeDestroy(){
-        if(this.isDirty) this.$emit('input', this.newDelegates)
+    beforeDestroy() {
+        if (this.isDirty) this.$emit('input', this.newDelegates);
     },
     components: {
         personPreview,
     },
-}
+};
 </script>

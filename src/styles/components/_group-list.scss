@@ -9,6 +9,10 @@
         justify-content: space-between;
         flex: 2;
         min-width: 260px;
+
+        div {
+            height: 100%;
+        }
     }
 
     .flip-list-move {
@@ -75,8 +79,8 @@
                 position: absolute;
                 right: 0;
                 top: 0px;
-                opacity:0;
-                .el-color-picker__trigger{
+                opacity: 0;
+                .el-color-picker__trigger {
                     width: 181px;
                 }
             }
@@ -94,9 +98,8 @@
             .group-dropdown-menu {
                 margin-right: 0;
             }
-            
         }
-  
+
         .input {
             border: none;
             box-shadow: 0 0 1px 1px #dbdbdb;
@@ -115,6 +118,11 @@
         align-items: center;
         justify-content: flex-end;
         height: 100%;
+
+        .el-dropdown {
+            display: flex;
+            align-items: center;
+        }
     }
 
     .columns {
@@ -141,16 +149,29 @@
             }
 
             i {
-                font-size: .8rem;
+                font-size: 0.8rem;
                 color: lightgray;
                 padding-left: 9px;
                 padding-top: 4px;
-                
+
                 &:first-of-type {
                     padding-left: 0;
                     padding-right: 9px;
                 }
             }
         }
+    }
+}
+
+.el-color-picker {
+    width: 100%;
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    .el-color-picker__trigger {
+        width: 100%;
+        opacity: 0;
     }
 }

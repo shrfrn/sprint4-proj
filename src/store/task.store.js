@@ -75,25 +75,25 @@ export const taskStore = {
             // boardCopy.groups[groupIdx].tasks = tasks;
             // Write updated board to store
 
-            try {         
+            try {
                 console.log('save', context);
-                 context.commit({ type: 'changeTasks', tasks,groupId,board:boardCopy  })
+                context.commit({ type: 'changeTasks', tasks, groupId, board: boardCopy });
                 context.dispatch({ type: 'saveBoard', board: context.getters.currBoard });
             } catch (err) {
                 console.log('Error in taskStore => addTask failed\n', err);
             }
         },
     },
-    mutations:{
-        changeTasks(state,{tasks,groupId,board}){
-            console.log('save',state);
-       
-            const groupIdx= board.groups.findIndex(group=>{
-                return group.id=== groupId
-            })
-            
+    mutations: {
+        changeTasks(state, { tasks, groupId, board }) {
+            console.log('save', state);
+
+            const groupIdx = board.groups.findIndex((group) => {
+                return group.id === groupId;
+            });
+
             board.groups[groupIdx].tasks = tasks;
-        }
+        },
     },
     getters: {
         // getEmptyTask(state) {

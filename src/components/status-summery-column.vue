@@ -3,7 +3,7 @@
         <div class="battery">
             <el-tooltip
                 class="item"
-                effect="light"
+                effect="dark"
                 :content="'Stuck: ' + percentOfTotal(statuses['Stuck']).toFixed(0) + '%'"
                 placement="top"
             >
@@ -19,7 +19,7 @@
 
             <el-tooltip
                 class="item"
-                effect="light"
+                effect="dark"
                 :content="'Done: ' + percentOfTotal(statuses['Done']).toFixed(0) + '%'"
                 placement="top"
             >
@@ -34,7 +34,7 @@
             </el-tooltip>
             <el-tooltip
                 class="item"
-                effect="light"
+                effect="dark"
                 :content="
                     'In progress: ' + percentOfTotal(statuses['In progress']).toFixed(0) + '%'
                 "
@@ -51,7 +51,7 @@
             </el-tooltip>
             <el-tooltip
                 class="item"
-                effect="light"
+                effect="dark"
                 :content="'Empty: ' + percentOfTotal(statuses['']).toFixed(0) + '%'"
                 placement="top"
             >

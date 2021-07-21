@@ -8,9 +8,9 @@
     @include flex(start, center, row);
     position: relative;
 
-    &:hover .dropdown {
-        display: block;
-    }
+    // &:hover .dropdown {
+    //     display: block;
+    // }
 
     .dropdown {
         position: absolute;

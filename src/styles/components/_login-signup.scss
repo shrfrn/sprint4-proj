@@ -1,16 +1,13 @@
 .login-signup {
-    .el-tabs__item {
-        font-weight: 600;
-        font-family: Lato;
-        font-size: 15px;
-        background: -webkit-linear-gradient(#2ea8e0, #ad59e6);
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
+    .el-tabs {
+        .el-tabs__content {
+            display: flex;
+            text-align: left;
+        }
     }
-    .el-form-item__content {
-        margin: 0;
-    }
-    .el-button {
-        margin: 0;
-    }
+}
+.el-dialog {
+    width: 400px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px 9px #ff61241f;
 }

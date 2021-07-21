@@ -3,7 +3,7 @@
     background-color: #2b2f4c;
     width: 66px;
     padding: 20px 0;
-
+    height: 100vh;
     .task-action {
         .logo-monday {
             width: 30px;
@@ -54,5 +54,13 @@
         &:hover {
             transform: rotate(-90deg) translateY(-75px);
         }
+    }
+    .btn-logout {
+        height: 50px;
+        width: 50px;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        color: white;
     }
 }

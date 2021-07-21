@@ -40,43 +40,41 @@
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown> -->
-    <div
-      class="task-title"
-      :class="isEdit"
-      @mouseover="togglehover(true)"
-      @mouseleave="togglehover(false)"
-      @click="openTaskDetails"
-    >
-      <template v-if="isEditTitle">
-      
-          <input
-            ref="editTitle"
-            type="text"
-            v-model="currTask.title"
-            @blur="updateTask"
-            @keydown.enter="updateTask"
-          />
-          <!-- @change="toggleEdit(false)" -->
-        
-      </template>
-      <section class="title-task handle-task" v-else>
-        <p>{{ task.title }}</p>
-        <button @click.stop="toggleEdit(true)" v-if="isHover">Edit</button>
-      </section>
-      <!-- <i class="far fa-comments open-chat" @click="openTaskDetails"></i> -->
-      <i class="far fa-comment open-chat"></i>
-    </div>
-    <component
-      v-for="column in currBoard.columns"
-      :key="column"
-      :is="componentType(column)"
-      class="dynamic-column"
-      @input="updateTask"
-      @add-activity="addActivity"
-      :board="currBoard"
-      v-model="currTask.columns[column]"
-    />
-  </section>
+        <div
+            class="task-title"
+            :class="isEdit"
+            @mouseover="togglehover(true)"
+            @mouseleave="togglehover(false)"
+            @click="openTaskDetails"
+        >
+            <template v-if="isEditTitle">
+                <input
+                    ref="editTitle"
+                    type="text"
+                    v-model="currTask.title"
+                    @keydown.enter="updateTask"
+                    @blur="toggleEdit(false)"
+                />
+                <!-- @change="toggleEdit(false)" -->
+            </template>
+            <section class="title-task handle-task" v-else>
+                <p>{{ task.title }}</p>
+                <button @click.stop="toggleEdit(true)" v-if="isHover">Edit</button>
+            </section>
+            <!-- <i class="far fa-comments open-chat" @click="openTaskDetails"></i> -->
+            <i class="far fa-comment open-chat"></i>
+        </div>
+        <component
+            v-for="column in currBoard.columns"
+            :key="column"
+            :is="componentType(column)"
+            class="dynamic-column"
+            @input="updateTask"
+            @add-activity="addActivity"
+            :board="currBoard"
+            v-model="currTask.columns[column]"
+        />
+    </section>
 </template>
 
 <script>
@@ -95,8 +93,8 @@ export default {
     },
     data() {
         return {
-            title: this.task.title,
-            currTask: this.task,
+            // title: this.task.title,
+            currTask: '',
             isHover: false,
             isEditTitle: false,
         };
@@ -129,56 +127,49 @@ export default {
     methods: {
         toggleEdit(isTrue) {
             this.isEditTitle = isTrue;
+            if (!isTrue) this.currTask.title = this.task.title;
             setTimeout(() => {
                 if (this.$refs.editTitle) this.$refs.editTitle.focus();
             }, 0);
-            // if (this.$refs.editTitle) this.$refs.editTitle.focus();
         },
         togglehover(isTrue) {
             this.isHover = isTrue;
         },
         openTaskDetails() {
+            if (this.isEditTitle === true) return;
             this.$emit('openTaskDetails', this.task.id);
         },
-       addActivity(change){
+        addActivity(change) {
             var msg;
-      if (this.isEditTitle === true) {
-        msg =
-          "edit task name from " +
-          this.task.title +
-          " to " +
-          this.currTask.title;
-        this.$store.commit({
-          type: "setActivity",
-          itemId: this.currTask.id,
-          itemName: this.currTask.title,
-          typeActivity: "Edit task name",
-          msg,
-        });
-      } else if(change){
-          
-      
-        this.$store.commit({
-          type: "setActivity",
-          itemId: this.currTask.id,
-          itemName: this.currTask.title,
-          typeActivity: change.type,
-          msg:change.msg,
-        });
-
-      }
-      
-    },
-    async updateTask() {
-
-     if (this.isEditTitle === true)  this.addActivity()
-      await this.$store.dispatch({
-        type: "updateTask",
-        task: this.currTask,
-        groupId: this.groupId,
-      });
-      this.toggleEdit(false);
-    },
+            if (this.isEditTitle === true) {
+                msg = 'edit task name from ' + this.task.title + ' to ' + this.currTask.title;
+                this.$store.commit({
+                    type: 'setActivity',
+                    itemId: this.currTask.id,
+                    itemName: this.currTask.title,
+                    typeActivity: 'Edit task name',
+                    msg,
+                });
+            } else if (change) {
+                this.$store.commit({
+                    type: 'setActivity',
+                    itemId: this.currTask.id,
+                    itemName: this.currTask.title,
+                    typeActivity: change.type,
+                    msg: change.msg,
+                });
+            }
+        },
+        async updateTask() {
+            if (this.isEditTitle === true) this.addActivity();
+            console.log(this.currTask.title);
+            await this.$store.dispatch({
+                type: 'updateTask',
+                task: this.currTask,
+                groupId: this.groupId,
+            });
+            this.isEditTitle = false;
+        },
         async removeTask() {
             console.log('removing');
             await this.$store.dispatch({

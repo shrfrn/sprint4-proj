@@ -1,13 +1,13 @@
 import { boardService } from '@/services/board.service.js';
 import { userService } from '../services/user.service';
-import {socketService} from '@/services/socket.service.js'
+import { socketService } from '@/services/socket.service.js';
 
 export const boardStore = {
     strict: true,
     state: {
         boards: [],
         currBoard: null,
-        loggedinUser:null
+        loggedinUser: null,
     },
     mutations: {
         setBoards(state, { boards }) {
@@ -16,9 +16,9 @@ export const boardStore = {
         loadBoard(state, { board }) {
             state.currBoard = board;
         },
-        setLoggedinUser(state){
-         state.loggedinUser=userService.getLoggedinUser();
-         console.log( 'state.loggedinUser', state.loggedinUser);
+        setLoggedinUser(state) {
+            state.loggedinUser = userService.getLoggedinUser();
+            console.log('state.loggedinUser', state.loggedinUser);
         },
         removeBoard(state, { boardId }) {
             const idx = state.boards.findIndex((board) => board._id === boardId);
@@ -34,66 +34,77 @@ export const boardStore = {
             state.currBoard = filteredBoard;
         },
         setActivity(state, { itemId, itemName, typeActivity, msg }) {
-
             const activity = boardService.getEmptyActivity();
             activity.itemId = itemId;
             activity.itemName = itemName;
             activity.createdAt = Date.now();
-            activity.createdBy = state.loggedinUser|| { _id: 'u101', fullname: 'Guest user', imgUrl: '' };
+            activity.createdBy = state.loggedinUser || {
+                _id: 'u101',
+                fullname: 'Guest user',
+                imgUrl: '',
+            };
             activity.type = typeActivity;
             activity.msg = msg;
             state.currBoard.activities.unshift(activity);
             console.log(' state.currBoard.activities', state.currBoard.activities);
         },
         setUpdate(state, { itemId, txt }) {
-            console.log('stste',state);
+            console.log('stste', state);
             const update = boardService.getEmptyUpdate();
             update.createdAt = Date.now();
             update.itemId = itemId;
-            update.createdBy =state.loggedinUser|| { _id: 'u101', fullname: 'Guest user', imgUrl: '' };
+            update.createdBy = state.loggedinUser || {
+                _id: 'u101',
+                fullname: 'Guest user',
+                imgUrl: '',
+            };
             update.txt = txt;
-            if(state.currBoard.updates) state.currBoard.updates.unshift(update);
-            else state.currBoard['updates']=[update]
+            if (state.currBoard.updates) state.currBoard.updates.unshift(update);
+            else state.currBoard['updates'] = [update];
             console.log('state.currBoard.updates', state.currBoard.updates);
         },
         setFilterList(state, { filteredBoards }) {
             state.boards = filteredBoards;
         },
-        toggleLike(state,{id}){
-            console.log('id',id);
-              const updateIdx= state.currBoard.updates.findIndex(update=>{
-                   return update.id===id
-               });
-               console.log('updateIdx',updateIdx);
-               const userToToggle=state.loggedinUser||{ _id: 'u101', fullname: 'Guest user', imgUrl: '' }
-               console.log('userToToggle',userToToggle);
-               console.log('state.currBoard.updates',state.currBoard.updates[updateIdx]);
-               const userIdx=state.currBoard.updates[updateIdx].likedBy.findIndex(user=>{
-                            return user._id===userToToggle._id
-               })
-               if(userIdx===-1) state.currBoard.updates[updateIdx].likedBy.push(userToToggle)
-               else state.currBoard.updates[updateIdx].likedBy.splice(userIdx,1);
+        toggleLike(state, { id }) {
+            console.log('id', id);
+            const updateIdx = state.currBoard.updates.findIndex((update) => {
+                return update.id === id;
+            });
+            console.log('updateIdx', updateIdx);
+            const userToToggle = state.loggedinUser || {
+                _id: 'u101',
+                fullname: 'Guest user',
+                imgUrl: '',
+            };
+            console.log('userToToggle', userToToggle);
+            console.log('state.currBoard.updates', state.currBoard.updates[updateIdx]);
+            const userIdx = state.currBoard.updates[updateIdx].likedBy.findIndex((user) => {
+                return user._id === userToToggle._id;
+            });
+            if (userIdx === -1) state.currBoard.updates[updateIdx].likedBy.push(userToToggle);
+            else state.currBoard.updates[updateIdx].likedBy.splice(userIdx, 1);
         },
-        setColumns(state, {columns}){
-            state.currBoard.columns = columns
+        setColumns(state, { columns }) {
+            state.currBoard.columns = columns;
         },
     },
     actions: {
         async loadBoards(context) {
-            const boards = await boardService.query()
+            const boards = await boardService.query();
             context.commit({ type: 'setBoards', boards });
         },
         async loadBoard(context, { boardId }) {
-            const board = await boardService.getById(boardId)
+            const board = await boardService.getById(boardId);
             context.commit({ type: 'loadBoard', board });
         },
         async saveBoard(context, { board }) {
-            const newBoard = await boardService.save(board)
-            await context.dispatch({ type: 'loadBoards' })
+            const newBoard = await boardService.save(board);
+            await context.dispatch({ type: 'loadBoards' });
 
-            context.commit({ type: 'loadBoard', board: newBoard })
+            context.commit({ type: 'loadBoard', board: newBoard });
             console.log('about to emit board change');
-            socketService.emit('board-updated', board)
+            socketService.emit('board-updated', board);
         },
         async saveMiniBoard(context, { miniBoard }) {
             try {
@@ -147,10 +158,9 @@ export const boardStore = {
             }
         },
         async saveUpdate(context, { itemId, txt }) {
-          
             context.commit({ type: 'setUpdate', itemId, txt });
-            const boardCopy = await boardService.save(context.getters.currBoard)
-            context.commit({ type: 'loadBoard', board: boardCopy })
+            const boardCopy = await boardService.save(context.getters.currBoard);
+            context.commit({ type: 'loadBoard', board: boardCopy });
             console.log('succccccccccc');
         },
         async setFilterList(context, { filterBy }) {
@@ -161,15 +171,19 @@ export const boardStore = {
                 console.log('couldnt filtered', err);
             }
         },
-        async toggleUpdateLike(context,{id}){
-            context.commit({ type: 'toggleLike', id});
-            context.dispatch({type: 'saveBoard', board: context.getters.currBoard})
-        }
-
+        async toggleUpdateLike(context, { id }) {
+            context.commit({ type: 'toggleLike', id });
+            context.dispatch({ type: 'saveBoard', board: context.getters.currBoard });
+        },
+        async logout(context) {
+            console.log('logout');
+            await userService.logout();
+            context.commit({ type: 'setLoggedinUser' });
+        },
     },
     getters: {
-        getLoggedinUser(state){
-            return state.loggedinUser;
+        getLoggedinUser(state) {
+            return state.loggedinUser || { _id: 'u101', fullname: 'Guest user', imgUrl: '' };
         },
         boards(state) {
             return state.boards;
@@ -189,17 +203,14 @@ export const boardStore = {
             });
         },
         getUpdatesByItem: (state) => (itemId) => {
-            
             if (state.currBoard.updates) {
                 return state.currBoard.updates.filter((update) => {
                     return update.itemId === itemId;
                 });
+            } else {
+                state.currBoard['updates'] = [];
+                return state.currBoard.updates;
             }
-            else{
-                state.currBoard['updates']=[];
-                return state.currBoard.updates
-            }
-
-        }
+        },
     },
 };
