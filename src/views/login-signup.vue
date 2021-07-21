@@ -35,7 +35,7 @@
     </section>
 </template>
 <script>
-import { userService } from '../services/user.servic';
+import { userService } from '../services/user.service';
 
 export default {
     data() {

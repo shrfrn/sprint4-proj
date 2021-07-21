@@ -1,16 +1,28 @@
 <template>
     <div class="home">
-        <div id="nav">
-            <router-link to="/">Home</router-link> <router-link to="/about">About</router-link>
-            <router-link :to="`/board/60f7b1e3c66d343ab4f0c567`">Boards</router-link>
-        </div>
-        <section class="back"></section>
-        <button class="aaa" @click="start">start as guest</button>
-        <button class="aaa" @click="dialogVisible = true">login</button>
-        <el-dialog :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-            <login-signup @login-signup="handleClose" />
-            <el-button @click="dialogVisible = false">Cancel</el-button>
-        </el-dialog>
+        <section class="header">
+            <div id="nav">
+                <router-link to="/">Home</router-link>
+                <router-link to="/about">About</router-link>
+                <router-link :to="`/board/60f7b1e3c66d343ab4f0c567`">Boards</router-link>
+            </div>
+            <section class="back"></section>
+            <button class="aaa" @click="start">start as guest</button>
+            <button class="aaa" @click="dialogVisible = true">login</button>
+            <el-dialog :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+                <login-signup @login-signup="handleClose" />
+                <el-button @click="dialogVisible = false">Cancel</el-button>
+            </el-dialog>
+        </section>
+        <section class="info">
+            <div class="pro">
+                <div class="icon"><i class="fas fa-tasks"></i></div>
+                <h3>Project Manegment</h3>
+                <p>Project management Plan, track, and manage any project from start to finish</p>
+            </div>
+            <div class="icon"><i class="fas fa-code"></i></div>
+            <div class="icon"><i class="fas fa-building"></i></div>
+        </section>
     </div>
 </template>
 
