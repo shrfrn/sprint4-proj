@@ -2,6 +2,15 @@
     width: 100%;
     margin-bottom: 40px;
 
+    .flip-list-enter, .flip-list-leave-to {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+
+    .flip-list-enter-active, .flip-list-leave-active {
+        transition: 0.5s;
+    }
+
     .flip-list-move {
         transition: 0.5s;
     }

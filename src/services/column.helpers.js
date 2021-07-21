@@ -58,8 +58,13 @@ function _delegateMatches(columnData, dataToMatch){
 function _initDelegates(){
     return []
 }
-function _delegateCompare(delegates1, delegates2){
+function _delegateCompare(task1, task2){
+    const delegates1 = task1.columns['delegates']
+    const delegates2 = task2.columns['delegates']
+
     if(delegates1.length !== delegates2.length)   return delegates1.length - delegates2.length
+    if(delegates1.length === 0) return 0
+
     const d1 = JSON.parse(JSON.stringify(delegates1)).sort()
     const d2 = JSON.parse(JSON.stringify(delegates2)).sort()
     return d1[0].fullname - d2[0].fullname
@@ -73,8 +78,8 @@ function _dateMatches(columnData, dataToMatch){
 function _initDate(){
     return 0
 }
-function _dateCompare(date1, date2){
-    return date1 - date2
+function _dateCompare(task1, task2){
+    return task1.columns['date'] - task2.columns['date']
 }
 function _statusTxt(columnData){
     return columnData.txt
@@ -85,8 +90,11 @@ function _statusMatches(columnData, dataToMatch){
 function _initStatus(){
     return { id: 's000', txt: '', color: '#c4c4c4' }
 }
-function _statusCompare(status1, status2){
-    return status1 - status2
+function _statusCompare(task1, task2){
+    const status1 = task1.columns['status'].txt
+    const status2 = task2.columns['status'].txt
+    console.log(status1, status2);
+    return status1.localeCompare(status2)
 }
 function _tagsTxt(columnData){
     const tags = columnData.map(tag => tag)
@@ -98,9 +106,14 @@ function _tagsMatches(columnData, dataToMatch){
 function _initTags(){
     return []
 }
-function _tagsCompare(tags1, tags2){
+function _tagsCompare(task1, task2){
+    const tags1 = task1.columns['tags']
+    const tags2 = task2.columns['tags']
+
     if(tags1.length !== tags2.length)   return tags1.length - tags2.length
+    if(tags1.length === 0) return 0
+
     const t1 = JSON.parse(JSON.stringify(tags1)).sort()
     const t2 = JSON.parse(JSON.stringify(tags2)).sort()
-    return t1[0] - t2[0]
+    return t1[0].localeCompare(t2[0])
 }

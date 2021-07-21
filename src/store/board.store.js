@@ -73,7 +73,10 @@ export const boardStore = {
                })
                if(userIdx===-1) state.currBoard.updates[updateIdx].likedBy.push(userToToggle)
                else state.currBoard.updates[updateIdx].likedBy.splice(userIdx,1);
-        }
+        },
+        setColumns(state, {columns}){
+            state.currBoard.columns = columns
+        },
     },
     actions: {
         async loadBoards(context) {

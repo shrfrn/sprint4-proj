@@ -305,11 +305,11 @@ const gBoards = [
         groups: [
             {
                 id: 'g101',
-                title: 'Group I',
+                title: 'Group 1',
                 tasks: [
                     {
                         id: 't101',
-                        title: 'Item I',
+                        title: 'Item 1',
                         createdAt: Date.now(),
                         columns: {
                             delegates: [],
@@ -320,7 +320,7 @@ const gBoards = [
                     },
                     {
                         id: 't102',
-                        title: 'Item II',
+                        title: 'Item 2',
                         createdAt: Date.now(),
                         columns: {
                             delegates: [],
@@ -331,7 +331,7 @@ const gBoards = [
                     },
                     {
                         id: 't103',
-                        title: 'Item III',
+                        title: 'Item 3',
                         createdAt: Date.now(),
                         columns: {
                             delegates: [],
@@ -351,7 +351,7 @@ const gBoards = [
                 tasks: [
                     {
                         id: 't201',
-                        title: 'Item IV',
+                        title: 'Item 4',
                         createdAt: Date.now(),
                         columns: {
                             delegates: [],
@@ -362,35 +362,13 @@ const gBoards = [
                     },
                     {
                         id: 't202',
-                        title: 'Item V',
+                        title: 'Item 5',
                         createdAt: Date.now(),
                         columns: {
                             delegates: [],
                             status: { id: 's000', txt: '', color: '#c4c4c4' },
                             date: Date.now(),
                             tags: ['UI'],
-                        },
-                    },
-                    {
-                        id: 't203',
-                        title: 'Item VI',
-                        createdAt: Date.now(),
-                        columns: {
-                            delegates: [],
-                            status: { id: 's000', txt: '', color: '#c4c4c4' },
-                            date: Date.now(),
-                            tags: [],
-                        },
-                    },
-                    {
-                        id: 't204',
-                        title: 'Item VII',
-                        createdAt: Date.now(),
-                        columns: {
-                            delegates: [],
-                            status: { id: 's000', txt: '', color: '#c4c4c4' },
-                            date: Date.now(),
-                            tags: [],
                         },
                     },
                 ],
@@ -405,6 +383,31 @@ const gBoards = [
                 fullname: 'Avior Hagibor',
                 imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
             },
+            {
+                _id : '60f5642ea22a0da5023ec2bf',
+                fullname: 'Rachel Bekarov',
+                imgUrl: 'https://www.iconninja.com/files/980/282/508/female-blond-avatar-person-girl-user-woman-icon.png',
+            },
+            {
+                _id: '60f5644aa22a0da5023ec2c0',
+                fullname: 'Sharon Macaron',
+                imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+            },
+            {
+                _id: '60f7b029c66d343ab4f0c562',
+                fullname: 'Eden Maran',
+                imgUrl: 'https://www.iconninja.com/files/980/282/508/female-blond-avatar-person-girl-user-woman-icon.png',
+            },
+            {
+                _id: '60f7b04ec66d343ab4f0c563',
+                fullname: 'Muki Suflaki',
+                imgUrl: 'https://www.w3schools.com/howto/img_avatar.png',
+            },
+            {
+                _id: '60f7b064c66d343ab4f0c564',
+                fullname: 'Shimi Halimi',
+                imgUrl: 'https://www.iconninja.com/files/980/282/508/female-blond-avatar-person-girl-user-woman-icon.png',
+            }        
         ],
         statuses: [
             { id: 's001', txt: 'Done', color: '#33d391' },

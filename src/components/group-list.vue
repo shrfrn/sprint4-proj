@@ -81,14 +81,19 @@
                                 />
                             </div>
 
-                            <div class="columns">
-                                <div
-                                    class="column-title"
-                                    v-for="(column, idx) in columns"
-                                    :key="idx"
-                                >
-                                    {{ column }}
-                                </div>
+                            <div>
+                                <draggable class="columns" v-model="columns">
+                                    <div
+                                        class="column-title"
+                                        v-for="(column, idx) in columns"
+                                        :key="idx"
+                                        @click="sortBy(column, group.tasks)"
+                                    >
+                                        <i class="fas fa-grip-vertical"></i>
+                                        {{ column }}
+                                        <i :class="columnSortIcon(column)"></i>
+                                    </div>
+                                </draggable>
                             </div>
                         </div>
                     </div>
@@ -110,6 +115,7 @@
 <script>
 import taskList from './task-list.vue';
 import draggable from 'vuedraggable';
+import {columnHelpers} from '@/services/column.helpers.js'
 
 export default {
     props: {
@@ -140,6 +146,8 @@ export default {
                 'hsla(209, 100%, 56%, 0.73)',
                 '#c7158577',
             ],
+            sortColumn: '',
+            sortDir: 1,
         };
     },
 
@@ -159,8 +167,13 @@ export default {
         draggable,
     },
     computed: {
-        columns() {
-            return this.$store.getters.currBoard.columns;
+        columns: {
+            get() {
+                return this.$store.getters.currBoard.columns;
+            },
+            set(columns) {
+                this.$store.commit({type: 'setColumns', columns})
+            }
         },
     },
 
@@ -216,6 +229,22 @@ export default {
         openTaskDetails(taskId) {
             this.$emit('openTaskDetails', taskId);
         },
+        sortBy(column, tasks){
+            if(this.sortColumn === column){
+                this.sortDir *= -1
+            } else {
+                this.sortColumn = column
+                this.sortDir = 1
+            }
+                
+            tasks.sort(columnHelpers[column].compare)
+            if(this.sortDir === -1) tasks.reverse()
+        },
+        columnSortIcon(column){
+            if(this.sortColumn !== column)  return ''
+            if(this.sortDir === 1) return 'fas fa-arrow-up'
+            else return 'fas fa-arrow-down'
+        }
     },
 };
 </script>

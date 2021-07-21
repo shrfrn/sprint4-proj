@@ -8,7 +8,7 @@
            
             handle=".handle-task"
         >
-            <transition-group type="transition" name="flip-list">
+            <transition-group type="transition" name="flip-list ">
                 <task-preview
                     class="style-task sortable"
                     :style="{ borderColor: color.color }"
@@ -32,7 +32,7 @@
 
         <div class="summery">
             <component
-                :is="column"
+                :is="summeryColumnName(column)"
                 v-for="(column, idx) in summeryComponents"
                 :key="idx"
                 :group="group"
@@ -45,27 +45,29 @@
 <script>
 import taskPreview from './task-preview.vue';
 import draggable from 'vuedraggable';
-import tagsSummery from './tags-summery-column.vue';
-import personSummery from './person-summery-column.vue';
-import statusSummery from './status-summery-column.vue';
-import dateSummery from './date-summery-column.vue';
+import tagsSummeryColumn from './tags-summery-column.vue';
+import personSummeryColumn from './person-summery-column.vue';
+import statusSummeryColumn from './status-summery-column.vue';
+import dateSummeryColumn from './date-summery-column.vue';
+import {columnHelpers} from '@/services/column.helpers.js'
 
 export default {
     props: { tasks: Array, color: Object, groupId: String, group: Object },
     components: {
         taskPreview,
         draggable,
-        tagsSummery,
-        personSummery,
-        statusSummery,
-        dateSummery,
+        tagsSummeryColumn,
+        personSummeryColumn,
+        statusSummeryColumn,
+        dateSummeryColumn,
     },
 
     data() {
         return {
             tasksCopy: null,
             taskToAdd: null,
-            summeryComponents: [statusSummery, dateSummery, personSummery, tagsSummery],
+            // summeryComponents: [statusSummery, dateSummery, personSummery, tagsSummery],
+            summeryComponents: this.$store.getters.currBoard.columns
         };
     },
     created() {
@@ -99,6 +101,23 @@ export default {
                 groupId:this.groupId
             });
         },
+        summeryColumnName(column) {
+            return columnHelpers.componentSummeryType(column)
+        },
     },
 };
 </script>
+<style>
+    .flip-list-enter, .flip-list-leave-to {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+
+    .flip-list-enter-active, .flip-list-leave-active {
+        transition: 0.5s;
+    }
+
+    .flip-list-move {
+        transition: 0.5s;
+    }
+</style>

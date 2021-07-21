@@ -54,10 +54,10 @@ export default {
         console.log('CREATING');
         await this.loadBoard();
         await socketService.setup()
+        console.log(('in board'));
         // console.log('in created. board \n', this.board);
         socketService.emit('in-board', this.board._id)
         socketService.on('board-updated', this.updateBoard )
-        
     },
     destroyed(){
         socketService.emit('left-board', this.board._id)
@@ -150,8 +150,10 @@ export default {
     watch: {
         '$route.params.boardId': {
             immediate: true,
-            handler() {
+            async handler() {
+                await socketService.emit('left-board', this.board._id)
                 this.loadBoard();
+                socketService.emit('in-board', this.$route.params.boardId)
             },
         },
     },
