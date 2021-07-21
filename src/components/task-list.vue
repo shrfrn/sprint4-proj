@@ -5,7 +5,6 @@
             ghost-class="ghost"
             group="tasks"
             @change="changeTasks"
-           
             handle=".handle-task"
         >
             <transition-group type="transition" name="flip-list">
@@ -95,8 +94,8 @@ export default {
         async changeTasks() {
             await this.$store.dispatch({
                 type: 'saveTasks',
-                tasks:this.tasksCopy,
-                groupId:this.groupId
+                tasks: this.tasksCopy,
+                groupId: this.groupId,
             });
         },
     },

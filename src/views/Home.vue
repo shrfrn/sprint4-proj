@@ -2,7 +2,7 @@
     <div class="home">
         <div id="nav">
             <router-link to="/">Home</router-link> <router-link to="/about">About</router-link>
-            <router-link :to="`/board/60f57a5e8ee2f1ab23e50183`">Boards</router-link>
+            <router-link :to="`/board/60f7b1e3c66d343ab4f0c567`">Boards</router-link>
         </div>
         <section class="back"></section>
         <button class="aaa" @click="start">start as guest</button>
@@ -31,7 +31,7 @@ export default {
     },
     methods: {
         start() {
-            this.$router.push(`/board/${this.initBoard}`);
+            this.$router.push(`/board/60f7b1e3c66d343ab4f0c567`);
         },
         handleClose() {
             this.dialogVisible = false;
