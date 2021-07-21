@@ -9,9 +9,9 @@
             <section class="back"></section>
             <button class="aaa" @click="start">start as guest</button>
             <button class="aaa" @click="dialogVisible = true">login</button>
-            <el-dialog :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-                <login-signup @login-signup="handleClose" />
-                <el-button @click="dialogVisible = false">Cancel</el-button>
+            <el-dialog :visible.sync="dialogVisible" :before-close="handleClose">
+                <login-signup @hide="handleClose" @login-signup="handleClose" />
+                <!-- <el-button @click="dialogVisible = false">Cancel</el-button> -->
             </el-dialog>
         </section>
         <section class="info">

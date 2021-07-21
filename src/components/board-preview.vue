@@ -93,7 +93,6 @@ export default {
             this.isEditingState = true;
         },
         updateBoardName(boardId) {
-            console.log('boardId :>> ', boardId);
             this.$emit('updateBoardName', this.newTitle, boardId);
             this.isEditingState = false;
             this.currEditedBoard = null;

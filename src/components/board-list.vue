@@ -6,13 +6,7 @@
             @click="closeNav"
             v-show="isNavOpen"
         ></i>
-        <!-- <i class="far fa-arrow-alt-circle-left"></i> -->
-        <!-- <i
-            v-show="isNavOpen"
-            class="arrow fas fa-arrow-circle-left"
-            :class="{ close: !isNavOpen }"
-            @click="closeNav"
-        ></i> -->
+
         <i
             v-show="!isNavOpen"
             class="arrow far fa-arrow-alt-circle-right"
@@ -28,10 +22,7 @@
                         <i class="fas fa-plus fa-sm"></i>
                         <span>Add board</span>
                     </article>
-                    <!-- <article class="action" @click="filter">
-                        <i class="fas fa-filter fa-sm"></i>
-                        <span>Filter</span>
-                    </article> -->
+
                     <article class="action">
                         <el-input
                             size="medium"
@@ -47,7 +38,6 @@
 
                 <section v-show="isNavOpen" class="board-list-items">
                     <p v-show="isNavOpen" class="title"><i class="far fa-star"></i> Favorites</p>
-                    <!-- <p class="indication" v-show="!favBoards.length">No favorites yet</p> -->
 
                     <!-- FAVORITES -->
                     <board-preview
@@ -114,7 +104,7 @@ export default {
                 cancelButtonText: 'Cancel',
                 inputPattern: /\w*[a-zA-Z]\w*/,
                 inputErrorMessage: 'Invalid Name',
-            }) 
+            })
                 .then(({ value }) => {
                     const newBoard = boardService.getEmptyBoard();
                     const boardTitle = value;
@@ -168,11 +158,6 @@ export default {
     components: {
         boardPreview,
     },
-    // watch: {
-    //     boards(newVal) {
-
-    //     },
-    // },
 };
 </script>
 

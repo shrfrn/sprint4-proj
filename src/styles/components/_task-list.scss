@@ -2,12 +2,14 @@
     width: 100%;
     margin-bottom: 40px;
 
-    .flip-list-enter, .flip-list-leave-to {
+    .flip-list-enter,
+    .flip-list-leave-to {
         transform: translateY(30px);
         opacity: 0;
     }
 
-    .flip-list-enter-active, .flip-list-leave-active {
+    .flip-list-enter-active,
+    .flip-list-leave-active {
         transition: 0.5s;
     }
 
@@ -27,7 +29,7 @@
         opacity: 0;
     }
 
-    form {
+    .form {
         position: relative;
         left: 0;
         width: 100%;
@@ -79,10 +81,6 @@
         padding-inline-start: 5px;
         font-size: 15px;
         // margin: 2px;
-
-        form {
-            // background-color: #333;
-        }
     }
 
     .summery {
@@ -90,9 +88,6 @@
         justify-content: flex-end;
         align-items: center;
         background-color: #f5f6f8;
-
-        width: 720px;
-        margin-left: auto;
 
         > * {
             display: flex;
@@ -102,6 +97,16 @@
             height: 100%;
             font-family: Lato;
             font-size: 14px;
+        }
+        width: 720px;
+        margin-left: auto;
+
+        // .helper {
+        //     min-width: 260px;
+        // }
+
+        .summery-column {
+            min-width: 180px;
         }
 
         .tag-summery {

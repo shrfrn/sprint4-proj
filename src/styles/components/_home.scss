@@ -1,6 +1,6 @@
 .home {
     height: 100vh;
-    
+
     .header {
         height: 60%;
         margin-bottom: 20px;
@@ -55,26 +55,24 @@
             }
         }
     }
-    .info{ 
-         @include flex;
-         gap: 10%;
-         flex-wrap: wrap;
-        .icon{
-          
+    .info {
+        @include flex;
+        gap: 10%;
+        flex-wrap: wrap;
+        .icon {
             height: 120px;
             width: 120px;
             background-image: linear-gradient(135deg, #98729e, #fab0dc);
             border-radius: 50%;
-            i{
+            i {
                 position: relative;
-                top:50%;
-               
+                top: 50%;
+
                 transform: translateY(-50%);
                 font-size: 40px;
                 color: white;
                 text-align: center;
             }
-        
         }
     }
     // background-color: #3f3f91;

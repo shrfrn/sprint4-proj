@@ -10,7 +10,8 @@
                         <el-input v-model="userCreds.password"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="onLogin">Login</el-button>
+                        <el-button type="primary" plain @click="onLogin">Login</el-button>
+                        <el-button type="danger" plain @click="hide">Cancel</el-button>
                     </el-form-item>
                 </el-form>
             </el-tab-pane>
@@ -26,12 +27,12 @@
                         <el-input v-model="userCreds.password"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="onSignup">Signup</el-button>
+                        <el-button type="primary" plain @click="onSignup">Signup</el-button>
+                        <el-button type="danger" plain @click="hide">Cancel</el-button>
                     </el-form-item>
                 </el-form>
             </el-tab-pane>
         </el-tabs>
-        Tabs: select login or signup Signup form Login form
     </section>
 </template>
 <script>
@@ -57,6 +58,9 @@ export default {
         selectTab(tab) {
             this.activeTab = tab;
         },
+        hide() {
+            this.$emit('hide');
+        },
         onSignup() {
             console.log('signup');
             userService.signup(this.userCreds);
@@ -65,8 +69,8 @@ export default {
                 fullname: '',
                 username: '',
                 password: '',
-            }
-            this.$store.commit({ type: 'setLoggedinUser' })
+            };
+            this.$store.commit({ type: 'setLoggedinUser' });
         },
         onLogin() {
             console.log('login');
@@ -79,9 +83,8 @@ export default {
                 fullname: '',
                 username: '',
                 password: '',
-            }
-            this.$store.commit({ type: 'setLoggedinUser' })
-
+            };
+            this.$store.commit({ type: 'setLoggedinUser' });
         },
     },
 };

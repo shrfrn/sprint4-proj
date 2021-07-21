@@ -50,18 +50,25 @@
                                         <el-dropdown-item @click.native="duplicateGroup(group)">
                                             <i class="far fa-copy"></i> Duplicate Group
                                         </el-dropdown-item>
-                                        <el-dropdown-item divided class="color-change">
-                                            <i class="fas fa-palette"></i> change color
+                                        <el-dropdown-item
+                                            @mouseover.native="openColorPallete"
+                                            divided
+                                            class="color-change"
+                                            :style="{ color: group.style.color }"
+                                        >
+                                            <!-- @mouseout.native="closeColorPallete" -->
+                                            <i class="fas fa-palette"></i>
+                                            change color
                                             <el-color-picker
                                                 @change="changeColor(group)"
                                                 v-model="group.style.color"
-                                                show-alpha
                                                 :predefine="predefineColors"
                                             >
                                             </el-color-picker>
                                         </el-dropdown-item>
                                     </el-dropdown-menu>
                                 </el-dropdown>
+
                                 <li
                                     class="group-title handle-group"
                                     :style="{ color: group.style.color }"
@@ -104,6 +111,7 @@
                         :color="group.style"
                         :group="group"
                         :groupId="group.id"
+                        :columnOrder="columnOrder"
                         @openTaskDetails="openTaskDetails"
                     />
                 </ul>
@@ -115,7 +123,7 @@
 <script>
 import taskList from './task-list.vue';
 import draggable from 'vuedraggable';
-import {columnHelpers} from '@/services/column.helpers.js'
+import { columnHelpers } from '@/services/column.helpers.js';
 
 export default {
     props: {
@@ -126,6 +134,7 @@ export default {
         return {
             isAllCollapse: false,
             groupsCopy: null,
+            isPickColor: false,
             collapsedGroups: [],
             isGroupCollapse: null,
             isEditingState: false,
@@ -148,11 +157,13 @@ export default {
             ],
             sortColumn: '',
             sortDir: 1,
+            columnOrder: null,
         };
     },
 
     created() {
         this.groupsCopy = JSON.parse(JSON.stringify(this.groups));
+        this.columnOrder = this.$store.getters.currBoard.columns;
     },
 
     watch: {
@@ -160,6 +171,9 @@ export default {
             // console.log('in group list watcher groupsCopy.tasks', this.groupsCopy[0].tasks);
             // console.log('in group list watcher newVal.tasks', newVal);
             this.groupsCopy = JSON.parse(JSON.stringify(newVal));
+        },
+        columns() {
+            this.columnOrder = this.$store.getters.currBoard.columns;
         },
     },
     components: {
@@ -172,12 +186,18 @@ export default {
                 return this.$store.getters.currBoard.columns;
             },
             set(columns) {
-                this.$store.commit({type: 'setColumns', columns})
-            }
+                this.$store.commit({ type: 'setColumns', columns });
+            },
         },
     },
 
     methods: {
+        openColorPallete() {
+            this.isPickColor = true;
+        },
+        closeColorPallete() {
+            this.isPickColor = false;
+        },
         onStart() {
             this.isAllCollapse = true;
         },
@@ -216,35 +236,33 @@ export default {
         removeGroup(group) {
             this.$emit('removeGroup', group);
         },
-        // duplicateGroup(group) {
-        //     this.$emit('duplicateGroup', group);
-        // },
         duplicateGroup(group) {
             const duplicatedGroup = JSON.parse(JSON.stringify(group));
             this.$emit('duplicateGroup', duplicatedGroup);
         },
         changeColor(group) {
             this.$emit('changeColor', group);
+            this.isPickColor = false;
         },
         openTaskDetails(taskId) {
             this.$emit('openTaskDetails', taskId);
         },
-        sortBy(column, tasks){
-            if(this.sortColumn === column){
-                this.sortDir *= -1
+        sortBy(column, tasks) {
+            if (this.sortColumn === column) {
+                this.sortDir *= -1;
             } else {
-                this.sortColumn = column
-                this.sortDir = 1
+                this.sortColumn = column;
+                this.sortDir = 1;
             }
-                
-            tasks.sort(columnHelpers[column].compare)
-            if(this.sortDir === -1) tasks.reverse()
+
+            tasks.sort(columnHelpers[column].compare);
+            if (this.sortDir === -1) tasks.reverse();
         },
-        columnSortIcon(column){
-            if(this.sortColumn !== column)  return ''
-            if(this.sortDir === 1) return 'fas fa-arrow-up'
-            else return 'fas fa-arrow-down'
-        }
+        columnSortIcon(column) {
+            if (this.sortColumn !== column) return '';
+            if (this.sortDir === 1) return 'fas fa-arrow-up';
+            else return 'fas fa-arrow-down';
+        },
     },
 };
 </script>
