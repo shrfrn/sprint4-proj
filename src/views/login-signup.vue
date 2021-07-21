@@ -57,9 +57,9 @@ export default {
         selectTab(tab) {
             this.activeTab = tab;
         },
-        onSignup() {
+       async onSignup() {
             console.log('signup');
-            userService.signup(this.userCreds);
+           await userService.signup(this.userCreds);
             this.$emit('login-signup', true);
             this.userCreds = {
                 fullname: '',
@@ -68,9 +68,9 @@ export default {
             }
             this.$store.commit({ type: 'setLoggedinUser' })
         },
-        onLogin() {
+      async  onLogin() {
             console.log('login');
-            userService
+           await userService
                 .login(this.userCreds)
                 .then((res) => console.log(res))
                 .catch((err) => console.error(err));

@@ -1,5 +1,7 @@
 import { storageService } from './async-storage.service'
 import { httpService } from './http.service'
+import axios from 'axios';
+
 const SCORE_FOR_REVIEW = 10
 
 export const userService = {
@@ -11,7 +13,8 @@ export const userService = {
     remove,
     update,
     getLoggedinUser,
-    increaseScore
+    increaseScore,
+    uploadImg
 }
 
 window.userService = userService
@@ -74,3 +77,36 @@ function getLoggedinUser() {
     return JSON.parse(sessionStorage.getItem('loggedinUser') || 'null')
 }
 
+ async function uploadImg(ev) {
+    // Defining our variables
+    console.log('upload');
+    const CLOUD_NAME = 'rachelmistertoy' // Insert yours
+    const UPLOAD_PRESET = 'oa9nnanl' // Insert yours
+    const UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`
+    
+    const FORM_DATA = new FormData();
+    // Building the request body
+    FORM_DATA.append('file', ev.target.files[0])
+    FORM_DATA.append('upload_preset', UPLOAD_PRESET)
+ 
+    // Sending a post method request to Cloudniarys' API
+//     fetch(UPLOAD_URL,{
+//         method:'POST',
+//         body:FORM_DATA
+//     }).then(res=>{
+//         return res.json()
+//     }).then(res=>{
+//         console.log('upload',res);
+//         return Promise.resolve(res) 
+//     })
+//    .catch(err=>{
+//        console.log('err',err);
+//    })
+    // Sending a post method request to Cloudniarys' API
+    try {
+        const res = await axios.post(UPLOAD_URL, FORM_DATA)
+        return res.data;
+   } catch (err) {
+       console.error('ERROR!', err)
+   }
+}
