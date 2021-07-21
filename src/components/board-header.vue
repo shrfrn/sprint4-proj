@@ -55,6 +55,17 @@
                 <el-popover title="Board Members" placement="right" width="400" trigger="click">
                     <el-table :data="members">
                         <el-table-column property="fullname" label="Fullname"></el-table-column>
+                        <el-table-column>
+                            <template slot-scope="scope">
+                                <el-button
+                                    size="mini"
+                                    @click="updateTag(scope.$index, scope.row)">Edit</el-button>
+                                <el-button
+                                    size="mini"
+                                    type="danger"
+                                    @click="updateTag(scope.$index, scope.row)">Delete</el-button>
+                            </template>
+                        </el-table-column>
                     </el-table>
                     <el-button size="mini" slot="reference">Show Board Memebrs</el-button>
                 </el-popover>
@@ -114,7 +125,7 @@
         <!-- </div> -->
     </section>
 </template>
-
+ 
 <script>
 import Avatar from 'vue-avatar';
 export default {
@@ -150,6 +161,10 @@ export default {
             this.$emit('updateTitles', this.board);
             this.isEditingState = false;
             this.currEditedTag = null;
+        },
+        saveBoard(){
+            console.log('in saveBoard. columns:', this.board.columns);
+            this.$emit('updateTitles', this.board);
         },
         toggleDescription() {
             this.isDecriptionShown = !this.isDecriptionShown;

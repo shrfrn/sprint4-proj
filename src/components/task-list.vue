@@ -65,7 +65,6 @@ export default {
         return {
             tasksCopy: null,
             taskToAdd: null,
-            // summeryComponents: [statusSummery, dateSummery, personSummery, tagsSummery],
             summeryComponents: this.$store.getters.currBoard.columns
         };
     },

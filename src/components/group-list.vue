@@ -106,6 +106,8 @@
                         :groupId="group.id"
                         @openTaskDetails="openTaskDetails"
                     />
+                    <column-picker v-model="columns"></column-picker>
+
                 </ul>
             </transition-group>
         </draggable>
@@ -116,6 +118,7 @@
 import taskList from './task-list.vue';
 import draggable from 'vuedraggable';
 import {columnHelpers} from '@/services/column.helpers.js'
+import columnPicker from '@/components/column-picker.vue'
 
 export default {
     props: {
@@ -165,6 +168,7 @@ export default {
     components: {
         taskList,
         draggable,
+        columnPicker,
     },
     computed: {
         columns: {
@@ -172,6 +176,7 @@ export default {
                 return this.$store.getters.currBoard.columns;
             },
             set(columns) {
+                console.log('in setter', columns);
                 this.$store.commit({type: 'setColumns', columns})
             }
         },
