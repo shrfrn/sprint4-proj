@@ -175,10 +175,15 @@ export const boardStore = {
             context.commit({ type: 'toggleLike', id });
             context.dispatch({ type: 'saveBoard', board: context.getters.currBoard });
         },
+        async logout(context) {
+            console.log('logout');
+            await userService.logout();
+            context.commit({ type: 'setLoggedinUser' });
+        },
     },
     getters: {
         getLoggedinUser(state) {
-            return state.loggedinUser;
+            return state.loggedinUser || { _id: 'u101', fullname: 'Guest user', imgUrl: '' };
         },
         boards(state) {
             return state.boards;

@@ -52,8 +52,8 @@
                     ref="editTitle"
                     type="text"
                     v-model="currTask.title"
-                    @blur="updateTask"
                     @keydown.enter="updateTask"
+                    @blur="toggleEdit(false)"
                 />
                 <!-- @change="toggleEdit(false)" -->
             </template>
@@ -93,8 +93,8 @@ export default {
     },
     data() {
         return {
-            title: this.task.title,
-            currTask: this.task,
+            // title: this.task.title,
+            currTask: '',
             isHover: false,
             isEditTitle: false,
         };
@@ -127,6 +127,7 @@ export default {
     methods: {
         toggleEdit(isTrue) {
             this.isEditTitle = isTrue;
+            if (!isTrue) this.currTask.title = this.task.title;
             setTimeout(() => {
                 if (this.$refs.editTitle) this.$refs.editTitle.focus();
             }, 0);
@@ -135,6 +136,7 @@ export default {
             this.isHover = isTrue;
         },
         openTaskDetails() {
+            if (this.isEditTitle === true) return;
             this.$emit('openTaskDetails', this.task.id);
         },
         addActivity(change) {
@@ -160,12 +162,13 @@ export default {
         },
         async updateTask() {
             if (this.isEditTitle === true) this.addActivity();
+            console.log(this.currTask.title);
             await this.$store.dispatch({
                 type: 'updateTask',
                 task: this.currTask,
                 groupId: this.groupId,
             });
-            this.toggleEdit(false);
+            this.isEditTitle = false;
         },
         async removeTask() {
             console.log('removing');
