@@ -54,6 +54,16 @@
 
                 <el-popover title="Board Members" placement="right" width="400" trigger="click">
                     <el-table :data="members">
+                        <el-table-column width="45">
+                            <template slot-scope="scope">
+                                <avatar
+                                    :size="30"
+                                    inline
+                                    :src="scope.row.imgUrl"
+                                    :username="scope.row.fullname"
+                                ></avatar>
+                            </template>
+                        </el-table-column>
                         <el-table-column property="fullname" label="Fullname"></el-table-column>
                         <el-table-column>
                             <template slot-scope="scope">

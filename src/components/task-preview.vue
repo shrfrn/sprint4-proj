@@ -139,36 +139,25 @@ export default {
             if (this.isEditTitle === true) return;
             this.$emit('openTaskDetails', this.task.id);
         },
-        addActivity(change) {
-            var msg;
-            if (this.isEditTitle === true) {
-                msg = 'edit task name from ' + this.task.title + ' to ' + this.currTask.title;
-                this.$store.commit({
-                    type: 'setActivity',
-                    itemId: this.currTask.id,
-                    itemName: this.currTask.title,
-                    typeActivity: 'Edit task name',
-                    msg,
-                });
-            } else if (change) {
-                this.$store.commit({
-                    type: 'setActivity',
-                    itemId: this.currTask.id,
-                    itemName: this.currTask.title,
-                    typeActivity: change.type,
-                    msg: change.msg,
-                });
+        addActivity() {
+            const activity = {
+                boardId: this.$store.getters.currBoard._id,
+                groupId: this.groupId,
+                taskId: this.currTask.id,
+                activityType: 'task-update',
+                content: { txt: 'Task updated.' },
             }
+            this.$store.dispatch({ type: 'addActivity', activity });
         },
         async updateTask() {
-            if (this.isEditTitle === true) this.addActivity();
-            console.log(this.currTask.title);
-            await this.$store.dispatch({
-                type: 'updateTask',
-                task: this.currTask,
-                groupId: this.groupId,
-            });
-            this.isEditTitle = false;
+            try {
+                await this.addActivity()
+                await this.$store.dispatch({ type: 'updateTask', task: this.currTask, groupId: this.groupId });
+                this.isEditTitle = false;
+            } catch (err) {
+                console.log('error updating task:\n', err);
+                throw err
+            }
         },
         async removeTask() {
             console.log('removing');

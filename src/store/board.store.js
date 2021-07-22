@@ -33,23 +33,12 @@ export const boardStore = {
         setFilter(state, { filteredBoard }) {
             state.currBoard = filteredBoard;
         },
-        setActivity(state, { itemId, itemName, typeActivity, msg }) {
-            const activity = boardService.getEmptyActivity();
-            activity.itemId = itemId;
-            activity.itemName = itemName;
-            activity.createdAt = Date.now();
-            activity.createdBy = state.loggedinUser || {
-                _id: 'u101',
-                fullname: 'Guest user',
-                imgUrl: '',
-            };
-            activity.type = typeActivity;
-            activity.msg = msg;
-            state.currBoard.activities.unshift(activity);
-            console.log(' state.currBoard.activities', state.currBoard.activities);
+        addActivity(state, { activity }) {
+            state.currBoard.activities.unshift(activity)
+            console.log('about to emit task-updated');
+            socketService.emit('task-updated', activity)
         },
         setUpdate(state, { itemId, txt }) {
-            console.log('stste', state);
             const update = boardService.getEmptyUpdate();
             update.createdAt = Date.now();
             update.itemId = itemId;
@@ -103,7 +92,6 @@ export const boardStore = {
             await context.dispatch({ type: 'loadBoards' });
 
             context.commit({ type: 'loadBoard', board: newBoard });
-            console.log('about to emit board change');
             socketService.emit('board-updated', board);
         },
         async saveMiniBoard(context, { miniBoard }) {
@@ -170,6 +158,10 @@ export const boardStore = {
             } catch (err) {
                 console.log('couldnt filtered', err);
             }
+        },
+        async addActivity(context, { activity }){
+            activity = await boardService.addActivity(activity)
+            context.commit({ type: 'addActivity', activity })
         },
         async toggleUpdateLike(context, { id }) {
             context.commit({ type: 'toggleLike', id });

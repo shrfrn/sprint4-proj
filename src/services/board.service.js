@@ -4,7 +4,8 @@ import { columnHelpers } from '@/services/column.helpers.js';
 import { utilService } from './util.service.js';
 
 // const KEY = 'somedayBoard';
-const BASE_URL = 'board/';
+const BOARD_URL = 'board/';
+const ACTIVITY_URL = 'activity/';
 
 export const boardService = {
     query,
@@ -18,7 +19,8 @@ export const boardService = {
     getActivitiesByItem,
     getUpdatesByItem,
     getEmptyUpdate,
-    getEmptyActivity
+    getEmptyActivity,
+    addActivity,
 };
 
 // Board service
@@ -26,7 +28,7 @@ async function query(filterBy = {}) {
     if (!filterBy) filterBy = getEmptyFilter();
     const regex = new RegExp(filterBy.txt, 'i');
     // let boards = await httpService.get('boards', {filterBy})
-    let boards = await httpService.get(BASE_URL);
+    let boards = await httpService.get(BOARD_URL);
     const filteredBoards = boards.filter((board) => regex.test(board.title));
     // boards.boards = boards.map((board) => {
     //     return { _id: board._id, title: board.title, isFavorite: board.isFavorite };
@@ -35,7 +37,7 @@ async function query(filterBy = {}) {
 }
 
 async function getById(id, filterBy = { txt: '' }) {
-    const board = await httpService.get(BASE_URL + id);
+    const board = await httpService.get(BOARD_URL + id);
     const regex = new RegExp(filterBy.txt, 'i');
 
     var filteredGroups = [];
@@ -63,17 +65,19 @@ async function getById(id, filterBy = { txt: '' }) {
 }
 
 async function remove(id) {
-    return await httpService.delete(BASE_URL + id);
+    return await httpService.delete(BOARD_URL + id);
 }
 
 async function save(board) {
     if (board._id) {
-        return await httpService.put(BASE_URL + board._id, board);
+        return await httpService.put(BOARD_URL + board._id, board);
     } else {
-        return await httpService.post(BASE_URL, board);
+        return await httpService.post(BOARD_URL, board);
     }
 }
-
+async function addActivity(activity){
+    return await httpService.post(ACTIVITY_URL + 'add', activity)
+}
 function getEmptyBoard() {
     const newBoard = JSON.parse(JSON.stringify(gBoards[0]));
     console.log(newBoard);

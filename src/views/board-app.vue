@@ -8,9 +8,25 @@
 <script>
 import navbar from '../components/navbar.vue';
 import boardList from '../components/board-list.vue';
-
+import { socketService } from '@/services/socket.service.js';
 export default {
     
+    created() {
+        socketService.setup()
+        socketService.on('task-updated', this.updateActivity)
+        
+    },
+    methods:{
+
+        updateActivity(activity){
+            console.log('in updateActivity:\n', activity);
+        },
+
+        async logout(){
+            await this.$store.dispatch({ type: "logout" });
+        },
+        
+    },
     computed: {
         boards() {
             return this.$store.getters.boards;
@@ -19,20 +35,9 @@ export default {
             return this.$store.getters.getLoggedinUser
         }
     },
-    created() {
-        // this.$router.push('/boards/123')
-    },
-    methods:{
-       async logout(){
-           console.log('logout');
-          await this.$store.dispatch({
-        type: "logout",
-      
-      });
-     
-    },
-        
-    },
+    // destroyed() {
+    //     socketService.emit('left-app', this.board._id)
+    // },
     components: {
         navbar,
         boardList,

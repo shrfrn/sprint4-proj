@@ -149,7 +149,7 @@ export default {
     },
     watch: {
         '$route.params.boardId': {
-            immediate: true,
+            // immediate: true,
             async handler() {
                 await socketService.emit('left-board', this.board._id)
                 this.loadBoard();
