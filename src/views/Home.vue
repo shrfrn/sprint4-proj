@@ -13,7 +13,7 @@
             </el-dialog>
             <section class="back"></section>
             <section class="title">
-                <div class="home-desc">
+                <div class="home-desc animate__animated animate__slideInLeft animate__fast">
                     <h2>Work the way that works for you</h2>
                     <p>Highly effective teams choose someday -</p>
                     <p>
@@ -22,6 +22,7 @@
                     </p>
                     <button class="btn-go" @click="start">start as guest</button>
                 </div>
+
                 <img class="home-img" src="../assets/img/home.svg" alt="" />
             </section>
         </section>
@@ -47,7 +48,12 @@
         <section class="details">
             <div class="manage">
                 <div>
-                    <img src="../assets/img/manage.jpg" alt="" srcset="" />
+                    <img
+                        src="../assets/img/manage.jpg"
+                        class="animate__animated animate__slideInLeft animate__fast"
+                        alt=""
+                        srcset=""
+                    />
                 </div>
                 <div class="manage-desc">
                     <h2>Manage everything in one workspace</h2>
@@ -57,6 +63,7 @@
                     </p>
                 </div>
             </div>
+
             <div class="set-up">
                 <div class="manage-desc">
                     <h2>Set up in minutes</h2>
@@ -66,7 +73,12 @@
                     </p>
                 </div>
                 <div>
-                    <img src="../assets/img/setup.jpg" alt="" srcset="" />
+                    <img
+                        src="../assets/img/setup.jpg"
+                        class="animate__animated animate__slideInRight animate__fast"
+                        alt=""
+                        srcset=""
+                    />
                 </div>
             </div>
         </section>

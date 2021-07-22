@@ -64,6 +64,7 @@
             <!-- <i class="far fa-comments open-chat" @click="openTaskDetails"></i> -->
             <i class="far fa-comment open-chat"></i>
         </div>
+
         <component
             v-for="column in currBoard.columns"
             :key="column"

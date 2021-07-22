@@ -10,17 +10,19 @@
     justify-content: center;
     width: 230px;
     padding: 0.3rem;
-    border: 1px solid rgb(241, 240, 240);
+    border: 1px solid rgb(121, 121, 121);
+    box-shadow: 0 0 1px 1px rgb(192, 192, 192);
     border-radius: 8px;
     z-index: 2;
 
-    .delegate-list, .member-list {
+    .delegate-list,
+    .member-list {
         width: 100%;
         padding: 0.3rem;
         background-color: #f8f8f8;
     }
     .delegate-list {
-        border-bottom: 1px solid rgb(194, 194, 194);
+        border-bottom: 2px solid rgb(194, 194, 194);
     }
 }
 

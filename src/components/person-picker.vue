@@ -11,6 +11,7 @@
                     />
                 </transition-group>
             </section>
+
             <section class="member-list">
                 <transition-group name="person-list">
                     <person-preview

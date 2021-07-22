@@ -1,15 +1,15 @@
 <template>
     <section>
         <i
-            class="arrow far fa-arrow-alt-circle-left"
+            class="arrow fa fa-chevron-circle-left"
+            aria-hidden="true"
             :class="{ close: !isNavOpen }"
             @click="closeNav"
             v-show="isNavOpen"
         ></i>
-
         <i
             v-show="!isNavOpen"
-            class="arrow far fa-arrow-alt-circle-right"
+            class="arrow fa fa-chevron-circle-right"
             :class="{ close: !isNavOpen }"
             @click="closeNav"
         ></i>
@@ -61,6 +61,7 @@
                     <board-preview
                         v-for="board in boards"
                         :key="board._id"
+                        v-show="!board.isFavorite"
                         :miniBoard="board"
                         @deleteBoard="deleteBoard"
                         @addToFavorites="addToFavorites"
@@ -89,6 +90,7 @@ export default {
             isNavOpen: true,
             filterBy: { txt: '' },
             favBoards: [],
+            windowWidth: null,
         };
     },
     methods: {
@@ -151,9 +153,16 @@ export default {
         duplicateBoard(boardId) {
             this.$store.dispatch({ type: 'duplicateBoard', boardId });
         },
+        reportWindowSize() {
+            if (window.innerWidth <= 960) this.isNavOpen = false;
+            else this.isNavOpen = true;
+        },
     },
     async created() {
         await this.$store.dispatch({ type: 'loadBoards' });
+        this.reportWindowSize();
+        window.addEventListener('resize', this.reportWindowSize);
+        // console.log('window.innerWidth :>> ', window.innerWidth);
     },
     components: {
         boardPreview,

@@ -112,23 +112,72 @@
 
 .arrow {
     position: relative;
-    top: 30px;
+    top: 22px;
     left: 125px;
     cursor: pointer;
     font-size: 22px;
-    border-radius: 50%;
-    background-color: #fff;
+    border: 1px solid #dbdbdb;
+    opacity: 0.9;
+    padding: 0;
+    margin: 0;
+
+    border-radius: 80%;
+    color: #fff;
+    background-color: #505050;
     transition: 0.2s;
 
     &:hover {
-        background-color: #505050;
+        background-color: #fff;
         border-radius: 50%;
-        color: #ffffff;
+        color: #0073ea;
+        border: 1px solid #0073ea;
     }
 }
 
 .arrow.close {
     position: relative;
-    top: 30px;
+    top: 22px;
     left: 20px;
+}
+
+@media (max-width: $break-wide) {
+    .board-list.close {
+        width: 15px;
+    }
+
+    .arrow {
+        position: relative;
+        top: 20px;
+        left: 125px;
+        cursor: pointer;
+        font-size: 15px;
+        border: 1px solid #dbdbdb;
+        opacity: 0.9;
+        // padding: 0;
+        // margin: 0;
+
+        background-color: #000;
+        transition: 0.2s;
+
+        &:hover {
+            background-color: #fff;
+            border-radius: 50%;
+            color: #0073ea;
+            border: 1px solid #0073ea;
+        }
+    }
+
+    .arrow.close {
+        position: relative;
+        top: 20px;
+        left: 12px;
+    }
+}
+
+.el-message-box__message {
+    text-align: center;
+}
+
+.el-message-box__input {
+    text-align: center;
 }

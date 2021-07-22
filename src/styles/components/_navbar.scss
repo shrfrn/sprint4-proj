@@ -64,3 +64,44 @@
         color: white;
     }
 }
+
+@media (max-width: $break-wide) {
+    .navbar {
+        width: 40px;
+
+        .user-details {
+            width: 150px;
+            transform: rotate(-90deg) translateY(-70px);
+        }
+
+        .task-action,
+        .user-action {
+            display: flex;
+            gap: 30px;
+            width: 40px;
+            a {
+                @include flex(center, center, row);
+                padding: 15px;
+                // height: 20px;
+                // width: 20px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: 1s;
+                color: white;
+            }
+
+            .router-link-exact-active {
+                &::before {
+                    border-width: none;
+                }
+                //your desired design when link is clicked
+                background-color: transparent;
+            }
+        }
+    }
+    img,
+    i {
+        width: 20px;
+        height: 20px;
+    }
+}
