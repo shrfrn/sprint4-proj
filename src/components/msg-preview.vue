@@ -25,9 +25,9 @@
         </el-tooltip>
       Liked
     </div>
-    <div class="msg-footer" @click="addLike">
-      <button><i class="far fa-thumbs-up"></i> Like</button>
-      <button><i class="fas fa-reply"></i> Reply</button>
+    <div class="msg-footer">
+      <button  @click="addLike"><i class="far fa-thumbs-up"></i> Like</button>
+      <button  @click="deleteUpdate"><i class="far fa-trash-alt"></i> delete</button>
     </div>
   </section>
 </template>
@@ -52,6 +52,13 @@ export default {
        
       });
     },
+    async deleteUpdate(){
+      await this.$store.dispatch({
+        type: "removeUpdate",
+        updateId: this.update.id,
+       
+      });
+    }
   },
 };
 </script>
