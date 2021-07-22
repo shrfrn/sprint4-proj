@@ -1,17 +1,18 @@
 //970
 .home {
     height: 100vh;
+    font-family: Lato;
     .header {
-        min-height: 60%;
+        min-height: 70%;
         #nav {
             @include flex(flex-end);
             // background-color: #595ad4;
             gap: 20px;
-            margin-right: 116px;
+            margin-right: 130px;
             a {
                 font-family: Roboto;
                 font-weight: 900;
-                color: #060638;
+                color: #ffffff;
                 transition: 0.3s;
 
                 &:hover {
@@ -21,13 +22,14 @@
             }
         }
         .back {
-            background-image: linear-gradient(135deg, #98729e, #fab0dc);
-            background-size: cover;
-            min-height: 60%;
+            background-image: linear-gradient(
+                204deg
+                , #6C76B9, #4A89C4, #2B99C5, #2DA7BD, #4EB3B2, #66BDBC, #7CC7C6, #91D1D0, #AEDBE7, #CFE5F4, #ECF1FB, #FFFFFF);            background-size: cover;
+            min-height: 70%;
             width: 100%;
             position: absolute;
             top: 0;
-            border-radius: 0 0 20% 0;
+            border-radius: 0 0 150px 0;
             /* right: 0; */
             z-index: -1;
         }
@@ -36,13 +38,15 @@
             gap: 20px;
             flex-wrap: wrap;
             margin: 40px 20px;
-            margin-top: 40px;
+            margin-top: 63px;
             .home-desc {
                 margin-top: 35px;
                 height: 100%;
                 @include flex(space-between, start, column);
                 p {
                     font-size: 17px;
+                    color: white;
+                    margin-bottom: 5px;
                 }
                 h2 {
                     font-size: 2.4rem;
@@ -75,7 +79,7 @@
             border-radius: 15px;
             border: none;
             background-color: rgb(253, 253, 253);
-            color: #595ad4;
+            color: #5E375E;
             font-size: 19px;
             font-family: Roboto;
             text-transform: capitalize;
@@ -97,7 +101,7 @@
             border: none;
             cursor: pointer;
             background-color: rgb(253, 253, 253);
-            color: #595ad4;
+            color: #5E375E;
             font-size: 18px;
             font-family: Roboto;
             text-transform: capitalize;
@@ -123,12 +127,14 @@
         flex-wrap: wrap;
         min-height: 50%;
         width: 100%;
-        border-radius: 0 0 20% 0;
+        border-radius: 0 0 150px 0;
         background-color: white;
         .icon {
             height: 120px;
             width: 120px;
-            background-image: linear-gradient(135deg, #98729e, #fab0dc);
+            background-image: linear-gradient(
+                204deg
+                , #6C76B9, #4A89C4, #2B99C5, #2DA7BD, #4EB3B2, #66BDBC, #7CC7C6, #91D1D0, #AEDBE7, #CFE5F4, #ECF1FB, #FFFFFF);
             border-radius: 50%;
             i {
                 position: relative;
@@ -146,9 +152,11 @@
             margin-bottom: 20px;
             h3 {
                 margin-bottom: 10px;
+                color: #6C76B9;
             }
             .desc {
                 width: 20ch;
+                color: #6C76B9;
             }
         }
         @media (max-width: 970px) {
@@ -157,22 +165,23 @@
     }
 
     .details {
-        background-color: #f5e6ee;
+        background-color: #ECF1FB;
         min-height: 80%;
-        border-radius: 0 20% 0 0;
+        border-radius:200px 0 0 0;
         padding: 30px;
 
         @include flex(center, center, column);
-
+gap: 60px;
         .manage,
         .set-up {
             width: 80%;
-            @include flex;
+            @include flex(start,start);
+            gap: 20px;
             div {
                 @include flex(start, start, column);
                 flex: 1;
                 img {
-                    width: 80%;
+                    // width: 80%;
                     border-radius: 5px;
                     // flex: 1;
                 }

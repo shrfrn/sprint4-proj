@@ -21,6 +21,7 @@ export default {
     },
     created() {
         // this.$router.push('/boards/123')
+        
     },
     methods:{
        async logout(){

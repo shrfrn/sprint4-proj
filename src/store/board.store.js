@@ -88,6 +88,12 @@ export const boardStore = {
         setColumns(state, { columns }) {
             state.currBoard.columns = columns;
         },
+        removeUpdate(state,{updateId}){
+            const idx = state.currBoard.updates.findIndex((update) => {
+                return update.id === updateId;
+            });
+            state.currBoard.updates.splice(idx, 1);
+        }
     },
     actions: {
         async loadBoards(context) {
@@ -122,6 +128,7 @@ export const boardStore = {
                 const newBoard = await boardService.save(boardCopy);
                 await context.dispatch({ type: 'loadBoards' });
                 context.commit({ type: 'loadBoard', board: newBoard });
+                socketService.emit('board-list-updated');
             } catch (err) {
                 console.log('couldnt save board', err);
             }
@@ -130,6 +137,7 @@ export const boardStore = {
             console.log('boardId :>> ', boardId);
             await boardService.remove(boardId);
             context.commit({ type: 'removeBoard', boardId });
+            socketService.emit('board-list-updated');
         },
         async duplicateBoard(context, { boardId }) {
             try {
@@ -142,6 +150,7 @@ export const boardStore = {
                 await context.dispatch({ type: 'loadBoards' });
                 // context.commit({ type: 'setBoards', boards });
                 context.commit({ type: 'loadBoard', board: newBoard });
+                socketService.emit('board-list-updated');
             } catch (err) {
                 console.log('couldnt duplicate board', err);
             }
@@ -180,6 +189,15 @@ export const boardStore = {
             await userService.logout();
             context.commit({ type: 'setLoggedinUser' });
         },
+        async saveUser(context,{user}){
+            await userService.update(user);
+            console.log(context);
+        },
+        async removeUpdate(context,{updateId}){
+            context.commit({ type: 'removeUpdate', updateId });  
+           await context.dispatch({ type: 'saveBoard', board: context.getters.currBoard });
+        },
+
     },
     getters: {
         getLoggedinUser(state) {
