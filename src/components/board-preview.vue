@@ -1,5 +1,10 @@
 <template>
-    <article @click="setBoard(miniBoard._id)" class="board-preview">
+    <article
+        @click="setBoard(miniBoard._id)"
+        class="board-preview"
+        @mouseover="toggleHover(true)"
+        @mouseleave="toggleHover(false)"
+    >
         <div class="texts">
             <i class="fas fa-th-list"></i>
             <span v-show="!isEditingState || currEditedBoard != miniBoard._id">{{
@@ -16,7 +21,7 @@
             />
         </div>
 
-        <el-dropdown trigger="hover">
+        <el-dropdown v-show="isHover" trigger="hover">
             <span class="el-dropdown-link">
                 <i class="fas fa-ellipsis-h"></i>
             </span>
@@ -73,6 +78,7 @@ export default {
     },
     data() {
         return {
+            isHover: false,
             active: false,
             isContextMenuShown: false,
             newTitle: this.miniBoard.title,
@@ -81,6 +87,9 @@ export default {
         };
     },
     methods: {
+        toggleHover(bool) {
+            this.isHover = bool;
+        },
         setBoard(boardId) {
             if (this.$store.getters.currBoard?._id === boardId) return;
             this.$router.push(`/board/${boardId}`);

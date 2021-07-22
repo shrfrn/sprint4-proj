@@ -18,29 +18,34 @@
                         v-model="board.title"
                     />
                     <i class="fas fa-info-circle" @click="toggleDescription"></i>
+                    <i v-show="board.isFavorite" class="fas fa-star"></i>
+                    <i v-show="!board.isFavorite" class="far fa-star"></i>
                 </div>
+                <transition
+                    enter-active-class="animate__animated animate__fadeInUp animate__faster"
+                    leave-active-class="animate__animated animate__fadeOutDown animate__faster"
+                >
+                    <div class="sub-title" v-if="isDecriptionShown">
+                        <p
+                            @click="setToEdit('description')"
+                            v-show="!isEditingState || currEditedTag !== 'description'"
+                        >
+                            {{ board.description }}
+                        </p>
 
-                <div class="sub-title" v-if="isDecriptionShown">
-                    <p
-                        @click="setToEdit('description')"
-                        v-show="!isEditingState || currEditedTag !== 'description'"
-                    >
-                        {{ board.description }}
-                    </p>
-
-                    <textarea
-                        ref="description"
-                        type="textarea"
-                        rows="4"
-                        cols="50"
-                        @blur="updateTag"
-                        @keydown.enter="updateTag"
-                        v-show="isEditingState && currEditedTag === 'description'"
-                        v-model="board.description"
-                    />
-                </div>
+                        <textarea
+                            ref="description"
+                            type="textarea"
+                            rows="4"
+                            cols="50"
+                            @blur="updateTag"
+                            @keydown.enter="updateTag"
+                            v-show="isEditingState && currEditedTag === 'description'"
+                            v-model="board.description"
+                        />
+                    </div>
+                </transition>
             </div>
-
             <div class="members">
                 <div class="members-avatars">
                     <span class="avatar" v-for="member in board.members" :key="member._id">
@@ -67,13 +72,15 @@
                         <el-table-column property="fullname" label="Fullname"></el-table-column>
                         <el-table-column>
                             <template slot-scope="scope">
-                                <el-button
-                                    size="mini"
-                                    @click="updateTag(scope.$index, scope.row)">Edit</el-button>
+                                <el-button size="mini" @click="updateTag(scope.$index, scope.row)"
+                                    >Edit</el-button
+                                >
                                 <el-button
                                     size="mini"
                                     type="danger"
-                                    @click="updateTag(scope.$index, scope.row)">Delete</el-button>
+                                    @click="updateTag(scope.$index, scope.row)"
+                                    >Delete</el-button
+                                >
                             </template>
                         </el-table-column>
                     </el-table>
@@ -114,30 +121,15 @@
                 </el-dropdown-menu>
             </el-dropdown>
 
-            <!-- FILTER -->
-            <!-- <el-dropdown trigger="click">
-                <el-button
-                    class="btn-filter"
-                    size="small"
-                    @click.native="isntAvaliable"
-                    type="primary"
-                >
-                    <i class="fas fa-filter"></i> Filter
-                </el-button>
-                <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item value="all">All</el-dropdown-item>
-                    <el-dropdown-item value="status">Status</el-dropdown-item>
-                    <el-dropdown-item value="priority">Priority</el-dropdown-item>
-                    <el-dropdown-item value="person">Person</el-dropdown-item>
-                </el-dropdown-menu>
-            </el-dropdown> -->
+            <column-picker v-model="columns"></column-picker>
         </div>
-        <!-- </div> -->
     </section>
 </template>
- 
+
 <script>
+import columnPicker from '@/components/column-picker.vue';
 import Avatar from 'vue-avatar';
+
 export default {
     props: {
         board: Object,
@@ -156,6 +148,16 @@ export default {
     created() {
         this.members = this.board.members;
     },
+    computed: {
+        columns: {
+            get() {
+                return this.$store.getters.currBoard.columns;
+            },
+            set(columns) {
+                this.$store.commit({ type: 'setColumns', columns });
+            },
+        },
+    },
     methods: {
         showBoardMembers() {
             this.isMembersShown = !this.isMembersShown;
@@ -172,7 +174,7 @@ export default {
             this.isEditingState = false;
             this.currEditedTag = null;
         },
-        saveBoard(){
+        saveBoard() {
             console.log('in saveBoard. columns:', this.board.columns);
             this.$emit('updateTitles', this.board);
         },
@@ -193,6 +195,7 @@ export default {
     },
     components: {
         Avatar,
+        columnPicker,
     },
 };
 </script>

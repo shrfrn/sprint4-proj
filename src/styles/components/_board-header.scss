@@ -32,7 +32,7 @@
                 height: 100%;
                 font-family: Roboto;
                 font-weight: 600;
-                font-size: 32px;
+                font-size: 24px;
                 border: none;
                 border-radius: 2px;
                 outline: none;
@@ -135,6 +135,41 @@
                 &:hover {
                     background-color: #e6e9ef;
                 }
+            }
+        }
+    }
+}
+
+input.el-input__inner {
+    width: 200px;
+}
+
+.el-select-dropdown__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+@media (max-width: $break-wide) {
+    .board-header {
+        padding-inline: 10px;
+        .board-info {
+            flex-direction: column;
+            .board-title {
+                .main-title h2 {
+                    font-size: 20px;
+                }
+            }
+            .members {
+                .members-avatars {
+                    display: none;
+                }
+            }
+        }
+
+        .board-actions {
+            > button {
+                width: 50%;
             }
         }
     }

@@ -10,7 +10,10 @@
             <transition-group type="transition" name="flip-list ">
                 <task-preview
                     class="style-task sortable"
-                    :style="{ borderColor: color.color }"
+                    :style="{
+                        borderInlineStart: '8px solid ' + color.color,
+                        borderInlineEnd: '8px solid #e6e9ef',
+                    }"
                     v-for="(task, idx) in tasksCopy"
                     :key="idx"
                     :task="task"
@@ -22,7 +25,10 @@
         <div class="form">
             <input
                 class="style-task add-input"
-                :style="{ borderColor: color.color }"
+                :style="{
+                    borderInlineStart: '8px solid ' + color.color,
+                    borderInlineEnd: '8px solid #e6e9ef',
+                }"
                 type="text"
                 placeholder="+ Add"
                 v-model="taskToAdd.title"
@@ -30,8 +36,21 @@
             />
         </div>
 
-        <div class="summery">
-            <!-- <div class="helper"></div> -->
+        <section class="summery-preview">
+            <div class="summery-title"></div>
+            <div class="summery-cmps">
+                <component
+                    class="summery-column"
+                    :is="summeryColumnName(column)"
+                    v-for="(column, idx) in columnOrder"
+                    :key="idx"
+                    :group="group"
+                    :groupId="groupId"
+                />
+            </div>
+        </section>
+
+        <!-- <div class="summery">
             <component
                 class="summery-column"
                 :is="summeryColumnName(column)"
@@ -40,7 +59,7 @@
                 :group="group"
                 :groupId="groupId"
             />
-        </div>
+        </div> -->
     </section>
 </template>
 
@@ -68,7 +87,7 @@ export default {
         return {
             tasksCopy: null,
             taskToAdd: null,
-            summeryComponents: this.$store.getters.currBoard.columns
+            summeryComponents: this.$store.getters.currBoard.columns,
         };
     },
     created() {

@@ -30,7 +30,7 @@ export default {
     },
     data() {
         return {
-            minDate: Infinity,
+            minDate: Date.now(),
             maxDate: -Infinity,
             isDaysShown: false,
         };
@@ -50,6 +50,8 @@ export default {
                 if (task.columns['date'] < this.minDate) this.minDate = task.columns['date'];
                 if (task.columns['date'] > this.maxDate) this.maxDate = task.columns['date'];
             });
+            if (!this.minDate) this.minDate = Date.now();
+            if (!this.maxDate) this.maxDate = Date.now();
         },
         getMonthForamt(time) {
             const months = [
@@ -70,7 +72,8 @@ export default {
         },
         differenceInTime(date1, date2) {
             const diff = new Date(date2).getTime() - new Date(date1).getTime();
-            return Math.trunc(diff / (1000 * 3600 * 24)) + ' Days';
+            if (date1 === date2) return 0 + ' Days';
+            return Math.trunc(diff / (1000 * 3600 * 24)) + 1 + ' Days';
         },
     },
     watch: {

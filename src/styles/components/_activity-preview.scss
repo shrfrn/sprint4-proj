@@ -1,5 +1,6 @@
-.el-drawer {
+.el-drawer__open .el-drawer.rtl {
     box-shadow: 0 0 3px 3px #333;
+    width: 30%;
 }
 
 .el-drawer__header {
@@ -51,5 +52,11 @@
 
     div {
         flex: 1;
+    }
+}
+
+@media (max-width: $break-wide) {
+    .el-drawer__open .el-drawer.rtl {
+        width: 50%;
     }
 }

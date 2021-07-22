@@ -8,7 +8,7 @@
             handle=".handle-group"
         >
             <transition-group type="transition" name="flip-list">
-                <ul class="sortable" v-for="group in groupsCopy" :key="group.id">
+                <ul class="group-container sortable" v-for="group in groupsCopy" :key="group.id">
                     <div class="group-details">
                         <div class="preview-group">
                             <div class="group-title">
@@ -78,7 +78,7 @@
                                     {{ group.title }}
                                 </li>
                                 <input
-                                    class="input"
+                                    class="input group-title"
                                     :ref="group.id"
                                     v-show="isEditingState && currEditedGroup == group.id"
                                     @blur="updateGroupName(group)"
@@ -86,22 +86,36 @@
                                     type="text"
                                     v-model="group.title"
                                 />
+
+                                <!-- <div>
+                                    <draggable class="columns" v-model="columns">
+                                        <div
+                                            class="column-title"
+                                            v-for="(column, idx) in columns"
+                                            :key="idx"
+                                            @click="sortBy(column, group.tasks)"
+                                        >
+                                            <i class="fas fa-grip-vertical"></i>
+                                            {{ column }}
+                                            <i :class="columnSortIcon(column)"></i>
+                                        </div>
+                                    </draggable>
+                                </div> -->
                             </div>
 
-                            <div>
-                                <draggable class="columns" v-model="columns">
-                                    <div
-                                        class="column-title"
-                                        v-for="(column, idx) in columns"
-                                        :key="idx"
-                                        @click="sortBy(column, group.tasks)"
-                                    >
-                                        <i class="fas fa-grip-vertical"></i>
-                                        {{ column }}
-                                        <i :class="columnSortIcon(column)"></i>
-                                    </div>
-                                </draggable>
-                            </div>
+                            <draggable class="columns" v-model="columns">
+                                <div
+                                    class="column-title"
+                                    v-for="(column, idx) in columns"
+                                    :key="idx"
+                                    @click="sortBy(column, group.tasks)"
+                                >
+                                    <!-- <i v-show="isHover" class="fas fa-grip-vertical"></i> -->
+                                    <i class="fas fa-grip-vertical"></i>
+                                    {{ captilize(column) }}
+                                    <i :class="columnSortIcon(column)"></i>
+                                </div>
+                            </draggable>
                         </div>
                     </div>
 
@@ -114,8 +128,6 @@
                         :columnOrder="columnOrder"
                         @openTaskDetails="openTaskDetails"
                     />
-                    <column-picker v-model="columns"></column-picker>
-
                 </ul>
             </transition-group>
         </draggable>
@@ -125,8 +137,7 @@
 <script>
 import taskList from './task-list.vue';
 import draggable from 'vuedraggable';
-import {columnHelpers} from '@/services/column.helpers.js'
-import columnPicker from '@/components/column-picker.vue'
+import { columnHelpers } from '@/services/column.helpers.js';
 
 export default {
     props: {
@@ -135,6 +146,7 @@ export default {
 
     data() {
         return {
+            isHover: false,
             isAllCollapse: false,
             groupsCopy: null,
             isPickColor: false,
@@ -171,8 +183,6 @@ export default {
 
     watch: {
         groups(newVal) {
-            // console.log('in group list watcher groupsCopy.tasks', this.groupsCopy[0].tasks);
-            // console.log('in group list watcher newVal.tasks', newVal);
             this.groupsCopy = JSON.parse(JSON.stringify(newVal));
         },
         columns() {
@@ -182,7 +192,6 @@ export default {
     components: {
         taskList,
         draggable,
-        columnPicker,
     },
     computed: {
         columns: {
@@ -196,6 +205,13 @@ export default {
     },
 
     methods: {
+        // toggleHover(bool) {
+        //     this.isHover = bool;
+        // },
+        captilize(title) {
+            const captilizedTitle = title.charAt(0).toUpperCase() + title.slice(1);
+            return captilizedTitle;
+        },
         openColorPallete() {
             this.isPickColor = true;
         },

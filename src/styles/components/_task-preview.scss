@@ -1,12 +1,12 @@
 .task-preview {
-    background-color: whitesmoke;
-    margin: 2px;
-    margin-left: 32px;
-    height: 34px;
-    padding-inline-start: 5px;
-    transition: 1s;
     @include flex(start, center, row);
+    background-color: whitesmoke;
+    margin: 2px 0;
+    height: 34px;
+    transition: 0.5s;
     position: relative;
+    // margin-left: 32px;
+    // padding-inline-start: 5px;
 
     // &:hover .dropdown {
     //     display: block;

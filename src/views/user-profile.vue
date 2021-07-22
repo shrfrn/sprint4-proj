@@ -12,6 +12,7 @@
         :inline="true"
         :size="130"
         :src="imgUrl"
+       
       />
 
       <h1>{{ user.fullname }}</h1>
@@ -28,13 +29,16 @@ export default {
   data() {
     return {
       user: null,
+      
     };
   },
   created() {
     this.user = this.$store.getters.getLoggedinUser;
+
   },
   computed: {
     imgUrl() {
+        console.log(this.user.imgUrl);
       return this.user.imgUrl || "";
     },
   },
@@ -42,12 +46,17 @@ export default {
     async onUploadImg(ev) {
       const res = await userService.uploadImg(ev);
       this.user["imgUrl"] = res.url;
-      console.log(this.user);
-      //     userService.uploadImg(ev).then(res=>{
-      //    console.log(res);
-
-      //         });
-      //      console.log('by');
+   
+     if(this.user._id==='u101'){
+         console.log('you are guest');
+         return
+     } 
+      await this.$store.dispatch({
+        type: "saveUser",
+        user: this.user,
+      });
+       this.user = this.$store.getters.getLoggedinUser;
+       console.log(' this.user', this.user);
     },
   },
   components: {

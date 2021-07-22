@@ -33,15 +33,13 @@
         position: relative;
         left: 0;
         width: 100%;
-        margin-left: -7px;
+        // margin-left: -7px;
         opacity: 0.6;
         transition: 0.2s;
 
         &:focus-within {
             opacity: 1;
         }
-
-        // margin-left: 2px;
     }
     .edit-input {
         position: relative;
@@ -59,19 +57,20 @@
 
     input {
         &.add-input {
-            margin-left: 22px;
+            // margin-left: 22px;
+            width: 100%;
         }
 
         position: relative;
         left: 0;
-        // opacity: 1;
         height: 35px;
         width: 98.8%;
 
-        box-shadow: 0 0 1px 1px #dbdbdb;
+        // box-shadow: 0 0 1px 1px #dbdbdb;
         background: transparent;
         outline: none;
         border: none;
+
         font-family: Lato;
         font-size: 15px;
         padding: 5px;
@@ -80,76 +79,91 @@
         border-inline-start: 6px rgb(55, 55, 105) solid;
         padding-inline-start: 5px;
         font-size: 15px;
-        // margin: 2px;
+
+        &.add-input {
+            border-inline: 1px solid #dbdbdb;
+        }
     }
 
-    .summery {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        background-color: #f5f6f8;
+    .summery-preview {
+        @include flex(start, center, row);
+        background-color: transparent;
+        margin: 2px 0;
+        height: 34px;
+        transition: 0.5s;
+        border-inline-end: 6px solid white;
 
-        > * {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 180px;
+        .summery-title {
+            @include flex(space-between, center, row);
+            min-width: 260px;
+            padding-inline-end: 10px;
             height: 100%;
-            font-family: Lato;
-            font-size: 14px;
-        }
-        width: 720px;
-        margin-left: auto;
-
-        // .helper {
-        //     min-width: 260px;
-        // }
-
-        .summery-column {
-            min-width: 180px;
+            min-width: 275px;
+            flex: 2;
+            border-inline-end: 1px white solid;
+            background-color: transparent;
         }
 
-        .tag-summery {
-            div {
-                color: rgb(random(255), random(255), random(255));
-            }
+        .summery-cmps {
+            background-color: whitesmoke;
+            display: flex;
+            min-width: 300px;
+            align-items: center;
 
-            gap: 2px 5px;
-        }
-
-        .date-summery {
-            p {
+            > * {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 180px;
+                height: 100%;
+                font-family: Lato;
                 font-size: 14px;
-                border: 2px solid #555;
-                border-radius: 20px;
-                padding: 0 8px;
-                font-weight: 600;
             }
-        }
-        .status-summery {
-            height: 30px;
 
-            .battery {
+            .summery-column {
                 display: flex;
                 align-items: center;
-                width: 100%;
-                height: 100%;
+                justify-content: center;
+                font-weight: 600;
+                width: 180px;
+                height: 39px;
+                min-width: 75px;
+                transition: 0.3s;
+            }
 
-                .done,
-                .stuck,
-                .in-progress,
-                .empty {
+            .tag-summery {
+                div {
+                    color: rgb(random(255), random(255), random(255));
+                }
+
+                gap: 2px 5px;
+            }
+
+            .status-summery {
+                height: 30px;
+
+                .battery {
                     display: flex;
                     align-items: center;
-                    justify-content: center;
+                    width: 90%;
                     height: 90%;
-                    text-align: center;
-                    font-size: 12px;
-                    font-weight: 600;
-                    transition: 0.3s;
 
-                    &:hover {
-                        transform: scale(110%, 110%);
+                    .done,
+                    .stuck,
+                    .in-progress,
+                    .empty {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        height: 90%;
+                        text-align: center;
+                        font-size: 12px;
+                        font-weight: 600;
+                        transition: 0.3s;
+
+                        &:hover {
+                            transform: scale(110%, 110%);
+                        }
                     }
                 }
             }
