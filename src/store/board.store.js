@@ -33,12 +33,8 @@ export const boardStore = {
             console.log('about to emit task-updated');
             socketService.emit('task-updated', activity);
         },
-        setUpdate(state, { itemId, txt }) {
-            const update = boardService.getEmptyUpdate();
-            update.createdAt = Date.now();
-            update.itemId = itemId;
-            update.createdBy = this.$store.getters.loggedinUser
-            update.txt = txt;
+        setUpdate(state, {update }) {
+        
             if (state.currBoard.updates) state.currBoard.updates.unshift(update);
             else state.currBoard['updates'] = [update];
             console.log('state.currBoard.updates', state.currBoard.updates);
@@ -133,7 +129,13 @@ export const boardStore = {
             }
         },
         async saveUpdate(context, { itemId, txt }) {
-            context.commit({ type: 'setUpdate', itemId, txt });
+            console.log(itemId, txt);
+            const update = boardService.getEmptyUpdate();
+            update.createdAt = Date.now();
+            update.itemId = itemId;
+            update.createdBy = context.getters.loggedinUser
+            update.txt = txt;
+            context.commit({ type: 'setUpdate', update });
             const boardCopy = await boardService.save(context.getters.currBoard);
             context.commit({ type: 'loadBoard', board: boardCopy });
         },
