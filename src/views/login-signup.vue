@@ -69,7 +69,10 @@ export default {
         },
 
         async onSignup() {
-            await userService.signup(this.userCreds);
+            console.log('signup');
+            await userService.signup(this.userCreds).then(() => {
+                this.$router.push(`/board/60f7b1e3c66d343ab4f0c567`);
+            });
             this.$emit('login-signup', true);
             this.userCreds = {
                 fullname: '',
@@ -77,13 +80,15 @@ export default {
                 password: '',
             };
             this.$store.commit({ type: 'setLoggedinUser' });
-            this.$router.push(`/board/60f7b1e3c66d343ab4f0c567`);
         },
         async onLogin() {
             console.log('login');
             await userService
                 .login(this.userCreds)
-                .then((res) => console.log(res))
+                .then((res) => {
+                    console.log(res);
+                    this.$router.push(`/board/60f7b1e3c66d343ab4f0c567`);
+                })
                 .catch((err) => console.error(err));
             this.$emit('login-signup', true);
             this.userCreds = {
@@ -92,7 +97,6 @@ export default {
                 password: '',
             };
             this.$store.commit({ type: 'setLoggedinUser' });
-            this.$router.push(`/board/60f7b1e3c66d343ab4f0c567`);
         },
     },
 };

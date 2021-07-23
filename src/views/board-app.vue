@@ -13,13 +13,15 @@ export default {
     created() {
         socketService.setup();
         socketService.on('task-updated', this.updateActivity);
-        console.log('this.$store.getters.currBoard :>> ', this.$store.getters.currBoard);
+        socketService.on('board-list-updated', this.updateBoards);
     },
     methods: {
         updateActivity(activity) {
             console.log('in updateActivity:\n', activity);
         },
-
+        async updateBoards() {
+            await this.$store.dispatch({ type: 'loadBoards' });
+        },
         async logout() {
             await this.$store.dispatch({ type: 'logout' });
         },
