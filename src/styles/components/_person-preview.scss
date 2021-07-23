@@ -5,12 +5,13 @@
     padding: 0.3rem;
     transition: 0.2s;
     cursor: pointer;
+    font-family: Lato;
 
     & > * {
         margin-left: 0.5rem;
     }
 
     &:hover {
-        background-color: lightgray;
+        background-color: rgb(243, 243, 243);
     }
 }

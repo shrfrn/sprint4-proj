@@ -103,7 +103,11 @@
                                 </div> -->
                             </div>
 
-                            <draggable class="columns" v-model="columns">
+                            <draggable
+                                class="columns"
+                                ghost-class="ghost-columns"
+                                v-model="columns"
+                            >
                                 <div
                                     class="column-title"
                                     v-for="(column, idx) in columns"

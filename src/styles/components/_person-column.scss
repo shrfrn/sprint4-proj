@@ -1,10 +1,16 @@
 .person-column {
     position: relative;
     width: 250px;
+    border-radius: 8px;
 
     .empty-delegate-list {
-        color: gray;
+        color: rgb(224, 224, 224);
         font-size: 23px;
+        transition: 0.2s;
+
+        &:hover {
+            color: rgba(79, 79, 209, 0.623);
+        }
     }
 
     .avatar-list {

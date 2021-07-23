@@ -17,7 +17,11 @@ export default {
     },
     methods: {
         updateActivity(activity) {
-            console.log('in updateActivity:\n', activity);
+            if (this.currTaskId && this.currTaskId === activity.taskId) {
+                return console.log('inside task');
+            }
+            if (this.currBoardId === activity.boardId) return console.log('inside board');
+            return console.log('inside app');
         },
         async updateBoards() {
             await this.$store.dispatch({ type: 'loadBoards' });
@@ -32,6 +36,12 @@ export default {
         },
         user() {
             return this.$store.getters.getLoggedinUser;
+        },
+        currBoardId() {
+            return this.$store.getters.currBoard._id;
+        },
+        currTaskId() {
+            return this.$route.params.id;
         },
     },
     // destroyed() {
