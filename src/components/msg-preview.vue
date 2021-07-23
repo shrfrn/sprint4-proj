@@ -6,6 +6,7 @@
         :username="update.createdBy.fullname"
         :inline="true"
         :size="40"
+        :src="imgUrl"
       />
       {{ update.createdBy.fullname }}
     </div>
@@ -13,21 +14,29 @@
       <div class="msg-txt">{{ update.txt }}</div>
     </div>
     <div v-if="update.likedBy.length" class="liked-by">
-        <el-tooltip  v-for="user in update.likedBy" :key="user._id" class="item" effect="light" :content="user.fullname" placement="top">
-      <avatar
-       
-        
-        class="person-preview-avatar"
-        :username="user.fullname"
-        :inline="true"
-        :size="20"
-      />
-        </el-tooltip>
+      <el-tooltip
+        v-for="user in update.likedBy"
+        :key="user._id"
+        class="item"
+        effect="light"
+        :content="user.fullname"
+        placement="top"
+      >
+        <avatar
+          class="person-preview-avatar"
+          :username="user.fullname"
+          :inline="true"
+          :size="20"
+          :src="imgUrlToLike(user)"
+        />
+      </el-tooltip>
       Liked
     </div>
     <div class="msg-footer">
-      <button  @click="addLike"><i class="far fa-thumbs-up"></i> Like</button>
-      <button  @click="deleteUpdate"><i class="far fa-trash-alt"></i> delete</button>
+      <button @click="addLike"><i class="far fa-thumbs-up"></i> Like</button>
+      <button @click="deleteUpdate">
+        <i class="far fa-trash-alt"></i> delete
+      </button>
     </div>
   </section>
 </template>
@@ -40,25 +49,30 @@ export default {
     update: Object,
   },
   data() {
-    return {
-    };
+    return {};
   },
   components: { Avatar },
   methods: {
-  async  addLike() {
-     await this.$store.dispatch({
+    async addLike() {
+      await this.$store.dispatch({
         type: "toggleUpdateLike",
         id: this.update.id,
-       
       });
     },
-    async deleteUpdate(){
+    async deleteUpdate() {
       await this.$store.dispatch({
         type: "removeUpdate",
         updateId: this.update.id,
-       
       });
-    }
+    },
+    imgUrlToLike(user) {
+      return user.imgUrl || "";
+    },
+  },
+  computed: {
+    imgUrl() {
+      return this.update.createdBy.imgUrl || "";
+    },
   },
 };
 </script>

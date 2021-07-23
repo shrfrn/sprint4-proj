@@ -99,6 +99,7 @@ export const boardStore = {
 
             context.commit({ type: 'loadBoard', board: newBoard });
             socketService.emit('board-updated', board);
+            socketService.emit('board-list-updated');
         },
         async saveMiniBoard(context, { miniBoard }) {
             try {
