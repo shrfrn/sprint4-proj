@@ -33,7 +33,6 @@ export default {
     },
     watch: {
         drawer() {
-            // console.log(newVal);
             setTimeout(() => {
                 this.closeDetails();
             }, 100);
@@ -46,7 +45,6 @@ export default {
         const taskId = this.$route.params.id;
         board.groups.forEach((group) => {
             return group.tasks.forEach((task) => {
-                // console.log(task.id);
                 if (task.id === taskId) this.currTask = task;
             });
         });

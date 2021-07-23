@@ -30,18 +30,12 @@
 
 <script>
 // import { boardService } from '../services/board.service';
-import {socketService} from '@/services/socket.service.js'
+import { socketService } from '@/services/socket.service.js';
 import boardHeader from '../components/board-header.vue';
 import groupList from '../components/group-list.vue';
 // import boardViews from '../components/board-views.vue';
 
 export default {
-    data() {
-        return {
-            // idx: 1,
-        };
-    },
-
     computed: {
         board() {
             return JSON.parse(JSON.stringify(this.$store.getters.currBoard));
@@ -51,32 +45,24 @@ export default {
         },
     },
     async created() {
-        console.log('CREATING');
         await this.loadBoard();
-        await socketService.setup()
-        console.log(('in board'));
-        // console.log('in created. board \n', this.board);
-        socketService.emit('in-board', this.board._id)
-        socketService.on('board-updated', this.updateBoard )
+        await socketService.setup();
+        socketService.emit('in-board', this.board._id);
+        socketService.on('board-updated', this.updateBoard);
     },
-    destroyed(){
-        socketService.emit('left-board', this.board._id)
+    destroyed() {
+        socketService.emit('left-board', this.board._id);
     },
 
     methods: {
-        updateBoard(board){
+        updateBoard(board) {
             console.log('update recieved on socket\n', board);
-            this.$store.commit({ type: 'loadBoard', board})
-            
-            // Currently updating board list on every change in current board.
-            // TODO: optimize - load board list only on changes which are visible in the list:
-            // board name, favorites.
+            this.$store.commit({ type: 'loadBoard', board });
         },
         async loadBoard() {
             try {
                 const { boardId } = this.$route.params;
                 return await this.$store.dispatch({ type: 'loadBoard', boardId });
-                // this.board = this.$store.getters.currBoard;
             } catch (error) {
                 console.log('Couldnt load board');
             }
@@ -139,7 +125,6 @@ export default {
             this.$router.push(`/board/${board._id}/task/${taskId}`);
         },
         setFilter(filterBy) {
-            console.log('filterBy :>> ', filterBy);
             this.$store.dispatch({ type: 'setFilter', filterBy });
 
             // this.groupsToShow = this.board.groups.filter((group) =>
@@ -151,9 +136,9 @@ export default {
         '$route.params.boardId': {
             // immediate: true,
             async handler() {
-                await socketService.emit('left-board', this.board._id)
+                await socketService.emit('left-board', this.board._id);
                 this.loadBoard();
-                socketService.emit('in-board', this.$route.params.boardId)
+                socketService.emit('in-board', this.$route.params.boardId);
             },
         },
     },

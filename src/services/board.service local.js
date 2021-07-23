@@ -72,7 +72,6 @@ async function getById(id, filterBy = { txt: '' }) {
 }
 
 async function remove(id) {
-    console.log('id :>> ', id);
     return await storageService.remove(KEY, id);
     // return await httpService.delete('toy/' + id)
 }
@@ -106,35 +105,6 @@ async function duplicateBoard(boardId) {
     return await query();
 }
 
-// async function updateGroup(updatedGroup, currBoard) {
-//     const board = await getById(currBoard._id);
-//     const idx = board.groups.findIndex((group) => group.id === updatedGroup.id);
-//     board.groups.splice(idx, 1, updatedGroup);
-//     return await storageService.put(KEY, board);
-// }
-
-// async function updateGroups(updatedGroups, currBoard) {
-//     const board = await getById(currBoard._id);
-//     board.groups = updatedGroups;
-//     return await storageService.put(KEY, board);
-// }
-
-// async function removeGroup(group, currBoard) {
-//     const board = await getById(currBoard._id);
-//     const idx = board.groups.findIndex((gp) => gp.id === group.id);
-//     board.groups.splice(idx, 1);
-//     return await storageService.put(KEY, board);
-// }
-
-// async function duplicateGroup(duplicatedGroup, currBoard) {
-//     duplicatedGroup.title = 'Copy of ' + duplicatedGroup.title;
-//     const board = await getById(currBoard._id);
-//     const idx = board.groups.findIndex((gp) => gp.id === duplicatedGroup.id);
-//     duplicatedGroup.id = utilService.makeId();
-//     board.groups.splice(idx + 1, 0, duplicatedGroup);
-//     return await storageService.put(KEY, board);
-// }
-
 function getEmptyBoard() {
     const newBoard = JSON.parse(JSON.stringify(gBoards[0]));
     newBoard._id = null;
@@ -151,61 +121,7 @@ function getEmptyBoard() {
     });
     return newBoard;
 }
-// async function addNewGroup(boardId) {
-//     const newGroup = _getNewGroup();
-//     const board = await getById(boardId);
-//     board.groups.splice(0, 0, newGroup);
-//     return await storageService.put(KEY, board);
-// }
-// function getGroupbyId(board, groupId) {
-//     console.log(board);
-//    return board.groups.findIndex(group => {
-//        return group.id === groupId
-//     })
-// }
-// async function removeTask(task, groupId, currBoardId) {
-//     const board = await getById(currBoardId);
-//     const gIdx=getGroupbyId(board,groupId);
 
-//     const idx = board.groups[gIdx].tasks.findIndex((taskToCheck) => {
-//         return taskToCheck.id === task.id;
-//     });
-
-//     board.groups[gIdx].tasks.splice(idx, 1);
-//     return await storageService.put(KEY, board);
-// }
-// async function duplicateTask(task, groupId, currBoardId) {
-//     task.title = 'Copy of ' + task.title;
-//     const board = await getById(currBoardId);
-//     const gIdx=getGroupbyId(board,groupId);
-//     const idx = board.groups[gIdx].tasks.findIndex((gp) => gp.id === task.id);
-
-//     task.id = utilService.makeId();
-//     board.groups[gIdx].tasks.splice(idx + 1, 0, task);
-//     return await storageService.put(KEY, board);
-// }
-// async function updateTask(task, groupId, currBoardId) {
-//     const board = await getById(currBoardId);
-//     const gIdx=getGroupbyId(board,groupId);
-//     const idx = board.groups[gIdx].tasks.findIndex((taskToCheck) => {
-//         return taskToCheck.id === task.id;
-//     });
-//     board.groups[gIdx].tasks[idx] = task;
-//     return await storageService.put(KEY, board);
-// }
-// async function addTask(task, groupId, currBoardId) {
-//     const board = await getById(currBoardId);
-//     const gIdx=getGroupbyId(board,groupId);
-//     board.groups[gIdx].tasks.push(task);
-
-//     return await storageService.put(KEY, board);
-// }
-// async function updateTasks(saveTasks, currBoardId, groupId) {
-//     const board = await getById(currBoardId);
-//     const gIdx=getGroupbyId(board,groupId);
-//     board.groups[gIdx].tasks = saveTasks;
-//     return await storageService.put(KEY, board);
-// }
 function getEmptyGroup() {
     const newGroup = {
         id: utilService.makeId(),
@@ -239,31 +155,6 @@ function getEmptyFilter() {
     };
 }
 
-// Private functions
-
-// function _getNewGroup() {
-//     return {
-//         id: utilService.makeId(),
-//         title: 'New Group',
-//         tasks: [
-//             {
-//                 id: utilService.makeId(),
-//                 title: 'You can add new task here',
-//                 createdAt: Date.now(),
-//                 columns: {
-//                     delegate: [],
-//                     status: { txt: '', color: '#c4c4c4' },
-//                     date: Date.now(),
-//                     tags: [],
-//                 },
-//             },
-//         ],
-//         style: {
-//             color: _getRandomColor(),
-//         },
-//     };
-// }
-
 function _getRandomColor() {
     var letters = '0123456789ABCDEF';
     var color = '#';
@@ -274,7 +165,6 @@ function _getRandomColor() {
 }
 
 // Data initailization
-
 const gBoards = [
     {
         _id: 'b101',

@@ -34,9 +34,9 @@ export const boardStore = {
             state.currBoard = filteredBoard;
         },
         addActivity(state, { activity }) {
-            state.currBoard.activities.unshift(activity)
+            state.currBoard.activities.unshift(activity);
             console.log('about to emit task-updated');
-            socketService.emit('task-updated', activity)
+            socketService.emit('task-updated', activity);
         },
         setUpdate(state, { itemId, txt }) {
             const update = boardService.getEmptyUpdate();
@@ -56,7 +56,6 @@ export const boardStore = {
             state.boards = filteredBoards;
         },
         toggleLike(state, { id }) {
-            console.log('id', id);
             const updateIdx = state.currBoard.updates.findIndex((update) => {
                 return update.id === id;
             });
@@ -77,12 +76,12 @@ export const boardStore = {
         setColumns(state, { columns }) {
             state.currBoard.columns = columns;
         },
-        removeUpdate(state,{updateId}){
+        removeUpdate(state, { updateId }) {
             const idx = state.currBoard.updates.findIndex((update) => {
                 return update.id === updateId;
             });
             state.currBoard.updates.splice(idx, 1);
-        }
+        },
     },
     actions: {
         async loadBoards(context) {
@@ -122,7 +121,6 @@ export const boardStore = {
             }
         },
         async removeBoard(context, { boardId }) {
-            console.log('boardId :>> ', boardId);
             await boardService.remove(boardId);
             context.commit({ type: 'removeBoard', boardId });
             socketService.emit('board-list-updated');
@@ -130,10 +128,8 @@ export const boardStore = {
         async duplicateBoard(context, { boardId }) {
             try {
                 const boardCopy = await boardService.getById(boardId);
-
                 delete boardCopy._id;
                 boardCopy.title = 'Copy of ' + boardCopy.title;
-
                 const newBoard = await boardService.save(boardCopy);
                 await context.dispatch({ type: 'loadBoards' });
                 // context.commit({ type: 'setBoards', boards });
@@ -158,7 +154,6 @@ export const boardStore = {
             context.commit({ type: 'setUpdate', itemId, txt });
             const boardCopy = await boardService.save(context.getters.currBoard);
             context.commit({ type: 'loadBoard', board: boardCopy });
-            console.log('succccccccccc');
         },
         async setFilterList(context, { filterBy }) {
             try {
@@ -168,9 +163,9 @@ export const boardStore = {
                 console.log('couldnt filtered', err);
             }
         },
-        async addActivity(context, { activity }){
-            activity = await boardService.addActivity(activity)
-            context.commit({ type: 'addActivity', activity })
+        async addActivity(context, { activity }) {
+            activity = await boardService.addActivity(activity);
+            context.commit({ type: 'addActivity', activity });
         },
         async toggleUpdateLike(context, { id }) {
             context.commit({ type: 'toggleLike', id });
@@ -181,15 +176,14 @@ export const boardStore = {
             await userService.logout();
             context.commit({ type: 'setLoggedinUser' });
         },
-        async saveUser(context,{user}){
+        async saveUser(context, { user }) {
             await userService.update(user);
             console.log(context);
         },
-        async removeUpdate(context,{updateId}){
-            context.commit({ type: 'removeUpdate', updateId });  
-           await context.dispatch({ type: 'saveBoard', board: context.getters.currBoard });
+        async removeUpdate(context, { updateId }) {
+            context.commit({ type: 'removeUpdate', updateId });
+            await context.dispatch({ type: 'saveBoard', board: context.getters.currBoard });
         },
-
     },
     getters: {
         getLoggedinUser(state) {
