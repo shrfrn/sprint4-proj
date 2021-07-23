@@ -19,7 +19,12 @@ export default {
     methods:{
 
         updateActivity(activity){
-            console.log('in updateActivity:\n', activity);
+            if (this.currTaskId && this.currTaskId === activity.taskId) {
+                return console.log('inside task');
+            }
+            if (this.currBoardId === activity.boardId) return console.log('inside board');
+
+            return console.log('inside app');
         },
 
         async logout(){
@@ -32,7 +37,13 @@ export default {
             return this.$store.getters.boards;
         },
         user(){
-            return this.$store.getters.getLoggedinUser
+            return this.$store.getters.loggedinUser
+        },
+        currBoardId(){
+            return this.$store.getters.currBoard._id
+        },
+        currTaskId(){
+            return this.$route.params.id
         }
     },
     // destroyed() {

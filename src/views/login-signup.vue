@@ -3,7 +3,7 @@
   
       <el-tabs v-model="activeTab">
         <el-tab-pane class="tab-label" label="Login" name="login">
-          <el-form label-width="100px" :model="userCreds" @submit="onLogin">
+          <el-form label-width="100px" :model="userCreds" @keydown.enter.native="onLogin">
             <el-form-item label="username">
               <el-input v-model="userCreds.username"></el-input>
             </el-form-item>
@@ -70,31 +70,28 @@ export default {
         },
 
         async onSignup() {
-            console.log('signup');
-            await userService.signup(this.userCreds);
-            this.$emit('login-signup', true);
-            this.userCreds = {
-                fullname: '',
-                username: '',
-                password: '',
-            };
-            this.$store.commit({ type: 'setLoggedinUser' });
-            this.$router.push(`/board/60f7b1e3c66d343ab4f0c567`);
+            try {
+                const user = await userService.signup(this.userCreds)
+                this.login(user)
+            } catch (err) {
+                console.log('login error')
+                throw err
+            }
         },
         async onLogin() {
-            console.log('login');
-            await userService
-                .login(this.userCreds)
-                .then((res) => console.log(res))
-                .catch((err) => console.error(err));
-            this.$emit('login-signup', true);
-            this.userCreds = {
-                fullname: '',
-                username: '',
-                password: '',
-            };
-            this.$store.commit({ type: 'setLoggedinUser' });
-            this.$router.push(`/board/60f7b1e3c66d343ab4f0c567`);
+            try {
+                const user = await userService.login(this.userCreds)
+                this.login(user)
+            } catch (err) {
+                console.log('login error')
+                throw err
+            }
+        },
+        login(user){
+            this.userCreds = { fullname: '', username: '', password: '' }
+            this.$store.commit({ type: 'setLoggedinUser', user })
+            this.$emit('login-signup', true)
+            this.$router.push(`/board/60f7b1e3c66d343ab4f0c567`)
         },
     },
 };

@@ -7,7 +7,6 @@ export const boardStore = {
     state: {
         boards: [],
         currBoard: null,
-        loggedinUser: null,
     },
     mutations: {
         setBoards(state, { boards }) {
@@ -15,10 +14,6 @@ export const boardStore = {
         },
         loadBoard(state, { board }) {
             state.currBoard = board;
-        },
-        setLoggedinUser(state) {
-            state.loggedinUser = userService.getLoggedinUser();
-            console.log('state.loggedinUser', state.loggedinUser);
         },
         removeBoard(state, { boardId }) {
             const idx = state.boards.findIndex((board) => board._id === boardId);
@@ -42,11 +37,7 @@ export const boardStore = {
             const update = boardService.getEmptyUpdate();
             update.createdAt = Date.now();
             update.itemId = itemId;
-            update.createdBy = state.loggedinUser || {
-                _id: 'u101',
-                fullname: 'Guest user',
-                imgUrl: '',
-            };
+            update.createdBy = this.$store.getters.loggedinUser
             update.txt = txt;
             if (state.currBoard.updates) state.currBoard.updates.unshift(update);
             else state.currBoard['updates'] = [update];
@@ -56,18 +47,8 @@ export const boardStore = {
             state.boards = filteredBoards;
         },
         toggleLike(state, { id }) {
-            console.log('id', id);
-            const updateIdx = state.currBoard.updates.findIndex((update) => {
-                return update.id === id;
-            });
-            console.log('updateIdx', updateIdx);
-            const userToToggle = state.loggedinUser || {
-                _id: 'u101',
-                fullname: 'Guest user',
-                imgUrl: '',
-            };
-            console.log('userToToggle', userToToggle);
-            console.log('state.currBoard.updates', state.currBoard.updates[updateIdx]);
+            const updateIdx = state.currBoard.updates.findIndex(update => update.id === id)
+            const userToToggle = this.$store.getters.loggedinUser
             const userIdx = state.currBoard.updates[updateIdx].likedBy.findIndex((user) => {
                 return user._id === userToToggle._id;
             });
@@ -95,9 +76,8 @@ export const boardStore = {
         },
         async saveBoard(context, { board }) {
             const newBoard = await boardService.save(board);
-            await context.dispatch({ type: 'loadBoards' });
-
             context.commit({ type: 'loadBoard', board: newBoard });
+            await context.dispatch({ type: 'loadBoards' }); // ?? do we need this here? consider updating the list locally
             socketService.emit('board-updated', board);
         },
         async saveMiniBoard(context, { miniBoard }) {
