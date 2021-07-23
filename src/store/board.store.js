@@ -33,11 +33,11 @@ export const boardStore = {
             console.log('about to emit task-updated');
             socketService.emit('task-updated', activity);
         },
-        setUpdate(state, { itemId, txt }) {
+        setUpdate(state, { getters }, { itemId, txt }) {
             const update = boardService.getEmptyUpdate();
             update.createdAt = Date.now();
             update.itemId = itemId;
-            update.createdBy = this.$store.getters.loggedinUser
+            update.createdBy = getters.loggedinUser;
             update.txt = txt;
             if (state.currBoard.updates) state.currBoard.updates.unshift(update);
             else state.currBoard['updates'] = [update];
@@ -47,8 +47,8 @@ export const boardStore = {
             state.boards = filteredBoards;
         },
         toggleLike(state, { id }) {
-            const updateIdx = state.currBoard.updates.findIndex(update => update.id === id)
-            const userToToggle = this.$store.getters.loggedinUser
+            const updateIdx = state.currBoard.updates.findIndex((update) => update.id === id);
+            const userToToggle = this.$store.getters.loggedinUser;
             const userIdx = state.currBoard.updates[updateIdx].likedBy.findIndex((user) => {
                 return user._id === userToToggle._id;
             });
@@ -148,7 +148,7 @@ export const boardStore = {
         async addActivity(context, { activity }) {
             activity = await boardService.addActivity(activity);
             context.commit({ type: 'addActivity', activity });
-            console.log('aaaaaaaaaaaaaa',context.getters.currBoard.activities);
+            console.log('aaaaaaaaaaaaaa', context.getters.currBoard.activities);
         },
         async toggleUpdateLike(context, { id }) {
             context.commit({ type: 'toggleLike', id });
@@ -186,7 +186,6 @@ export const boardStore = {
         },
         getActivitiesByItem: (state) => (itemId) => {
             return state.currBoard.activities.filter((activity) => {
-         
                 return activity.taskId === itemId;
             });
         },

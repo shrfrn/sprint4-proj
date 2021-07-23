@@ -28,17 +28,17 @@
             @mouseleave="togglehover(false)"
         >
         <el-dropdown-item @click.native="toggleEdit(true)"
-          ><i class="fas fa-pen"></i>Rename title</el-dropdown-item
+            ><i class="fas fa-pen"></i>Rename title</el-dropdown-item
         >
         <el-dropdown-item @click.native="duplicateTask"
-          ><i class="far fa-copy"></i>Duplicate task</el-dropdown-item
+            ><i class="far fa-copy"></i>Duplicate task</el-dropdown-item
         >
         <el-dropdown-item @click.native="openTaskDetails">
-          <i class="far fa-comments open-chat" @click="openTaskDetails">
+            <i class="far fa-comments open-chat" @click="openTaskDetails">
             Open chat
-          </i>
+            </i>
         </el-dropdown-item>
-      </el-dropdown-menu>
+        </el-dropdown-menu>
     </el-dropdown> -->
         <div
             class="task-title"
@@ -62,6 +62,9 @@
                 <button @click.stop="toggleEdit(true)" v-if="isHover">Edit</button>
             </section>
             <!-- <i class="far fa-comments open-chat" @click="openTaskDetails"></i> -->
+            <!-- <el-badge :value="taskMsgCount(currTask.id)" class="item">
+                <i class="far fa-comment open-chat"></i>
+            </el-badge> -->
             <i class="far fa-comment open-chat"></i>
         </div>
 
@@ -124,8 +127,14 @@ export default {
         currBoard() {
             return this.$store.getters.currBoard;
         },
+        user() {
+            return this.$store.getters.loggedinUser;
+        },
     },
     methods: {
+        taskMsgCount(id) {
+            return this.$store.getters.taskMsgCount(id);
+        },
         toggleEdit(isTrue) {
             this.isEditTitle = isTrue;
             if (!isTrue) this.currTask.title = this.task.title;
@@ -141,24 +150,33 @@ export default {
             this.$emit('openTaskDetails', this.task.id);
         },
         addActivity(msg) {
-            if(!msg) return 
+            if (!msg) return;
             const activity = {
                 boardId: this.$store.getters.currBoard._id,
                 groupId: this.groupId,
                 taskId: this.currTask.id,
                 activityType: msg.type,
                 content: { txt: msg.msg },
-            }
+            };
             this.$store.dispatch({ type: 'addActivity', activity });
         },
         async updateTask() {
             try {
-               if(this.isEditTitle) await this.addActivity({type:'edit title',msg: 'edit task name from ' + this.task.title + ' to ' + this.currTask.title})
-                await this.$store.dispatch({ type: 'updateTask', task: this.currTask, groupId: this.groupId });
+                if (this.isEditTitle)
+                    await this.addActivity({
+                        type: 'edit title',
+                        msg:
+                            'edit task name from ' + this.task.title + ' to ' + this.currTask.title,
+                    });
+                await this.$store.dispatch({
+                    type: 'updateTask',
+                    task: this.currTask,
+                    groupId: this.groupId,
+                });
                 this.isEditTitle = false;
             } catch (err) {
                 console.log('error updating task:\n', err);
-                throw err
+                throw err;
             }
         },
         async removeTask() {

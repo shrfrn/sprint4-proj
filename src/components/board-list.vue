@@ -87,7 +87,7 @@ export default {
     },
     data() {
         return {
-            isNavOpen: true,
+            isNavOpen: false,
             filterBy: { txt: '' },
             favBoards: [],
             windowWidth: null,
