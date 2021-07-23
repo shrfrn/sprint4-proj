@@ -5,7 +5,8 @@
     box-shadow: none;
 }
 .tags-column .el-tag {
-    background-color: rgba(6, 37, 19, 0.61);
-    color: whitesmoke;
+    background-color: #e4e4e4;
+    border: 1px solid rgb(190, 190, 190);
     font-weight: 600;
+    color: rgb(random(255), random(255), random(255));
 }

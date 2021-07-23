@@ -16,7 +16,7 @@ export const userService = {
     uploadImg
 }
 
-window.userService = userService
+window.userService = userService;
 // Note: due to async, must run one by one...
 // userService.signup({fullname: 'Puki Norma', username: 'user1', password:'123',score: 100, isAdmin: false})
 // userService.signup({fullname: 'Master Adminov', username: 'admin', password:'123', score: 100, isAdmin: true})
@@ -60,43 +60,28 @@ async function signup(userCred) {
     // return _saveLocalUser(user)
 }
 async function logout() {
-    sessionStorage.clear()
-    return await httpService.post('auth/logout')
+    sessionStorage.clear();
+    return await httpService.post('auth/logout');
 }
 
 function getLoggedinUser() {
     console.log('logged in as', JSON.parse(sessionStorage.getItem('loggedinUser') || 'null'));
-    return JSON.parse(sessionStorage.getItem('loggedinUser') || 'null')
+    return JSON.parse(sessionStorage.getItem('loggedinUser') || 'null');
 }
 
 async function uploadImg(ev) {
     // Defining our variables
-    console.log('upload');
-    const CLOUD_NAME = 'rachelmistertoy' // Insert yours
-    const UPLOAD_PRESET = 'oa9nnanl' // Insert yours
-    const UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`
-    
+    const CLOUD_NAME = 'rachelmistertoy'; // Insert yours
+    const UPLOAD_PRESET = 'oa9nnanl'; // Insert yours
+    const UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+
     const FORM_DATA = new FormData();
     // Building the request body
-    FORM_DATA.append('file', ev.target.files[0])
-    FORM_DATA.append('upload_preset', UPLOAD_PRESET)
- 
-    // Sending a post method request to Cloudniarys' API
-//     fetch(UPLOAD_URL,{
-//         method:'POST',
-//         body:FORM_DATA
-//     }).then(res=>{
-//         return res.json()
-//     }).then(res=>{
-//         console.log('upload',res);
-//         return Promise.resolve(res) 
-//     })
-//    .catch(err=>{
-//        console.log('err',err);
-//    })
-    // Sending a post method request to Cloudniarys' API
+    FORM_DATA.append('file', ev.target.files[0]);
+    FORM_DATA.append('upload_preset', UPLOAD_PRESET);
+
     try {
-        const res = await axios.post(UPLOAD_URL, FORM_DATA)
+        const res = await axios.post(UPLOAD_URL, FORM_DATA);
         return res.data;
    } catch (err) {
        console.error('ERROR!', err)

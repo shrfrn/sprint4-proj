@@ -12,7 +12,7 @@
                 :src="activity.createdBy.imgUrl"
             />
 
-            <span>{{ activity.msg }}</span>
+            <span>{{ activity.content.txt }}</span>
         </el-card>
     </section>
 </template>
@@ -23,7 +23,9 @@ export default {
     props: {
         activity: Object,
     },
-    methods: {},
+
+    methods: {  
+     },
     components: { Avatar },
 };
 </script>

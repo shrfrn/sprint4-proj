@@ -2,6 +2,8 @@
     <transition name="person-picker">
         <section @keydown.esc="end" class="person-picker">
             <section class="delegate-list">
+                <h2>Task Memebers</h2>
+                <el-divider v-if="newDelegates.length" content-position="center">On It</el-divider>
                 <transition-group name="person-list">
                     <person-preview
                         @item-selected="onRemoveDelegate"
@@ -13,6 +15,7 @@
             </section>
 
             <section class="member-list">
+                <el-divider v-if="newMembers.length" content-position="center">Add</el-divider>
                 <transition-group name="person-list">
                     <person-preview
                         @item-selected="onAddDelegate"

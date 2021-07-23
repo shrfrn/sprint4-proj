@@ -1,20 +1,19 @@
 <template>
-  <section class="board-app">
-    <navbar :user="user" @logout="logout" />
-    <board-list :boards="boards" />
-    <router-view />
-  </section>
+    <section class="board-app">
+        <navbar :user="user" @logout="logout" />
+        <board-list :boards="boards" />
+        <router-view />
+    </section>
 </template>
 <script>
 import navbar from '../components/navbar.vue';
 import boardList from '../components/board-list.vue';
 import { socketService } from '@/services/socket.service.js';
 export default {
-    
     created() {
-        socketService.setup()
-        socketService.on('task-updated', this.updateActivity)
-        
+        socketService.setup();
+        socketService.on('task-updated', this.updateActivity);
+        socketService.on('board-list-updated', this.updateBoards);
     },
     methods:{
 
@@ -23,14 +22,14 @@ export default {
                 return console.log('inside task');
             }
             if (this.currBoardId === activity.boardId) return console.log('inside board');
-
             return console.log('inside app');
         },
-
-        async logout(){
-            await this.$store.dispatch({ type: "logout" });
+        async updateBoards() {
+            await this.$store.dispatch({ type: 'loadBoards' });
         },
-        
+        async logout() {
+            await this.$store.dispatch({ type: 'logout' });
+        },
     },
     computed: {
         boards() {

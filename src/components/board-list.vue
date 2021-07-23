@@ -134,6 +134,7 @@ export default {
 
         deleteBoard(boardId) {
             this.$store.dispatch({ type: 'removeBoard', boardId });
+            this.$router.push('/board');
         },
 
         addToFavorites(boardId) {

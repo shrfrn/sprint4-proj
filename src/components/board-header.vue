@@ -63,7 +63,6 @@
                             <template slot-scope="scope">
                                 <avatar
                                     :size="30"
-                                    inline
                                     :src="scope.row.imgUrl"
                                     :username="scope.row.fullname"
                                 ></avatar>

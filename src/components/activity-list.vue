@@ -11,6 +11,9 @@ export default {
     props: {
         activities: Array,
     },
+    created(){
+        console.log(this.activities,'gggggg');
+    }
 };
 </script>
 

@@ -140,19 +140,20 @@ export default {
             if (this.isEditTitle === true) return;
             this.$emit('openTaskDetails', this.task.id);
         },
-        addActivity() {
+        addActivity(msg) {
+            if(!msg) return 
             const activity = {
                 boardId: this.$store.getters.currBoard._id,
                 groupId: this.groupId,
                 taskId: this.currTask.id,
-                activityType: 'task-update',
-                content: { txt: 'Task updated.' },
+                activityType: msg.type,
+                content: { txt: msg.msg },
             }
             this.$store.dispatch({ type: 'addActivity', activity });
         },
         async updateTask() {
             try {
-                await this.addActivity()
+               if(this.isEditTitle) await this.addActivity({type:'edit title',msg: 'edit task name from ' + this.task.title + ' to ' + this.currTask.title})
                 await this.$store.dispatch({ type: 'updateTask', task: this.currTask, groupId: this.groupId });
                 this.isEditTitle = false;
             } catch (err) {

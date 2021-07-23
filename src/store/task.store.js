@@ -11,7 +11,6 @@ export const taskStore = {
             boardCopy.groups[groupIdx].tasks.splice(taskIdx, 1, task);
 
             // Write updated board to store
-
             try {
                 context.dispatch({ type: 'saveBoard', board: boardCopy });
             } catch (err) {
