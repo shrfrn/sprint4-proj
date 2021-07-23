@@ -1,31 +1,42 @@
 <template>
-    <section class="activity-preview">
-        <!-- {{ activity.createdBy.fullname }}
+  <section class="activity-preview">
+    <!-- {{ activity.createdBy.fullname }}
   -->
 
-        <el-card shadow="hover" class="activity-card">
-            <avatar
-                class="person-preview-avatar"
-                :username="activity.createdBy.fullname"
-                :inline="true"
-                :size="30"
-                :src="activity.createdBy.imgUrl"
-            />
+    <el-card shadow="hover" class="activity-card">
+      <avatar
+        class="person-preview-avatar"
+        :username="name"
+        :inline="true"
+        :size="30"
+        :src="imgUrl"
+      />
 
-            <span>{{ activity.content.txt }}</span>
-        </el-card>
-    </section>
+      <span>{{ activity.content.txt }}</span>
+    </el-card>
+  </section>
 </template>
 
 <script>
-import Avatar from 'vue-avatar';
+import Avatar from "vue-avatar";
 export default {
-    props: {
-        activity: Object,
-    },
+  props: {
+    activity: Object,
+  },
 
-    methods: {  
-     },
-    components: { Avatar },
+  methods: {},
+  computed: {
+    name() {
+
+     
+      if (this.activity.createdBy) return this.activity.createdBy.fullname;
+      return 'Guest user';
+    },
+    imgUrl() {
+      if (this.activity.createdBy) return this.activity.createdBy.imgUrl;
+      return "";
+    },
+  },
+  components: { Avatar },
 };
 </script>
