@@ -167,6 +167,7 @@ export const boardStore = {
         async addActivity(context, { activity }) {
             activity = await boardService.addActivity(activity);
             context.commit({ type: 'addActivity', activity });
+            console.log('aaaaaaaaaaaaaa',context.getters.currBoard.activities);
         },
         async toggleUpdateLike(context, { id }) {
             context.commit({ type: 'toggleLike', id });
@@ -204,7 +205,8 @@ export const boardStore = {
         },
         getActivitiesByItem: (state) => (itemId) => {
             return state.currBoard.activities.filter((activity) => {
-                return activity.itemId === itemId;
+         
+                return activity.taskId === itemId;
             });
         },
         getUpdatesByItem: (state) => (itemId) => {

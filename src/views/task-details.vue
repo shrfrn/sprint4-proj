@@ -49,9 +49,9 @@ export default {
             });
         });
         this.activities = this.$store.getters.getActivitiesByItem(taskId);
-        console.log(this.activities);
+        console.log(this.activities,'activity');
         this.updates = this.$store.getters.getUpdatesByItem(taskId);
-        console.log(this.updates);
+        console.log(this.updates,'update');
     },
     methods: {
         closeDetails() {
