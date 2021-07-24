@@ -18,12 +18,24 @@ export default {
     methods:{
 
         updateActivity(activity){
+            console.log('task-update recieved');
+            console.log('in taskId:', this.currTaskId);
+            console.log(activity);
             if (this.currTaskId && this.currTaskId === activity.taskId) {
                 return console.log('inside task');
             }
-            if (this.currBoardId === activity.boardId) return console.log('inside board');
+            if (this.currBoardId === activity.boardId) return this.renderBoardBadge(activity)
             return console.log('inside app');
         },
+        // renderActivity(activity){
+
+        // },
+        renderBoardBadge(activity){
+            this.$store.commit({ type: 'registerActivity', activity})
+        },
+        // renderAppadge(activity){
+
+        // },
         async updateBoards() {
             await this.$store.dispatch({ type: 'loadBoards' });
         },

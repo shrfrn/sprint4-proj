@@ -62,10 +62,17 @@
                 <button @click.stop="toggleEdit(true)" v-if="isHover">Edit</button>
             </section>
             <!-- <i class="far fa-comments open-chat" @click="openTaskDetails"></i> -->
-            <!-- <el-badge :value="taskMsgCount(currTask.id)" class="item">
+            <!-- <el-badge :value="taskMsgCount(currTask.id)" class="item"> -->
+            <section v-if="hasUnreadMsg(currTask.id)">
+                <el-badge is-dot type="danger" class="item">
+                    <i class="far fa-comment open-chat"></i>
+                </el-badge>
+                <!-- <i class="far fa-comment open-chat"></i> -->
+            </section>
+            <section v-else>
                 <i class="far fa-comment open-chat"></i>
-            </el-badge> -->
-            <i class="far fa-comment open-chat"></i>
+                <!-- <i class="far fa-comment open-chat"></i> -->
+            </section>
         </div>
 
         <component
@@ -85,10 +92,10 @@
 import { columnHelpers } from '@/services/column.helpers.js';
 import { utilService } from '@/services/util.service.js';
 
-import personColumn from '@/components/person-column';
-import statusColumn from '@/components/status-column';
-import dateColumn from '@/components/date-column';
-import tagsColumn from '@/components/tags-column';
+import personColumn from '@/components/columns/person-column';
+import statusColumn from '@/components/columns/status-column';
+import dateColumn from '@/components/columns/date-column';
+import tagsColumn from '@/components/columns/tags-column';
 
 export default {
     props: {
@@ -133,7 +140,10 @@ export default {
     },
     methods: {
         taskMsgCount(id) {
-            return this.$store.getters.taskMsgCount(id);
+            return this.$store.getters.taskMsgCount(id)
+        },
+        hasUnreadMsg(id) {
+            return !!this.$store.getters.taskMsgCount(id)
         },
         toggleEdit(isTrue) {
             this.isEditTitle = isTrue;

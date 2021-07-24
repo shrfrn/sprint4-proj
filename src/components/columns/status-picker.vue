@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import statusItem from '@/components/status-item';
+import statusItem from '@/components/columns/status-item';
 export default {
     props: {
         value: {

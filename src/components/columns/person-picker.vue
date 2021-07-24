@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import personPreview from '@/components/person-preview';
+import personPreview from '@/components/columns/person-preview';
 export default {
     props: {
         delegates: {

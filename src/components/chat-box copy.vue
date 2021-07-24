@@ -32,8 +32,12 @@
 
 <script>
 import msgList from './msg-list.vue';
-
+// import tiptap from './tiptap.vue';
 export default {
+    components: {
+        msgList,
+        // tiptap
+    },
     props: {
         updates: Array,
     },
@@ -58,14 +62,13 @@ export default {
             console.log('this.txt :>> ', this.txt);
             await this.$store.dispatch({
                 type: 'saveUpdate',
-                taskId: this.$route.params.id,
+                itemId: this.$route.params.id,
                 txt: this.txt,
             });
             this.isEditingState = false;
             this.txt = '';
         },
     },
-    components: { msgList },
 };
 </script>
 

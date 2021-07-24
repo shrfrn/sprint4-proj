@@ -38,11 +38,11 @@ import groupList from '../components/group-list.vue';
 export default {
     computed: {
         board() {
-            return JSON.parse(JSON.stringify(this.$store.getters.currBoard));
+            return JSON.parse(JSON.stringify(this.$store.getters.currBoardFiltered));
         },
-        date() {
-            return this.$store.getters.currBoard.groups[0].tasks[0].columns['date'];
-        },
+        // date() {
+        //     return this.$store.getters.currBoard.groups[0].tasks[0].columns['date'];
+        // },
     },
     async created() {
         await this.loadBoard();
@@ -125,7 +125,8 @@ export default {
             this.$router.push(`/board/${board._id}/task/${taskId}`);
         },
         setFilter(filterBy) {
-            this.$store.dispatch({ type: 'setFilter', filterBy });
+            this.$store.commit({ type: 'setFilter', filterBy });
+            // this.$store.dispatch({ type: 'setFilter', filterBy });
 
             // this.groupsToShow = this.board.groups.filter((group) =>
             //     group.title.includes(filterBy.txt)

@@ -39,7 +39,7 @@ function displayedTimestamp(ts) {
 function msToShortDate(columnData){
     const date = new Date(columnData)
 
-    const dd = ('0' + (date.getDate() + 1)).slice(-2)
+    const dd = ('0' + (date.getDate())).slice(-2)
     const mm = ('0' + (date.getMonth() + 1)).slice(-2)
     const yyyy = ('0' + date.getFullYear()).slice(-4)
 

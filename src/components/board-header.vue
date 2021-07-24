@@ -126,7 +126,7 @@
 </template>
 
 <script>
-import columnPicker from '@/components/column-picker.vue';
+import columnPicker from '@/components/columns/column-picker.vue';
 import Avatar from 'vue-avatar';
 
 export default {
@@ -145,6 +145,7 @@ export default {
     },
 
     created() {
+        console.log('creating header. board is:\n', this.board);
         this.members = this.board.members;
     },
     computed: {

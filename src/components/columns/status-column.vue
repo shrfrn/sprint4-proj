@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import statusPicker from "@/components/status-picker";
+import statusPicker from "@/components/columns/status-picker";
 export default {
   props: {
     value: {

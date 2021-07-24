@@ -41,7 +41,6 @@
     </section>
 </template>
 <script>
-import { userService } from '../services/user.service';
 
 export default {
     data() {
@@ -51,6 +50,7 @@ export default {
                 fullname: '',
                 username: '',
                 password: '',
+                activities: [],
             },
         };
     },
@@ -70,8 +70,8 @@ export default {
 
         async onSignup() {
             try {
-                const user = await userService.signup(this.userCreds)
-                this.login(user)
+                await this.$store.dispatch({ type: 'signup', userCreds: this.userCreds})
+                this.onLoginSuccess()
             } catch (err) {
                 console.log('login error')
                 throw err
@@ -79,16 +79,15 @@ export default {
         },
         async onLogin() {
             try {
-                const user = await userService.login(this.userCreds)
-                this.login(user)
+                await this.$store.dispatch({ type: 'login', userCreds: this.userCreds})
+                this.onLoginSuccess()
             } catch (err) {
                 console.log('login error')
                 throw err
             }
         },
-        login(user){
+        onLoginSuccess(){
             this.userCreds = { fullname: '', username: '', password: '' }
-            this.$store.commit({ type: 'setLoggedinUser', user })
             this.$emit('login-signup', true)
             this.$router.push(`/board/60f7b1e3c66d343ab4f0c567`)
         },

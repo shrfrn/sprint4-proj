@@ -40,7 +40,7 @@
 
 <script>
 import Avatar from 'vue-avatar';
-import personPicker from '@/components/person-picker';
+import personPicker from '@/components/columns/person-picker';
 
 export default {
     props: {

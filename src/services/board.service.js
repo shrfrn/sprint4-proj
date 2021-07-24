@@ -18,7 +18,7 @@ export const boardService = {
     getEmptyFilter, // Everything under here should be in store.
     getActivitiesByItem,
     getUpdatesByItem,
-    getEmptyUpdate,
+    // getEmptyUpdate,
     getEmptyActivity,
     addActivity,
 };
@@ -36,31 +36,31 @@ async function query(filterBy = {}) {
     return filteredBoards;
 }
 
-async function getById(id, filterBy = { txt: '' }) {
+async function getById(id) {
     const board = await httpService.get(BOARD_URL + id);
-    const regex = new RegExp(filterBy.txt, 'i');
+    // const regex = new RegExp(filterBy.txt, 'i');
 
-    var filteredGroups = [];
-    board.groups.forEach((group) => {
-        if (regex.test(group.title)) {
-            filteredGroups.push(group);
-        } else {
-            let filteredTasks = group.tasks.filter(
-                (task) =>
-                    regex.test(task.title) ||
-                    board.columns.some((column) =>
-                        regex.test(columnHelpers[column].txt(task.columns[column]))
-                    )
-            );
+    // var filteredGroups = [];
+    // board.groups.forEach((group) => {
+    //     if (regex.test(group.title)) {
+    //         filteredGroups.push(group);
+    //     } else {
+    //         let filteredTasks = group.tasks.filter(
+    //             (task) =>
+    //                 regex.test(task.title) ||
+    //                 board.columns.some((column) =>
+    //                     regex.test(columnHelpers[column].txt(task.columns[column]))
+    //                 )
+    //         );
 
-            if (filteredTasks.length) {
-                group.tasks = filteredTasks;
-                filteredGroups.push(group);
-            }
-        }
-    });
-    board.groups = filteredGroups;
-
+    //         if (filteredTasks.length) {
+    //             group.tasks = filteredTasks;
+    //             filteredGroups.push(group);
+    //         }
+    //     }
+    // });
+    // board.groups = filteredGroups;
+console.log('board in getById is:\n', board);
     return board;
 }
 
@@ -123,20 +123,20 @@ function getEmptyFilter() {
         sortBy: 'title',
     };
 }
-function getEmptyUpdate(){
-    return {
-        id: utilService.makeId(),
-        itemId: '',
-        createdAt: null,
-        txt: '',
-        createdBy: {
-            _id: '',
-            fullname: '',
-            imgUrl: '',
-        },
-        likedBy: []
-    }
-}
+// function getEmptyUpdate(){
+//     return {
+//         id: utilService.makeId(),
+//         itemId: '',
+//         createdAt: null,
+//         txt: '',
+//         createdBy: {
+//             _id: '',
+//             fullname: '',
+//             imgUrl: '',
+//         },
+//         likedBy: []
+//     }
+// }
 function getEmptyActivity(){
   return  {
         id: utilService.makeId(),

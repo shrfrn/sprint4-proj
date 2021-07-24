@@ -5,7 +5,7 @@
    
   </section> -->
     <el-drawer :visible.sync="drawer" :title="currTask.title">
-        <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tabs v-model="activeName" @tab-click="tabSelect">
             <el-tab-pane label="Updates" name="Updates">
                 <chat-box v-if="updates" :updates="updates" />
             </el-tab-pane>
@@ -21,15 +21,46 @@ import activityList from '../components/activity-list.vue';
 import ChatBox from '../components/chat-box.vue';
 
 export default {
-    components: { activityList, ChatBox },
     data() {
         return {
             currTask: null,
             drawer: true,
             activeName: 'Updates',
-            activities: [],
-            updates: [],
+            // activities: [],
+            // updates: [],
         };
+    },
+    created() {
+        const board = this.$store.getters.currBoard;
+        const taskId = this.$route.params.id;
+        board.groups.forEach((group) => {
+            return group.tasks.forEach((task) => {
+                if (task.id === taskId) this.currTask = task;
+            });
+        });
+        // this.activities = this.$store.getters.getActivitiesByItem(taskId, 'task-updated');
+        // this.updates = this.$store.getters.getUpdatesByItem(taskId, 'new-msg');
+    },
+    computed: {
+        activities(){
+            return this.$store.getters.getActivitiesByItem(this.taskId, 'task-updated').sort((act1, act2) => { act2.createdAt - act1.createdAt })
+        },
+        updates(){
+            return this.$store.getters.getActivitiesByItem(this.taskId, 'new-msg').sort((act1, act2) => { act2.createdAt - act1.createdAt })
+        },
+        taskId(){
+            return this.currTask.id
+        },
+    },
+    methods: {
+        closeDetails() {
+            this.$router.push(`/board/${this.$route.params.boardId}`);
+        },
+        tabSelect(tab) {
+            if(tab.name === 'Updates'){
+                console.log('tab changed to updates');
+            }
+        },
     },
     watch: {
         drawer() {
@@ -40,28 +71,8 @@ export default {
             // this.currTask = JSON.parse(JSON.stringify(newVal));
         },
     },
-    created() {
-        const board = this.$store.getters.currBoard;
-        const taskId = this.$route.params.id;
-        board.groups.forEach((group) => {
-            return group.tasks.forEach((task) => {
-                if (task.id === taskId) this.currTask = task;
-            });
-        });
-        this.activities = this.$store.getters.getActivitiesByItem(taskId);
-        console.log(this.activities,'activity');
-        this.updates = this.$store.getters.getUpdatesByItem(taskId);
-        console.log(this.updates,'update');
-    },
-    methods: {
-        closeDetails() {
-            this.$router.push(`/board/${this.$route.params.boardId}`);
-        },
-        handleClick(tab, event) {
-            console.log(tab, event);
-        },
-    },
-};
+    components: { activityList, ChatBox },
+}
 </script>
 
 <style></style>

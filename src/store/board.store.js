@@ -1,12 +1,17 @@
 import { boardService } from '@/services/board.service.js';
 import { userService } from '../services/user.service';
 import { socketService } from '@/services/socket.service.js';
+import { columnHelpers } from '@/services/column.helpers.js';
 
 export const boardStore = {
     strict: true,
     state: {
         boards: [],
         currBoard: null,
+        filteredBoard: null,
+        filterBy: {
+            txt: '',
+        },
     },
     mutations: {
         setBoards(state, { boards }) {
@@ -14,6 +19,7 @@ export const boardStore = {
         },
         loadBoard(state, { board }) {
             state.currBoard = board;
+            if(state.filterBy.txt === '' ) state.filteredBoard = state.currBoard
         },
         removeBoard(state, { boardId }) {
             const idx = state.boards.findIndex((board) => board._id === boardId);
@@ -25,19 +31,53 @@ export const boardStore = {
             state.currBoard = updateBoard;
             console.log('state.currBoard.groups', state.currBoard.groups);
         },
-        setFilter(state, { filteredBoard }) {
-            state.currBoard = filteredBoard;
+        setFilter(state, { filterBy }) {
+            console.log('currBoard:\n', state.currBoard);
+            state.filteredBoard = JSON.parse(JSON.stringify(state.currBoard)) // ? maybe dont need this?
+            state.filterBy = JSON.parse(JSON.stringify(filterBy))
+
+            const regex = new RegExp(state.filterBy.txt, 'i')
+            const filteredGroups = []
+            
+            state.currBoard.groups.forEach((group) => {
+                if (regex.test(group.title)) {
+                    filteredGroups.push(group);
+                } else {
+                    let filteredTasks = group.tasks.filter(
+                        task =>
+                            regex.test(task.title) ||
+                            state.currBoard.columns.some(column =>
+                                {
+                                    if(column === 'date'){
+                                        console.log('data in date col:', task.columns[column]);
+                                        console.log('data in date as text:', columnHelpers[column].txt(task.columns[column]));
+                                    }
+                                    return regex.test(columnHelpers[column].txt(task.columns[column]))}
+                            )
+                        )
+        
+                    if (filteredTasks.length) {
+                        const filteredGroup = JSON.parse(JSON.stringify(group))
+                        filteredGroup.tasks = filteredTasks
+                        filteredGroups.push(filteredGroup)
+                    }
+                }
+            })
+            state.filteredBoard.groups = filteredGroups
         },
         addActivity(state, { activity }) {
             state.currBoard.activities.unshift(activity);
-            console.log('about to emit task-updated');
             socketService.emit('task-updated', activity);
         },
-        setUpdate(state, { update }) {
-            if (state.currBoard.updates) state.currBoard.updates.unshift(update);
-            else state.currBoard['updates'] = [update];
-            console.log('state.currBoard.updates', state.currBoard.updates);
+        registerActivity(state, { activity }){
+            console.log('registering activity', activity);
+            state.currBoard.activities.unshift(activity)
         },
+        // setUpdate(state, { update }) {
+        //     if (state.currBoard.updates) state.currBoard.updates.unshift(update);
+        //     else state.currBoard['updates'] = [update];
+        //     console.log('state.currBoard.updates', state.currBoard.updates);
+        // },
         setFilterList(state, { filteredBoards }) {
             state.boards = filteredBoards;
         },
@@ -67,6 +107,7 @@ export const boardStore = {
         },
         async loadBoard(context, { boardId }) {
             const board = await boardService.getById(boardId);
+            // debugger
             context.commit({ type: 'loadBoard', board });
         },
         async saveBoard(context, { board }) {
@@ -116,27 +157,37 @@ export const boardStore = {
                 console.log('couldnt duplicate board', err);
             }
         },
-        async setFilter(context, { filterBy }) {
-            try {
-                const filteredBoard = await boardService.getById(
-                    context.state.currBoard._id,
-                    filterBy
-                );
-                context.commit({ type: 'setFilter', filteredBoard });
-            } catch (err) {
-                console.log('couldnt filtered', err);
+        // async setFilter(context, { filterBy }) {
+        //     try {
+        //         const filteredBoard = await boardService.getById(
+        //             context.state.currBoard._id,
+        //             filterBy
+        //         );
+        //         context.commit({ type: 'setFilter', filteredBoard });
+        //     } catch (err) {
+        //         console.log('couldnt filtered', err);
+        //     }
+        // },
+        async saveUpdate(context, { taskId, txt }) {
+            
+            const currUser = JSON.parse(JSON.stringify(context.getters.loggedinUser))
+            console.log(currUser);
+            delete currUser.activities
+
+            const activity = { 
+                boardId: context.getters.currBoard._id,
+                taskId: taskId,
+                type: 'new-msg',
+                createdBy: currUser,
+                content: { txt },
             }
-        },
-        async saveUpdate(context, { itemId, txt }) {
-            console.log(itemId, txt);
-            const update = boardService.getEmptyUpdate();
-            update.createdAt = Date.now();
-            update.itemId = itemId;
-            update.createdBy = context.getters.loggedinUser;
-            update.txt = txt;
-            context.commit({ type: 'setUpdate', update });
-            const boardCopy = await boardService.save(context.getters.currBoard);
-            context.commit({ type: 'loadBoard', board: boardCopy });
+            console.log('saving msg...\n', activity);
+            try {
+                await context.dispatch({ type: 'addActivity', activity })
+            } catch (err) {
+                console.log('error registering new chat msg\n', err)
+                throw err
+            }
         },
         async setFilterList(context, { filterBy }) {
             try {
@@ -147,9 +198,8 @@ export const boardStore = {
             }
         },
         async addActivity(context, { activity }) {
-            activity = await boardService.addActivity(activity);
-            context.commit({ type: 'addActivity', activity });
-            console.log('aaaaaaaaaaaaaa', context.getters.currBoard.activities);
+            activity = await boardService.addActivity(activity)
+            context.commit({ type: 'registerActivity', activity })
         },
         async toggleUpdateLike(context, { id }) {
             context.commit({ type: 'toggleLike', id });
@@ -179,26 +229,33 @@ export const boardStore = {
         currBoard(state) {
             return state.currBoard;
         },
+        currBoardFiltered(state){
+            // console.log('in getter: filter board is :', state.filteredBoard);
+            return state.filteredBoard
+        },
         getEmptyTask(state) {
             return boardService.getEmptyTask(state.currBoard);
         },
         getEmptyUpdate() {
             return boardService.getEmptyUpdate();
         },
-        getActivitiesByItem: (state) => (itemId) => {
-            return state.currBoard.activities.filter((activity) => {
-                return activity.taskId === itemId;
-            });
-        },
-        getUpdatesByItem: (state) => (itemId) => {
-            if (state.currBoard.updates) {
-                return state.currBoard.updates.filter((update) => {
-                    return update.itemId === itemId;
+        getActivitiesByItem: (state) => (taskId, ActivityType) => {
+            if (state.currBoard.activities) {
+                const filteredActivities =  state.currBoard.activities.filter(activity => {
+                    return (activity.taskId === taskId && activity.type === ActivityType)
                 });
-            } else {
-                state.currBoard['updates'] = [];
-                return state.currBoard.updates;
+                console.log('filteredActivities:', filteredActivities);
+                if(filteredActivities.length)   return filteredActivities
             }
+            return []
         },
+        // getUpdatesByItem: (state) => (itemId) => {
+        //     if (state.currBoard.activities) {
+        //         return state.currBoard.activities.filter(activity => {
+        //             return (activity.itemId === itemId && activity.type === 'new-msg')
+        //         });
+        //     }
+        //     return []
+        // },
     },
 };

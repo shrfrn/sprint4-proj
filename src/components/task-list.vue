@@ -66,10 +66,10 @@
 <script>
 import taskPreview from './task-preview.vue';
 import draggable from 'vuedraggable';
-import tagsSummeryColumn from './tags-summery-column.vue';
-import personSummeryColumn from './person-summery-column.vue';
-import statusSummeryColumn from './status-summery-column.vue';
-import dateSummeryColumn from './date-summery-column.vue';
+import tagsSummeryColumn from './columns/tags-summery-column.vue';
+import personSummeryColumn from './columns/person-summery-column.vue';
+import statusSummeryColumn from './columns/status-summery-column.vue';
+import dateSummeryColumn from './columns/date-summery-column.vue';
 import { columnHelpers } from '@/services/column.helpers.js';
 
 export default {
