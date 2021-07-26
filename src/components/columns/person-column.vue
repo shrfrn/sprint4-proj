@@ -70,7 +70,6 @@ export default {
     },
     methods: {
         togglePersonPicker() {
-            console.log('togglePersonPicker');
             this.isPickerOpen = !this.isPickerOpen;
         },
         onNewDelegateList(newDelegates) {
@@ -81,9 +80,7 @@ export default {
             this.$emit('input', newDelegates);
         },
         onDelegateListChange(newDelegates) {
-            console.log('this.newDelegates BEFORE :>> ', this.newDelegates);
             this.newDelegates = newDelegates;
-            console.log('this.newDelegates AFTER :>> ', this.newDelegates);
         },
     },
     computed: {

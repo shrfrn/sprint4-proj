@@ -4,7 +4,7 @@
             class="person-preview-avatar"
             :username="person.fullname"
             :inline="true"
-            :size="30"
+            :size="28"
             :src="person.imgUrl"
         />
         <div class="person-preview-fullname">{{ person.fullname }}</div>

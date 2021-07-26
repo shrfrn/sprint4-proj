@@ -11,11 +11,12 @@ export const userStore = {
         },
 
         taskActivities: (state, getters) => (taskId) => {
-            console.log(getters.loggedinUser);
-            if(getters.loggedinUser.activities){
-                return getters.loggedinUser.activities.filter((activity) => activity.taskId === taskId);
+            if (getters.loggedinUser.activities) {
+                return getters.loggedinUser.activities.filter(
+                    (activity) => activity.taskId === taskId
+                );
             } else {
-                return []
+                return [];
             }
         },
         boardActivities: (state) => (boardId) => {
@@ -23,8 +24,6 @@ export const userStore = {
         },
 
         taskMsgCount: (state, getters) => (taskId) => {
-            console.log(getters.loggedinUser);
-
             const msgCount = getters.taskActivities(taskId).reduce((acc, activity) => {
                 return (acc += activity.type === 'new-msg' ? 1 : 0);
             }, 0);
@@ -41,20 +40,20 @@ export const userStore = {
         },
     },
     actions: {
-        async login(context, { userCreds }){
+        async login(context, { userCreds }) {
             console.log('userCreds:', userCreds);
             try {
-                const user = await userService.login(userCreds)
+                const user = await userService.login(userCreds);
                 console.log('after login back from server:\n', user);
-                context.commit({type: 'setLoggedinUser', user})
+                context.commit({ type: 'setLoggedinUser', user });
             } catch (err) {
                 console.log('error logging in\n', userCreds, err);
             }
         },
-        async signup(context, { userCreds }){
+        async signup(context, { userCreds }) {
             try {
-                const user = await userService.signup(userCreds)
-                context.commit({type: 'setLoggedinUser', user})
+                const user = await userService.signup(userCreds);
+                context.commit({ type: 'setLoggedinUser', user });
             } catch (err) {
                 console.log('error signing up\n', userCreds, err);
             }

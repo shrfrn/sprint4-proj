@@ -59,3 +59,19 @@ a {
         color: $clr1;
     }
 }
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(192, 192, 192);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(153, 153, 153);
+}

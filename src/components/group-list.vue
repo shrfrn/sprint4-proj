@@ -21,6 +21,13 @@
                                     </el-button>
                                     <el-dropdown-menu trigger="click" size="medium" slot="dropdown">
                                         <el-dropdown-item
+                                            @click.native="collapseAllButThis(group.id)"
+                                        >
+                                            <i class="fas fa-compress-arrows-alt"></i> Collapse all
+                                            but this group
+                                        </el-dropdown-item>
+                                        <el-dropdown-item
+                                            divided
                                             @click.native="collapseSingleGroup(group.id)"
                                         >
                                             <i class="fas fa-compress-alt"></i> Collapse this group
@@ -56,7 +63,6 @@
                                             class="color-change"
                                             :style="{ color: group.style.color }"
                                         >
-                                            <!-- @mouseout.native="closeColorPallete" -->
                                             <i class="fas fa-palette"></i>
                                             change color
                                             <el-color-picker
@@ -86,21 +92,6 @@
                                     type="text"
                                     v-model="group.title"
                                 />
-
-                                <!-- <div>
-                                    <draggable class="columns" v-model="columns">
-                                        <div
-                                            class="column-title"
-                                            v-for="(column, idx) in columns"
-                                            :key="idx"
-                                            @click="sortBy(column, group.tasks)"
-                                        >
-                                            <i class="fas fa-grip-vertical"></i>
-                                            {{ column }}
-                                            <i :class="columnSortIcon(column)"></i>
-                                        </div>
-                                    </draggable>
-                                </div> -->
                             </div>
 
                             <draggable
@@ -115,9 +106,8 @@
                                     @click="sortBy(column, group.tasks)"
                                 >
                                     <!-- <i v-show="isHover" class="fas fa-grip-vertical"></i> -->
-                                    <i class="fas fa-grip-vertical"></i>
                                     {{ captilize(column) }}
-                                    <i :class="columnSortIcon(column)"></i>
+                                    <!-- <i :class="columnSortIcon(column)"></i> -->
                                 </div>
                             </draggable>
                         </div>
@@ -176,6 +166,7 @@ export default {
             ],
             sortColumn: '',
             sortDir: 1,
+
             columnOrder: null,
         };
     },
@@ -237,6 +228,11 @@ export default {
             const idx = this.collapsedGroups.findIndex((id) => id === groupId);
             this.collapsedGroups.splice(idx, 1);
         },
+        collapseAllButThis(groupId) {
+            this.groups.forEach((group) => {
+                if (group.id != groupId) this.collapsedGroups.push(group.id);
+            });
+        },
         collapseGroups() {
             this.collapsedGroups = this.groups.map((gp) => gp.id);
             this.isAllCollapse = true;
@@ -283,7 +279,9 @@ export default {
             if (this.sortDir === -1) tasks.reverse();
         },
         columnSortIcon(column) {
-            if (this.sortColumn !== column) return '';
+            if (this.sortColumn !== column) {
+                return '';
+            }
             if (this.sortDir === 1) return 'fas fa-arrow-up';
             else return 'fas fa-arrow-down';
         },

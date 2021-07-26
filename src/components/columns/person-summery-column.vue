@@ -5,7 +5,7 @@
                 <avatar
                     :username="delegate.fullname"
                     :inline="true"
-                    :size="27"
+                    :size="24"
                     :src="delegate.imgUrl"
                 ></avatar>
             </el-tooltip>

@@ -1,7 +1,7 @@
 <template>
     <section>
         <i
-            class="arrow fa fa-chevron-circle-left"
+            class="arrow el-icon-arrow-left"
             aria-hidden="true"
             :class="{ close: !isNavOpen }"
             @click="closeNav"
@@ -9,7 +9,7 @@
         ></i>
         <i
             v-show="!isNavOpen"
-            class="arrow fa fa-chevron-circle-right"
+            class="arrow el-icon-arrow-right"
             :class="{ close: !isNavOpen }"
             @click="closeNav"
         ></i>

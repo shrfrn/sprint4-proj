@@ -1,5 +1,5 @@
 // import { storageService } from './async-storage.service'
-import { httpService } from './http.service'
+import { httpService } from './http.service';
 import axios from 'axios';
 
 export const userService = {
@@ -13,8 +13,8 @@ export const userService = {
     // update,
     removeActivities,
     getLoggedinUser,
-    uploadImg
-}
+    uploadImg,
+};
 
 window.userService = userService;
 // Note: due to async, must run one by one...
@@ -29,7 +29,7 @@ function getUsers() {
 
 function getById(userId) {
     // return storageService.get('user', userId)
-    return httpService.get(`user/${userId}`)
+    return httpService.get(`user/${userId}`);
 }
 // function remove(userId) {
 //     // return storageService.remove('user', userId)
@@ -43,20 +43,20 @@ function getById(userId) {
 //     // if (getLoggedinUser()._id === user._id) _saveLocalUser(user);
 
 // }
-async function removeActivities(activity){
-    return await httpService.put('activity/remove', activity)
+async function removeActivities(activity) {
+    return await httpService.put('activity/remove', activity);
 }
 
 async function login(userCred) {
     // const users = await storageService.query('user')
     // const user = users.find(user => user.username === userCred.username)
     // return _saveLocalUser(user)
-    return await httpService.post('auth/login', userCred)
+    return await httpService.post('auth/login', userCred);
     // if (user) return _saveLocalUser(user)
 }
 async function signup(userCred) {
     // const user = await storageService.post('user', userCred)
-    return await httpService.post('auth/signup', userCred)
+    return await httpService.post('auth/signup', userCred);
     // return _saveLocalUser(user)
 }
 async function logout() {
@@ -83,13 +83,12 @@ async function uploadImg(ev) {
     try {
         const res = await axios.post(UPLOAD_URL, FORM_DATA);
         return res.data;
-   } catch (err) {
-       console.error('ERROR!', err)
-   }
+    } catch (err) {
+        console.error('ERROR!', err);
+    }
 }
 
 function setLoggedinUser(user) {
-    sessionStorage.setItem('loggedinUser', JSON.stringify(user))
-    return user
+    sessionStorage.setItem('loggedinUser', JSON.stringify(user));
+    return user;
 }
-
