@@ -58,8 +58,6 @@ export default {
             }
         },
         async saveAction() {
-            console.log('hi');
-            console.log('this.txt :>> ', this.txt);
             await this.$store.dispatch({
                 type: 'saveUpdate',
                 itemId: this.$route.params.id,

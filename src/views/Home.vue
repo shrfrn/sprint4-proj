@@ -15,7 +15,7 @@
             <section class="title">
                 <div class="home-desc animate__animated animate__slideInLeft animate__fast">
                     <h2>Work the way that works for you</h2>
-                    <p>Highly effective teams choose someday -</p>
+                    <p>Highly effective teams choose Someday -</p>
                     <p>
                         Work OS for better collaboration, organization, and efficiency in all their
                         work.
@@ -59,7 +59,11 @@
                     <h2>Manage everything in one workspace</h2>
                     <p>
                         Planning, tracking and delivering your team’s best work has never been
-                        easier
+                        easier 
+                    </p>
+                    <p>
+                        Collaborate with team members across platforms, track progress
+                        and engage in real time, task oriented communication.
                     </p>
                 </div>
             </div>
@@ -69,7 +73,11 @@
                     <h2>Set up in minutes</h2>
                     <p>
                         Get started fast with hundreds of visual and customizable templates - or
-                        create your own
+                        create your own. 
+                    </p>
+                    <p>
+                        You dont need an account to try out Someday.
+                        It is free to use for as long as you like.
                     </p>
                 </div>
                 <div>

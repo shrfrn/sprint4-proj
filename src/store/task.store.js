@@ -5,6 +5,7 @@ export const taskStore = {
     actions: {
         async updateTask(context, { task, groupId }) {
             // Make a copy of the current board with the updated task in place of the older one.
+            
             let boardCopy = JSON.parse(JSON.stringify(context.getters.currBoard));
             const groupIdx = boardCopy.groups.findIndex((group) => group.id === groupId);
             const taskIdx = boardCopy.groups[groupIdx].tasks.findIndex((tsk) => tsk.id === task.id);

@@ -31,7 +31,7 @@ export default {
         };
     },
     created() {
-        this.user = this.$store.getters.getLoggedinUser;
+        this.user = this.$store.getters.loggedinUser;
     },
     computed: {
         imgUrl() {
@@ -52,7 +52,7 @@ export default {
                 type: 'saveUser',
                 user: this.user,
             });
-            this.user = this.$store.getters.getLoggedinUser;
+            this.user = this.$store.getters.loggedinUser;
             console.log(' this.user', this.user);
         },
     },

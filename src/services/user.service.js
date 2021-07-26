@@ -44,20 +44,25 @@ function getById(userId) {
 
 // }
 async function removeActivities(activity){
+    console.log('in user service removeActivities', activity);
     return await httpService.put('activity/remove', activity)
 }
 
 async function login(userCred) {
-    // const users = await storageService.query('user')
-    // const user = users.find(user => user.username === userCred.username)
-    // return _saveLocalUser(user)
-    return await httpService.post('auth/login', userCred)
-    // if (user) return _saveLocalUser(user)
+    try {
+        return await httpService.post('auth/login', userCred)
+    } catch (err) {
+        console.log('Error loging in...', err)
+        throw err       
+    }
 }
 async function signup(userCred) {
-    // const user = await storageService.post('user', userCred)
-    return await httpService.post('auth/signup', userCred)
-    // return _saveLocalUser(user)
+    try {
+        return await httpService.post('auth/signup', userCred)
+    } catch (err) {
+        console.log('Error loging in...', err)
+        throw err       
+    }
 }
 async function logout() {
     sessionStorage.clear();

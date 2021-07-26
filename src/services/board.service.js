@@ -60,7 +60,6 @@ async function getById(id) {
     //     }
     // });
     // board.groups = filteredGroups;
-console.log('board in getById is:\n', board);
     return board;
 }
 

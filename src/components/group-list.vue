@@ -272,6 +272,7 @@ export default {
             this.$emit('openTaskDetails', taskId);
         },
         sortBy(column, tasks) {
+            
             if (this.sortColumn === column) {
                 this.sortDir *= -1;
             } else {

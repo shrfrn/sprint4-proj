@@ -48,6 +48,7 @@ export default {
         await this.loadBoard();
         await socketService.setup();
         socketService.emit('in-board', this.board._id);
+        console.log('registering board on socket:', this.board._id);
         socketService.on('board-updated', this.updateBoard);
     },
     destroyed() {

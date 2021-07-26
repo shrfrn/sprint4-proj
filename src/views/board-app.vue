@@ -17,19 +17,25 @@ export default {
     },
     methods:{
 
-        updateActivity(activity){
+        async updateActivity(activity){
             console.log('task-update recieved');
             console.log('in taskId:', this.currTaskId);
             console.log(activity);
             if (this.currTaskId && this.currTaskId === activity.taskId) {
-                return console.log('inside task');
+                return await this.registerActivity(activity)
             }
             if (this.currBoardId === activity.boardId) return this.renderBoardBadge(activity)
             return console.log('inside app');
         },
-        // renderActivity(activity){
-
-        // },
+        async registerActivity(activity){
+            this.$store.commit({ type: 'registerActivity', activity})
+            try {
+                await this.$store.dispatch({ type: 'removeTaskActivities', taskId: activity.taskId })
+            } catch (err) {
+                console.log('error removing task activities from user', err);
+                throw err
+            }
+        },
         renderBoardBadge(activity){
             this.$store.commit({ type: 'registerActivity', activity})
         },

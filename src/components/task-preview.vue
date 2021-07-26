@@ -21,25 +21,6 @@
                 </el-dropdown-item>
             </el-dropdown-menu>
         </el-dropdown>
-        <!-- <div
-            class="task-title"
-            :class="isEdit"
-            @mouseover="togglehover(true)"
-            @mouseleave="togglehover(false)"
-        >
-        <el-dropdown-item @click.native="toggleEdit(true)"
-            ><i class="fas fa-pen"></i>Rename title</el-dropdown-item
-        >
-        <el-dropdown-item @click.native="duplicateTask"
-            ><i class="far fa-copy"></i>Duplicate task</el-dropdown-item
-        >
-        <el-dropdown-item @click.native="openTaskDetails">
-            <i class="far fa-comments open-chat" @click="openTaskDetails">
-            Open chat
-            </i>
-        </el-dropdown-item>
-        </el-dropdown-menu>
-    </el-dropdown> -->
         <div
             class="task-title"
             :class="isEdit"
@@ -166,18 +147,19 @@ export default {
                 groupId: this.groupId,
                 taskId: this.currTask.id,
                 activityType: msg.type,
+                createdBy: this.$store.getters.loggedinMiniUser,
                 content: { txt: msg.msg },
             };
             this.$store.dispatch({ type: 'addActivity', activity });
         },
         async updateTask() {
             try {
-                if (this.isEditTitle)
+                if (this.isEditTitle) {
                     await this.addActivity({
                         type: 'edit title',
-                        msg:
-                            'edit task name from ' + this.task.title + ' to ' + this.currTask.title,
+                        msg: 'edit task name from ' + this.task.title + ' to ' + this.currTask.title,
                     });
+                }
                 await this.$store.dispatch({
                     type: 'updateTask',
                     task: this.currTask,

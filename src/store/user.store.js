@@ -9,9 +9,13 @@ export const userStore = {
         loggedinUser(state) {
             return state.user || { _id: 'u101', fullname: 'Guest', imgUrl: '', activities: [] };
         },
-
+        loggedinMiniUser(state, getters) {
+            const miniUser = JSON.parse(JSON.stringify(getters.loggedinUser))
+            delete miniUser.activities
+            return miniUser
+        },
+        isGuestUser(state) { return !!state.user },
         taskActivities: (state, getters) => (taskId) => {
-            console.log(getters.loggedinUser);
             if(getters.loggedinUser.activities){
                 return getters.loggedinUser.activities.filter((activity) => activity.taskId === taskId);
             } else {
@@ -23,7 +27,6 @@ export const userStore = {
         },
 
         taskMsgCount: (state, getters) => (taskId) => {
-            console.log(getters.loggedinUser);
 
             const msgCount = getters.taskActivities(taskId).reduce((acc, activity) => {
                 return (acc += activity.type === 'new-msg' ? 1 : 0);
@@ -42,10 +45,8 @@ export const userStore = {
     },
     actions: {
         async login(context, { userCreds }){
-            console.log('userCreds:', userCreds);
             try {
                 const user = await userService.login(userCreds)
-                console.log('after login back from server:\n', user);
                 context.commit({type: 'setLoggedinUser', user})
             } catch (err) {
                 console.log('error logging in\n', userCreds, err);
@@ -59,13 +60,21 @@ export const userStore = {
                 console.log('error signing up\n', userCreds, err);
             }
         },
+        async logout(context){
+            try {
+                const user = await userService.logout()
+                context.commit({type: 'logout', user})
+            } catch (err) {
+                console.log('error signing up\n', err);
+            }
+        },
         async removeTaskActivities(context, { taskId }) {
-            if (!context.getters.loggedinUser) return;
+            if (context.getters.isGuestUser) return;
 
             const activity = { taskId };
             try {
-                userService.removeActivities(activity);
-                context.commit({ type: 'removeActivities', taskId });
+                await userService.removeActivities(activity);
+                context.commit({ type: 'removeTaskActivities', taskId });
             } catch (err) {
                 console.log('error removing activities', taskId);
                 throw err;
@@ -78,9 +87,12 @@ export const userStore = {
             // delete user.activities;
             userService.setLoggedinUser(user);
         },
+        logout(state){
+            state.user = null
+        },
         removeTaskActivities(state, { taskId }) {
             state.user.activities = state.user.activities.filter(
-                (activity) => activity.taskd !== taskId
+                activity => activity.taskd !== taskId
             );
         },
     },

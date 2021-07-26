@@ -67,7 +67,6 @@ export const boardStore = {
         },
         addActivity(state, { activity }) {
             state.currBoard.activities.unshift(activity);
-            socketService.emit('task-updated', activity);
         },
         registerActivity(state, { activity }){
             console.log('registering activity', activity);
@@ -147,6 +146,7 @@ export const boardStore = {
             try {
                 const boardCopy = await boardService.getById(boardId);
                 delete boardCopy._id;
+                boardCopy.activities = []
                 boardCopy.title = 'Copy of ' + boardCopy.title;
                 const newBoard = await boardService.save(boardCopy);
                 await context.dispatch({ type: 'loadBoards' });
@@ -199,17 +199,18 @@ export const boardStore = {
         },
         async addActivity(context, { activity }) {
             activity = await boardService.addActivity(activity)
-            context.commit({ type: 'registerActivity', activity })
+            await socketService.emit('task-updated', activity);
+            context.commit({ type: 'addActivity', activity })
         },
         async toggleUpdateLike(context, { id }) {
             context.commit({ type: 'toggleLike', id });
             context.dispatch({ type: 'saveBoard', board: context.getters.currBoard });
         },
-        async logout(context) {
-            console.log('logout');
-            await userService.logout();
-            context.commit({ type: 'setLoggedinUser' });
-        },
+        // async logout(context) {
+        //     console.log('logout');
+        //     await userService.logout();
+        //     context.commit({ type: 'setLoggedinUser' });
+        // },
         async saveUser(context, { user }) {
             await userService.update(user);
             console.log(context);
@@ -220,9 +221,9 @@ export const boardStore = {
         },
     },
     getters: {
-        getLoggedinUser(state) {
-            return state.loggedinUser || { _id: 'u101', fullname: 'Guest user', imgUrl: '' };
-        },
+        // getLoggedinUser(state) {
+        //     return state.loggedinUser || { _id: 'u101', fullname: 'Guest user', imgUrl: '' };
+        // },
         boards(state) {
             return state.boards;
         },
@@ -236,9 +237,9 @@ export const boardStore = {
         getEmptyTask(state) {
             return boardService.getEmptyTask(state.currBoard);
         },
-        getEmptyUpdate() {
-            return boardService.getEmptyUpdate();
-        },
+        // getEmptyUpdate() {
+        //     return boardService.getEmptyUpdate();
+        // },
         getActivitiesByItem: (state) => (taskId, ActivityType) => {
             if (state.currBoard.activities) {
                 const filteredActivities =  state.currBoard.activities.filter(activity => {

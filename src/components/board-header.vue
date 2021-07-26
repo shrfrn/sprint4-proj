@@ -145,7 +145,6 @@ export default {
     },
 
     created() {
-        console.log('creating header. board is:\n', this.board);
         this.members = this.board.members;
     },
     computed: {
