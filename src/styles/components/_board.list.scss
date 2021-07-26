@@ -6,6 +6,23 @@
     background-color: #ffffff;
     border-right: 1px solid #e6e9ef;
     font-family: Lato;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: rgb(192, 192, 192);
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: rgb(153, 153, 153);
+    }
 
     .title {
         font-size: rem(15px);
@@ -13,10 +30,6 @@
         color: rgb(107, 107, 107);
         margin-bottom: 10px;
     }
-
-    // &::after {
-    //     content: ':';
-    // }
 
     .board-list-actions {
         @include flex(center, start, column);
@@ -96,10 +109,6 @@
             margin-top: 5px;
             text-align: center;
         }
-
-        // div {
-        //     width: 100%;
-        // }
     }
 }
 
@@ -112,31 +121,30 @@
 
 .arrow {
     position: relative;
-    top: 22px;
+    top: 33px;
     left: 125px;
     cursor: pointer;
-    font-size: 22px;
-    border: 1px solid #dbdbdb;
+    font-size: 15px;
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #dcdfe6;
     opacity: 0.9;
-    padding: 0;
+    padding: 3px;
     margin: 0;
-
     border-radius: 80%;
-    color: #fff;
-    background-color: #505050;
-    transition: 0.2s;
+    transition: 0.15s;
 
     &:hover {
         background-color: #fff;
         border-radius: 50%;
-        color: #0073ea;
-        border: 1px solid #0073ea;
+        color: #2c3e50;
+        border: 1px solid #2c3e50;
     }
 }
 
 .arrow.close {
     position: relative;
-    top: 22px;
+    top: 33px;
     left: 20px;
 }
 
@@ -151,12 +159,12 @@
         left: 125px;
         cursor: pointer;
         font-size: 15px;
-        border: 1px solid #dbdbdb;
+        // border: 1px solid #dbdbdb;
         opacity: 0.9;
         // padding: 0;
         // margin: 0;
 
-        background-color: #000;
+        // background-color: #000;
         transition: 0.2s;
 
         &:hover {

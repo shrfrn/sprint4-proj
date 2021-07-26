@@ -101,6 +101,12 @@ export default {
     data() {
         return {
             dialogVisible: false,
+            userCreds: {
+                fullname: 'Guest User',
+                username: 'guest',
+                password: 'guest',
+                activities: [],
+            },
         };
     },
     computed: {
@@ -109,7 +115,8 @@ export default {
         },
     },
     methods: {
-        start() {
+        async start() {
+            await this.$store.dispatch({ type: 'login', userCreds: this.userCreds });
             this.$router.push(`/board/60f7b1e3c66d343ab4f0c567`);
         },
         handleClose() {

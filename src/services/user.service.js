@@ -1,5 +1,5 @@
 // import { storageService } from './async-storage.service'
-import { httpService } from './http.service'
+import { httpService } from './http.service';
 import axios from 'axios';
 
 export const userService = {
@@ -13,8 +13,8 @@ export const userService = {
     // update,
     removeActivities,
     getLoggedinUser,
-    uploadImg
-}
+    uploadImg,
+};
 
 window.userService = userService;
 // Note: due to async, must run one by one...
@@ -29,7 +29,7 @@ function getUsers() {
 
 function getById(userId) {
     // return storageService.get('user', userId)
-    return httpService.get(`user/${userId}`)
+    return httpService.get(`user/${userId}`);
 }
 // function remove(userId) {
 //     // return storageService.remove('user', userId)
@@ -88,13 +88,12 @@ async function uploadImg(ev) {
     try {
         const res = await axios.post(UPLOAD_URL, FORM_DATA);
         return res.data;
-   } catch (err) {
-       console.error('ERROR!', err)
-   }
+    } catch (err) {
+        console.error('ERROR!', err);
+    }
 }
 
 function setLoggedinUser(user) {
-    sessionStorage.setItem('loggedinUser', JSON.stringify(user))
-    return user
+    sessionStorage.setItem('loggedinUser', JSON.stringify(user));
+    return user;
 }
-

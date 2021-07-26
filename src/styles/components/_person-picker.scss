@@ -9,9 +9,9 @@
     align-items: center;
     justify-content: center;
     width: 230px;
-    border: 2px solid rgb(121, 121, 121);
-    box-shadow: 0 0 1px 1px rgb(192, 192, 192);
-    border-radius: 8px;
+
+    box-shadow: 0 0 3px 1px rgb(226, 226, 226);
+
     z-index: 200;
 
     .delegate-list,
@@ -23,20 +23,35 @@
     .delegate-list {
         .el-divider {
             margin: 10px auto;
-            // margin-bottom: 5px;
         }
-        border-top-left-radius: 8px;
-        border-top-right-radius: 8px;
-        // border-bottom: 1px solid rgb(150, 150, 150);
+
+        input::placeholder {
+            color: rgb(172, 172, 172);
+        }
     }
 
     .member-list {
         .el-divider {
             margin: 10px auto;
+
             // margin-bottom: 5px;
         }
-        border-bottom-left-radius: 8px;
-        border-bottom-right-radius: 8px;
+    }
+}
+
+.mail-invite {
+    margin-top: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    padding: 0.4rem;
+    color: rgb(137, 188, 206);
+    font-family: Lato;
+    transition: 0.3s;
+
+    &:hover {
+        color: rgb(21, 56, 68);
     }
 }
 

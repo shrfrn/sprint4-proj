@@ -2,8 +2,7 @@
     <transition name="person-picker">
         <section @keydown.esc="end" class="person-picker">
             <section class="delegate-list">
-                <h2>Task Memebers</h2>
-                <el-divider v-if="newDelegates.length" content-position="center">On It</el-divider>
+                <input type="text" placeholder="Enter name" />
                 <transition-group name="person-list">
                     <person-preview
                         @item-selected="onRemoveDelegate"
@@ -24,6 +23,10 @@
                         :key="member._id"
                     />
                 </transition-group>
+                <div class="mail-invite">
+                    <i class="far fa-envelope"></i>
+                    Invite a member by email
+                </div>
             </section>
         </section>
     </transition>
