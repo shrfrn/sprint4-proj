@@ -53,6 +53,7 @@ export default {
     },
     destroyed() {
         socketService.emit('left-board', this.board._id);
+        socketService.on('board-updated');
     },
 
     methods: {

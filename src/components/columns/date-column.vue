@@ -40,16 +40,16 @@ export default {
         onDateChange() {
             const date = new Date(this.newDate);
             console.log(date.getDay());
-            this.$emit('add-activity', {
-                type: 'change date',
-                msg:
-                    'change date to ' +
-                    date.getDay() +
-                    '/' +
-                    (date.getMonth() + 1) +
-                    '/' +
-                    date.getFullYear(),
-            });
+            // this.$emit('add-activity', {
+            //     type: 'change date',
+            //     msg:
+            //         'change date to ' +
+            //         date.getDay() +
+            //         '/' +
+            //         (date.getMonth() + 1) +
+            //         '/' +
+            //         date.getFullYear(),
+            // });
 
             this.$emit('input', this.newDate);
         },

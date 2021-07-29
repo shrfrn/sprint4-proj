@@ -50,7 +50,7 @@ export default {
     },
     onSelectStatus() {
       this.toggleStatusPicker();
-      this.$emit("add-activity", { type: "change status",msg:'change status to ' + this.newStatus.txt });
+    //   this.$emit("add-activity", { type: "change status",msg:'change status to ' + this.newStatus.txt });
       // this.$emit('input',{type:'status',new:this.newStatus} );
       this.$emit("input", this.newStatus);
     },

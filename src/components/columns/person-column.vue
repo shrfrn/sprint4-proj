@@ -73,10 +73,10 @@ export default {
             this.isPickerOpen = !this.isPickerOpen;
         },
         onNewDelegateList(newDelegates) {
-            this.$emit('add-activity', {
-                type: 'change person count',
-                msg: 'change person count to ' + newDelegates.length,
-            });
+            // this.$emit('add-activity', {
+            //     type: 'change person count',
+            //     msg: 'change person count to ' + newDelegates.length,
+            // });
             this.$emit('input', newDelegates);
         },
         onDelegateListChange(newDelegates) {

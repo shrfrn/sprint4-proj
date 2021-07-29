@@ -44,7 +44,7 @@ export default {
             this.isDirty = true;
         },
         onRemoveTag() {
-                  this.$emit("add-activity", { type: "change tag count",msg:'change tag count to ' +  this.newTagList.length });
+            // this.$emit("add-activity", { type: "change tag count",msg:'change tag count to ' +  this.newTagList.length });
             this.$emit('input', this.newTagList);
         },
         onPickerStateChange(isPickerOpen) {
@@ -53,7 +53,7 @@ export default {
             this.newTagList.forEach((tag) => {
                 if (!this.boardTags.includes(tag)) this.boardTags.unshift(tag);
             });
-          this.$emit("add-activity", { type: "change tag count",msg:'change tags count to ' +  this.newTagList.length });
+        //   this.$emit("add-activity", { type: "change tag count",msg:'change tags count to ' +  this.newTagList.length });
          
             this.$emit('input', this.newTagList);
         },

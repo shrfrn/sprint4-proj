@@ -110,11 +110,11 @@ export const boardStore = {
             context.commit({ type: 'loadBoard', board });
         },
         async saveBoard(context, { board }) {
+            socketService.emit('board-updated', board);
+            socketService.emit('board-list-updated');
             const newBoard = await boardService.save(board);
             context.commit({ type: 'loadBoard', board: newBoard });
             await context.dispatch({ type: 'loadBoards' }); // ?? do we need this here? consider updating the list locally
-            socketService.emit('board-updated', board);
-            socketService.emit('board-list-updated');
         },
         async saveMiniBoard(context, { miniBoard }) {
             try {
@@ -198,8 +198,8 @@ export const boardStore = {
             }
         },
         async addActivity(context, { activity }) {
+            socketService.emit('task-updated', activity);
             activity = await boardService.addActivity(activity)
-            await socketService.emit('task-updated', activity);
             context.commit({ type: 'addActivity', activity })
         },
         async toggleUpdateLike(context, { id }) {

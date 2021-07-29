@@ -15,6 +15,10 @@ export default {
         socketService.on('task-updated', this.updateActivity);
         socketService.on('board-list-updated', this.updateBoards);
     },
+    destroyed() {
+        socketService.off('task-updated');
+        socketService.off('board-list-updated');
+    },
     methods:{
 
         async updateActivity(activity){
